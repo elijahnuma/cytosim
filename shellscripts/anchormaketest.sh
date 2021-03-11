@@ -1,6 +1,6 @@
-for m in 30000 40000 50000 60000 70000 80000 90000 100000
-do bash edit.sh "new [0-9]* solid" "new $m solid" && for i in {1..5}
-do h=$((2**i)) && cp ./${h}headswithmotorvel.cym .. 
-cd .. && bash maketest.sh *.cym && cd anchortemplates/ 
+for m in 90000 100000
+do bash edit.sh "new [0-9]* solid" "new $m solid" && for h in 2 4 6 8 16 32
+do cp ./${h}headswithmotorvel.cym ../tests/ && cd ../tests/ 
+bash ../maketest.sh *.cym 10 && cd ../anchortemplates/ 
 done 
 done

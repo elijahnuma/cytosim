@@ -10,14 +10,14 @@ import numpy as np
 from CytoSimPhysics import *
 from CytoSimDataExtraction import *
 
-job_list = ['0' + str(i) if i<10 else str(i) for i in range(5000)]
+job_list = ['0' + str(i) if i<10 else str(i) for i in range(9999)]
 ## Variables to Record
 Contraction_Metrics=[]
 R_Metrics=[]
 Para_Metrics=[]
 tdata=[]
 
-opath='/gpfs_common/share03/belmonte/egnuma/job{}/save'.format(job_list[4])
+opath='/gpfs_common/share03/belmonte/egnuma/job{}/save'.format(job_list[0])
 os.chdir(opath)
 
 ## Change the report used by CytoSimDataExtraction.py

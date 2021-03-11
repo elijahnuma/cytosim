@@ -1,9 +1,6 @@
-job_num=$(($(ls .. | grep 'job' | wc -l)-1))
-cd ..
-for i in $(seq 0 $job_num)
-do echo Deleting job $i && if [[ $i -lt 10 ]]
-then rm -r job0$i
-else rm -r job$i
-fi
-done   
-
+for i in $(seq $1 $2)
+do sim_num=$(($(ls tests/test_${1} | wc -l) - 1)) && echo Clearing test $i 
+rm -r tests/test_${i}/* && for j in $(seq 0 $sim_num)
+do mkdir tests/test_${i}/$j
+done
+done

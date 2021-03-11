@@ -6,7 +6,7 @@
 #BSUB -o stdout.%J
 #BSUB -e stderr.%J
 #BSUB -R select[avx]
-bash analyzejobs.sh 213 195 199 rod
+bash analyzejobs.sh 577 110 119 rod
 
 
 

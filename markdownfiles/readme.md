@@ -30,7 +30,7 @@ args: test to insert, desired test location
 
 maketest.sh 
 creates new folder given .cym file
-args: cym file name
+args: cym file name, simulation number
 
 preconfigs.sh (run in test dir)
 looks for templete .cym files and runs pre_config_JMB.py for each folder in current directory
@@ -78,6 +78,10 @@ analyzejobs.sh
 puts respective jobs into respective folders
 args: test folder, starting job, ending job, report name (point/rod) 
 
+clear.sh
+clears test folders
+args: starting job, ending job
+
 runanalyzejobs.sh
 runs analyzejobs.sh for successive job batches by accessing submitanalyzejobs.csh
 args: starting test folder, ending test folder
@@ -85,13 +89,13 @@ args: starting test folder, ending test folder
 submitanalyzejobs.csh
 submits analyzejobs.sh to cluster
 
-/messages/
+/metadata/
 
-copymessages.sh (depreciated)
-copies messages.cmo files from jobs, args: starting job, ending job
-
-getmessagescmo.sh 
+getmessagescmo.sh (run in messages folder)
 copies messages.cmo files from jobs
+
+getoutstxt.sh (run in outs folder)
+copies outs.txt files from jobs
 
 how to run simulations:
 bash copytest.sh OR maketest.sh -> bash runsubmitrecordoff.sh -> bash runanalyzejobs.sh -> sftp -> get
