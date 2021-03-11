@@ -1,0 +1,90 @@
+[[ R = sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))) ]]% binding_range = [[R]]
+% Filament Sliding
+% 5 seconds
+
+set simul system
+{
+    time_step = 0.01
+    viscosity = 0.05
+    display = ( style=2; )
+}
+
+set space cell
+{
+    geometry = ( circle 6 )
+}
+
+new space cell
+
+set fiber actin
+{
+    rigidity = 0.075
+    segmentation = 0.1
+    display = ( line_width=1; )
+}
+
+set hand motor
+{
+    binding_rate = 0
+    binding_range = [[R]]
+    unbinding_rate = 0.1
+    unbinding_force = 6
+
+    activity = move
+    unloaded_speed = 1
+    stall_force = 4
+    hold_growing_end = 1
+
+    display = ( color=orange; size=7; width=7; )
+}
+
+set solid minifilament
+{
+    display = ( coloring = 1; size = 2; style = 4; );
+}
+
+set single myosin
+{
+    hand = motor;
+    stiffness = 100;
+}
+
+new 600 actin
+{
+    length = 2
+}
+
+new 100000 solid minifilament
+{
+    point1 = -0.4 0 0, 0.005, myosin;
+    point2 = +0.4 0 0, 0.005, myosin;
+    anchor1 = point1, point2, 0.3, myosin;
+    anchor2 = point1, point2, 0.7, myosin;
+ 
+}
+
+run system
+{
+    nb_frames = 2
+    nb_steps = 50
+	solve = 0
+}
+
+change hand motor
+{
+	binding_rate = 10
+}
+
+run system
+{
+    nb_frames = 75 
+    nb_steps = 300
+        solve = 1
+}
+
+run system
+{
+    nb_frames = 10
+    nb_steps = 200
+        solve = 1
+}

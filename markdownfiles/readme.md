@@ -1,0 +1,98 @@
+name of .cym files should be a descriptor of what is changing in each simulations or a description of the test
+
+/cyms/
+
+backup.sh (RUN ONLY IN LOGIN cyms/ DIR)
+backs up share folder
+
+clear.sh
+clears job files
+
+copysims.sh (run in test dir)
+copies test files for however many simulations needed
+args: simulation number
+
+copytest.sh 
+copies .cym file from selected test and changes .cym file
+args: test copy, target text, replacement text
+
+deletetests.sh 
+deletes range of test folders
+args: starting test, ending test
+
+editconfigs.sh
+edits config files
+args: text to be replaced, replacing text, file name
+
+insert.sh
+inserts test into desired location
+args: test to insert, desired test location
+
+maketest.sh 
+creates new folder given .cym file
+args: cym file name
+
+preconfigs.sh (run in test dir)
+looks for templete .cym files and runs pre_config_JMB.py for each folder in current directory
+
+redotest.sh 
+redoes test
+args: test number, target text, replacement text
+
+runjobs.sh (run in test dir)
+goes into every folder in current directory and runs submit job as a separate job for that folder
+
+/cyms/anchortemplates/
+
+anchormaketest.sh
+runs maketest.sh for each .cym template for every folder in an anchor folder, requires modification of for 
+loop directory
+
+edit.sh
+edits every .cym file in folder
+args: target text, replacement text
+
+/datacollection/
+
+checkjobs.sh
+checks if runrecordoff.sh has properly read every job file, run after submitting recordoff.py 
+
+clear.sh
+clears recordoff folders, run after submitting recordoff.py
+
+pendingrunningjobs.sh
+checks running and pending jobs in bjobs
+
+recordoff.py
+creates Data_Files for job number
+
+runsubmitrecordoff.sh 
+creates readable data files in each job folder
+
+submitrecordoff.csh
+submits recordoff.py
+
+/datacollection/data/
+
+analyzejobs.sh 
+puts respective jobs into respective folders
+args: test folder, starting job, ending job, report name (point/rod) 
+
+runanalyzejobs.sh
+runs analyzejobs.sh for successive job batches by accessing submitanalyzejobs.csh
+args: starting test folder, ending test folder
+
+submitanalyzejobs.csh
+submits analyzejobs.sh to cluster
+
+/messages/
+
+copymessages.sh (depreciated)
+copies messages.cmo files from jobs, args: starting job, ending job
+
+getmessagescmo.sh 
+copies messages.cmo files from jobs
+
+how to run simulations:
+bash copytest.sh OR maketest.sh -> bash runsubmitrecordoff.sh -> bash runanalyzejobs.sh -> sftp -> get
+bash anchormaketest.sh -> bash runsubmitrecordoff.sh -> bash runanalyzejobs.sh -> sftp -> get
