@@ -5,12 +5,13 @@ do if [[ $i -ge 0 && $i -lt 10 ]]
 then echo Analyzing job0$i... && cd $y/job0$i/save/
 else echo Analyzing job$i... && cd $y/job$i/save/
 fi
-mkdir $z/$i/ && cp -r ./Data_Files/ $z/$i/
+mkdir $z/$i/ 
+cp -r ./Data_Files/ $z/$i/
 mkdir $z/$i/reports/
 for d in ./run****/
 do cd $d && n=$(basename $d)
 if [[ "$4" == "point" ]]
-then reportGIT couple > ${n}report.txt 
+then reportGIT solid > ${n}report.txt 
 elif [[ "$4" == "rod" ]]
 then reportGIT single > ${n}report.txt
 fi

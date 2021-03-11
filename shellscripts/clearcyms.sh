@@ -6,4 +6,4 @@ then rm -r job0$i
 else rm -r job$i
 fi
 done   
-echo TEST LINE
+

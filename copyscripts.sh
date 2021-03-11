@@ -5,7 +5,7 @@ cp *.csh $gd/cshellscripts
 cp *.md $gd/markdownfiles
 cp *.py $gd/pythonscripts
 cp *.cym $gd/cymheadtemplates
-cd ./anchortemplates/
+cd ./motortemplates/
 cp *.sh $gd/shellscripts
 cp *.csh $gd/cshellscripts
 cp *.md $gd/markdownfiles
