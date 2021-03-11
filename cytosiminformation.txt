@@ -1,5 +1,6 @@
 All relevant cytosim information for cytosim.py
 ----------------------------------Descriptions------------------------------------
+Format: (names, var_range, motor_type)
 1: 'Preliminary tests' (1, 1, None)
 2: 'Preliminary tests with actin size ~ binding range' (1, 5, None)
 3: 'Point motor' (2, 2, 2) # 0.8 um rest length, k=100 pN/um, 2000 myosin
@@ -680,15 +681,15 @@ Names 1: np.linspace(0, sim_time, 100)
 Names 2: np.concatenate([np.linspace(0, 0.25, 2), np.linspace(0.5, sim_time + 0.5, 101)])
 Names 3: np.concatenate([np.linspace(0, 0.25, 2), np.linspace(0.5, 3.46, 75), np.linspace(3.5, 5.5, 11)])
 ------------------------------Test Variable Ranges-----------------------------
-Test Variable Range 1: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
-Test Variable Range 2: pd.Series([round(0.2+0.2*i, 2) for i in range(10)])
-Test Variable Range 3: pd.Series([round(0.1+0.1*i, 2) for i in range(10)])
-Test Variable Range 4: pd.Series([round(0.65+0.05*i, 2) for i in range(6)])
-Test Variable Range 5: pd.Series([round(0.6+0.05*i, 2) for i in range(9)])
-Test Variable Range 6: pd.Series([round(0.9+0.05*i, 2) for i in range(9)])
-Test Variable Range 7: pd.Series([''])
-Test Variable Range 8: pd.Series([round(0.9+0.1*i, 2) for i in range(9)])
-Test Variable Range 9: pd.Series(sorted(list(set([round(i*10**-j,5) for i in range(1, 11, 3) for j in range(5, 0, -1)]))))
+Variable Range 1: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+Variable Range 2: pd.Series([round(0.2+0.2*i, 2) for i in range(10)])
+Variable Range 3: pd.Series([round(0.1+0.1*i, 2) for i in range(10)])
+Variable Range 4: pd.Series([round(0.65+0.05*i, 2) for i in range(6)])
+Variable Range 5: pd.Series([round(0.6+0.05*i, 2) for i in range(9)])
+Variable Range 6: pd.Series([round(0.9+0.05*i, 2) for i in range(9)])
+Variable Range 7: pd.Series([''])
+Variable Range 8: pd.Series([round(0.9+0.1*i, 2) for i in range(9)])
+Variable Range 9: pd.Series(sorted(list(set([round(i*10**-j,5) for i in range(1, 11, 3) for j in range(5, 0, -1)]))))
 ----------------------------------Motors Types----------------------------------
 Motor Type None: None
 Motor Type point: myosin
@@ -700,23 +701,35 @@ Motors 5: [2**i for i in range(-4, 7)]
 Motors 6: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 Motors 7: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 Motors 8: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
-----------------------------------Metadata Heads--------------------------------
+---------------------------------Metadata Heads---------------------------------
 Heads 3: [2, 4, 8, 16, 32]
 Heads 4: [2, 4, 8, 16, 32]
 Heads 5: [2, 4, 8, 16, 32]
 Heads 6: [2, 4, 6, 8, 16, 32]
 Heads 7: [2, 4, 6, 8, 16, 32]
 Heads 8: [2, 4, 6, 8, 16, 32]
+-------------------------------Metadata Variables-------------------------------
+Variables 3: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+Variables 4: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+Variables 5: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+Variables 6: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+Variables 7: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+Variables 8: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+---------------------------Metadata Variable Names (sec)-------------------------
+Variable Name 3: Binding Range
+Variable Name 4: Binding Range
+Variable Name 5: Binding Range
+Variable Name 6: Binding Range
+Variable Name 7: Binding Range
+Variable Name 8: Binding Range
 ------------------------------Metadata Sim Time (sec)----------------------------
-Sim Time 1: None
-Sim Time 2: None
 Sim Time 3: 10
 Sim Time 4: 2
 Sim Time 5: 2
 Sim Time 6: 2
 Sim Time 7: 10
 Sim Time 8: 5
---------------------------------Metadata Sim Number------------------------------
+------------------------------Metadata Sim Number--------------------------------
 Sim Num 1: 5
 Sim Num 2: 5
 Sim Num 3: 5

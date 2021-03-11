@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 plot_length, plot_height = 10, 10
-    
+
 def searchcytosiminfo(request, mode):
     """
     finds information of request in cytosiminformation.txt
@@ -29,10 +29,10 @@ def searchcytosiminfo(request, mode):
             names_key, test_range_key, sim_time, motor_type_name = eval(test_info)
             # regex for names, test range list, and motor type
             names_line = [s for s in file if f"Names {names_key}:" in s][0]
-            test_range_line = [s for s in file if f"Test Variable Range {test_range_key}:" in s][0]
-            motor_type_line = [s for s in file if f"Motor Type {motor_type_name}:" in s][0]
             names = eval(re.sub(f'Names {names_key}: ', '', names_line))
-            test_range = eval(re.sub(f'Test Variable Range {test_range_key}: ', '', test_range_line))
+            test_range_line = [s for s in file if f"Variable Range {test_range_key}:" in s][0]
+            test_range = eval(re.sub(f'Variable Range {test_range_key}: ', '', test_range_line))
+            motor_type_line = [s for s in file if f"Motor Type {motor_type_name}:" in s][0]
             motor_type = re.sub(f'Motor Type {motor_type_name}: ', '', motor_type_line)
         return (description, names, test_range, sim_time, motor_type)
     if mode == 'group':
@@ -43,18 +43,22 @@ def searchcytosiminfo(request, mode):
             group_info = group_line.split(": ")[1]
         return eval(group_info)
     if mode == 'metadata':
-        motor_key = heads_key = sim_time_key = sim_num_key = request
+        motor_key = heads_key = sim_time_key = sim_num_key = var_range_key = var_name_key = request
         with open('cytosiminformation.txt', 'r') as f:
             file = f.read().splitlines()
             motors_line = [s for s in file if f"Motors {motor_key}:" in s][0]
-            heads_line = [s for s in file if f"Heads {heads_key}:" in s][0]
-            sim_time_line = [s for s in file if f"Sim Time {sim_time_key}:" in s][0]
-            sim_num_line = [s for s in file if f"Sim Num {sim_num_key}:" in s][0]
             motors = eval(re.sub(f'Motors {motor_key}: ', '', motors_line))
+            heads_line = [s for s in file if f"Heads {heads_key}:" in s][0]
             heads = eval(re.sub(f'Heads {heads_key}: ', '', heads_line))
+            var_range_line = [s for s in file if f"Variables {var_range_key}:" in s][0]
+            var_range = eval(re.sub(f'Variables {var_range_key}: ', '', var_range_line))
+            var_name_line = [s for s in file if f"Variable Name {var_name_key}:" in s][0]
+            var_name = re.sub(f'Variable Name {var_name_key}: ', '', var_name_line)
+            sim_time_line = [s for s in file if f"Sim Time {sim_time_key}:" in s][0]
             sim_time = eval(re.sub(f'Sim Time {sim_time_key}: ', '', sim_time_line))
+            sim_num_line = [s for s in file if f"Sim Num {sim_num_key}:" in s][0]
             sim_num = eval(re.sub(f'Sim Num {sim_num_key}: ', '', sim_num_line))
-        return (motors, heads, sim_time, sim_num)
+        return (motors, heads, var_range, var_name, sim_time, sim_num)
     
 def anchor_maker(anchor_num, bare=True):
     """ 
@@ -83,80 +87,82 @@ def metadata(info_num, log=True, show_plot=True):
     
     returns average computational times as dict
     """
-    motor_list, heads_list, sim_time, sim_num = searchcytosiminfo(info_num, 'metadata')
-    messages_seconds = []
-    memory_seconds = []
+    # motor count list, heads count, variable range, simulated time, number of simulations
+    motor_list, heads_list, var_range, var_name, sim_time, sim_num = searchcytosiminfo(info_num, 'metadata')
     cwd = os.getcwd()
     # number of messagescmo files, messagescmo and outtxt numbers should be equal 
     msg_num = len(os.listdir(os.path.join(cwd, 'metadata', f'messages_{info_num}')))
-    # starts at 3 to start at binding_range = 0.01 um
-    for i in range(3, msg_num, 10):
-        with open(cwd + f'\\metadata\\messages_{info_num}\\messages{i}.cmo', 'r') as f:
-            file = f.readlines()
-            seconds = file[-1]
-            seconds = re.search('[0-9]+', seconds)[0]
-            messages_seconds.append(seconds)
-        with open(cwd + f'\\metadata\\outs_{info_num}\\out{i}.txt', 'r') as f:
-            file = f.readlines()
-            seconds = [s for s in file if "Max Memory" in s][0]
-            seconds = re.search('[0-9]+\.[0-9]+', seconds)[0]
-            memory_seconds.append(seconds)
-    # number of times motors variable is changed
-    motor_num = len(motor_list)
-    # number of times heads variable is changed
-    heads_num = len(heads_list)
-    # standard deviation calculator for array
-    std = lambda arr: np.sqrt(sum((arr-np.mean(arr))**2)/len(arr))
-    # reshape arrays
-    messages_seconds = np.array(messages_seconds).astype(np.float64).reshape(motor_num, heads_num, sim_num)
-    memory_seconds = np.array(memory_seconds).astype(np.float64).reshape(motor_num, heads_num, sim_num)
-    # standard deivations
-    messages_errors = np.apply_along_axis(std, 2, messages_seconds)
-    memory_errors = np.apply_along_axis(std, 2, memory_seconds)
-    # average by simulation
-    messages_seconds = np.mean(messages_seconds, axis=2)
-    memory_seconds = np.mean(memory_seconds, axis=2)
-    # sort arrays organized by motor multiplier -> heads count
-    messages_seconds = np.column_stack(messages_seconds)
-    memory_seconds = np.column_stack(memory_seconds)
-    messages_errors = np.column_stack(messages_errors)
-    memory_errors = np.column_stack(memory_errors)
-    # sort into dictionaries for easier indexing
-    messages_seconds_dict = {h: messages_seconds[i] for i, h in enumerate(heads_list)}
-    memory_seconds_dict = {h: memory_seconds[i] for i, h in enumerate(heads_list)}
-    messages_errors_dict = {h: messages_errors[i] for i, h in enumerate(heads_list)}
-    memory_errors_dict = {h: memory_errors[i] for i, h in enumerate(heads_list)}
-    if show_plot:
-        # messages plot
-        fig, ax = plt.subplots(figsize=(plot_length, plot_height))
-        figname = 'comptimelog' if log else 'comptimenolog'
-        ax.set_title(f'Computational time vs. motors ({sim_time} second simulation)')
-        ax.set_xlabel('Motor #')
-        ax.set_ylabel('Seconds (S)')
-        if log:
-            ax.set_xscale('log')
-            ax.set_yscale('log')
-        for head in sorted(messages_seconds_dict.keys()):
-            ax.scatter(motor_list, messages_seconds_dict[head], label=f'{head} heads')
-            ax.errorbar(motor_list, messages_seconds_dict[head], yerr=messages_errors_dict[head], fmt='none')
-        ax.legend()
-        ax.grid(True, which='both')
-        plt.savefig(cwd + f'\\cytosimplots\\messages{info_num}{figname}.png')
-        # memory plot
-        fig, ax = plt.subplots(figsize=(plot_length, plot_height))
-        figname = 'memorylog' if log else 'memorynolog'
-        ax.set_title(f'Memory used vs. motors ({sim_time} second simulation)')
-        ax.set_xlabel('Motor #')
-        ax.set_ylabel('Memory (MB)')
-        if log:
-            ax.set_xscale('log')
-            ax.set_yscale('log')
-        for head in sorted(memory_seconds_dict.keys()):
-            ax.scatter(motor_list, memory_seconds_dict[head], label=f'{head} heads')
-            ax.errorbar(motor_list, memory_seconds_dict[head], yerr=memory_errors_dict[head], fmt='none')
-        ax.legend()
-        ax.grid(True, which='both')
-        plt.savefig(cwd + f'\\cytosimplots\\memory{info_num}{figname}.png')
+    # index of binding_range = 0.01 um is at 3
+    for i, var in enumerate(var_range):
+        messages_seconds = []
+        memory_seconds = []
+        for j in range(i, msg_num, sim_num):
+            with open(cwd + f'\\metadata\\messages_{info_num}\\messages{j}.cmo', 'r') as f:
+                file = f.readlines()
+                seconds = file[-1]
+                seconds = re.search('[0-9]+', seconds)[0]
+                messages_seconds.append(seconds)
+            with open(cwd + f'\\metadata\\outs_{info_num}\\out{j}.txt', 'r') as f:
+                file = f.readlines()
+                seconds = [s for s in file if "Max Memory" in s][0]
+                seconds = re.search('[0-9]+\.[0-9]+', seconds)[0]
+                memory_seconds.append(seconds)
+        # number of times motors variable is changed
+        motor_num = len(motor_list)
+        # number of times heads variable is changed
+        heads_num = len(heads_list)
+        # standard deviation calculator for array
+        std = lambda arr: np.sqrt(sum((arr-np.mean(arr))**2)/len(arr))
+        # reshape arrays
+        messages_seconds = np.array(messages_seconds).astype(np.float64).reshape(motor_num, heads_num, sim_num)
+        memory_seconds = np.array(memory_seconds).astype(np.float64).reshape(motor_num, heads_num, sim_num)
+        # standard deivations
+        messages_errors = np.apply_along_axis(std, 2, messages_seconds)
+        memory_errors = np.apply_along_axis(std, 2, memory_seconds)
+        # average by simulation
+        messages_seconds = np.mean(messages_seconds, axis=2)
+        memory_seconds = np.mean(memory_seconds, axis=2)
+        # sort arrays organized by motor multiplier -> heads count
+        messages_seconds = np.column_stack(messages_seconds)
+        memory_seconds = np.column_stack(memory_seconds)
+        messages_errors = np.column_stack(messages_errors)
+        memory_errors = np.column_stack(memory_errors)
+        # sort into dictionaries for easier indexing
+        messages_seconds_dict = {h: messages_seconds[i] for i, h in enumerate(heads_list)}
+        memory_seconds_dict = {h: memory_seconds[i] for i, h in enumerate(heads_list)}
+        messages_errors_dict = {h: messages_errors[i] for i, h in enumerate(heads_list)}
+        memory_errors_dict = {h: memory_errors[i] for i, h in enumerate(heads_list)}
+        if show_plot:
+            # messages plot
+            fig, ax = plt.subplots(figsize=(plot_length, plot_height))
+            fignamelog = 'comptimelog' if log else 'comptimenolog'
+            ax.set_title(f'Computational time vs. motors ({sim_time} second simulation) ({var_name} {var})')
+            ax.set_xlabel('Motor #')
+            ax.set_ylabel('Seconds (S)')
+            if log:
+                ax.set_xscale('log')
+                ax.set_yscale('log')
+            for head in sorted(messages_seconds_dict.keys()):
+                ax.scatter(motor_list, messages_seconds_dict[head], label=f'{head} heads')
+                ax.errorbar(motor_list, messages_seconds_dict[head], yerr=messages_errors_dict[head], fmt='none')
+            ax.legend()
+            ax.grid(True, which='both')
+            plt.savefig(cwd + f"\\cytosimplots\\messages{info_num}{fignamelog}{var_name.replace(' ', '').lower()}{var}.png")
+            # memory plot
+            fig, ax = plt.subplots(figsize=(plot_length, plot_height))
+            fignamelog = 'memorylog' if log else 'memorynolog'
+            ax.set_title(f'Memory used vs. motors ({sim_time} second simulation) ({var_name} {var})')
+            ax.set_xlabel('Motor #')
+            ax.set_ylabel('Memory (MB)')
+            if log:
+                ax.set_xscale('log')
+                ax.set_yscale('log')
+            for head in sorted(memory_seconds_dict.keys()):
+                ax.scatter(motor_list, memory_seconds_dict[head], label=f'{head} heads')
+                ax.errorbar(motor_list, memory_seconds_dict[head], yerr=memory_errors_dict[head], fmt='none')
+            ax.legend()
+            ax.grid(True, which='both')
+            plt.savefig(cwd + f"\\cytosimplots\\memory{info_num}{fignamelog}{var_name.replace(' ', '').lower()}{var}.png")
     return messages_seconds_dict, memory_seconds_dict
         
 def plot_handler(df, title, fig_name, y_label):
@@ -389,7 +395,7 @@ for binding_range in binding_ranges:
     contraction_times_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Max contraction rate time vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Seconds (s)')
     plt.grid(True, which='both')
     plt.savefig(cwd + f"\\cytosimplots\\maxpowertime{sim_time}sec{binding_range}bindingrange.png")
-# %% Analyzing cluster data with respect to motor count
+# %% analyzing cluster data with respect to motor count
 # metadata
 times, memory = metadata(info_num=metadata_num, show_plot=False)
 times_df = pd.DataFrame(times, index=motor_list)
@@ -399,18 +405,23 @@ names_list = 3
 test_range = 1
 sim_time = 5
 sim_num = 10
-# %% test-job matcher 
+# %% Test-job matcher 
 test = starting_job
 for i, m in enumerate(motor_list):
     for j, h in enumerate(heads_list):
         for k in range(sim_num):
             print(f'{sim_time} seconds test_{test} job{sim_num*len(heads_list)*i + sim_num*j + k}: {m} motors, {h} heads')
         test += 1
-# %% tests in cytosiminformation.txt 
+# %% Tests in cytosiminformation.txt 
 for t, tup in enumerate([(i, k) for i in motor_list for k in heads_list], starting_job):
     m, h = tup
     print(f"{t}: 'Rod {h} heads' ({names_list}, {test_range}, {sim_time}, 'rod') # {m} motors") if h == heads_list[0] else print(f"{t}: 'Rod {h} heads' (3, 1, {sim_time}, 'rod')")
-# %% groups in cytosiminformation.txt 
+# %% Groups in cytosiminformation.txt 
 for i, m in enumerate(motor_list):
     heads_num = len(heads_list)
     print(f"{m} motors ({sim_time} sec): ({[starting_job + heads_num*i + j for j in range(heads_num)]}, True, '({m} motors)')")
+# %% Metadata generator
+info_name = 'Variable Name'
+info = ['Binding Range', 'Binding Range', 'Binding Range', 'Binding Range', 'Binding Range', 'Binding Range']
+for i, v in enumerate(info, 3):
+    print(f'{info_name} {i}: {v}')
