@@ -183,7 +183,7 @@ compared_max_contraction_dfs = []
 compared_max_contraction_time_dfs = []
 compared_attach_dfs = []
 # groups under consideration
-groups = [f'{m} motors (5 sec)' for m in sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))[:-2]]
+groups = [f'{m} motors (5 sec)' for m in sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))]
 for group in groups:  
     # color linestyle pairs generator
     linestyles = ['-', '--', ':', '-.']
@@ -301,7 +301,7 @@ for group in groups:
     compared_max_contraction_time_dfs.append(pd.concat(test_group_max_contraction_time_dfs, axis=1))
     compared_attach_dfs.append(pd.concat(test_group_attach_dfs, axis=1))
 # %% Initializer
-motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))[:-2]
+motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 heads_list = [2, 4, 6, 8, 16, 32]
 binding_ranges = [0.001, 0.004, 0.007, 0.01, 0.04, 0.07, 0.1, 0.4, 0.7, 1]
 metadata_num = 8

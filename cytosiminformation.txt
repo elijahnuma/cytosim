@@ -565,6 +565,18 @@ All relevant cytosim information for cytosim.py
 563: 'Rod 8 heads' (3, 1, 5, 'rod')
 564: 'Rod 16 heads' (3, 1, 5, 'rod')
 565: 'Rod 32 heads' (3, 1, 5, 'rod')
+566: 'Rod 2 heads' (3, 1, 5, 'rod') # 90000 motors
+567: 'Rod 4 heads' (3, 1, 5, 'rod')
+568: 'Rod 6 heads' (3, 1, 5, 'rod')
+569: 'Rod 8 heads' (3, 1, 5, 'rod')
+570: 'Rod 16 heads' (3, 1, 5, 'rod')
+571: 'Rod 32 heads' (3, 1, 5, 'rod')
+572: 'Rod 2 heads' (3, 1, 5, 'rod') # 100000 motors
+573: 'Rod 4 heads' (3, 1, 5, 'rod')
+574: 'Rod 6 heads' (3, 1, 5, 'rod')
+575: 'Rod 8 heads' (3, 1, 5, 'rod')
+576: 'Rod 16 heads' (3, 1, 5, 'rod')
+577: 'Rod 32 heads' (3, 1, 5, 'rod')
 ------------------------------------Groups------------------------------------
 inf unbinding force: ([27, 31, 32], False, '(infinite binding force)')
 with motor velocity: ([33, 34, 35, 36, 37, 38], True, '(with motor velocity)') 
@@ -660,6 +672,8 @@ double motors and double heads with motor velocity: ([65, 66, 67, 35, 36, 37], T
 60000 motors (5 sec): ([548, 549, 550, 551, 552, 553], True, '(60000 motors)')
 70000 motors (5 sec): ([554, 555, 556, 557, 558, 559], True, '(70000 motors)')
 80000 motors (5 sec): ([560, 561, 562, 563, 564, 565], True, '(80000 motors)')
+90000 motors (5 sec): ([566, 567, 568, 569, 570, 571], True, '(90000 motors)')
+100000 motors (5 sec): ([572, 573, 574, 575, 576, 577], True, '(100000 motors)')
 manualtitle: ([30], True, 'manual title')
 ------------------------------------Names--------------------------------------
 Names 1: np.linspace(0, sim_time, 100)
@@ -685,7 +699,7 @@ Motors 4: [2**i for i in range(0, 7)]
 Motors 5: [2**i for i in range(-4, 7)]
 Motors 6: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 Motors 7: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
-Motors 8: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))[:-2]
+Motors 8: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 ----------------------------------Metadata Heads--------------------------------
 Heads 3: [2, 4, 8, 16, 32]
 Heads 4: [2, 4, 8, 16, 32]
