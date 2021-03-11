@@ -5,6 +5,10 @@ name of .cym files should be a descriptor of what is changing in each simulation
 backup.sh (RUN ONLY IN LOGIN cyms/ DIR):
 backs up share folder
 
+check.sh
+checks if test files were loaded successfully;
+args: starting test, ending test
+
 clear.sh:
 clears job files
 
@@ -54,8 +58,8 @@ args: target text, replacement text
 
 /datacollection/
 
-checkjobs.sh:
-checks if runrecordoff.sh has properly read every job file, run after submitting recordoff.py 
+check.sh:
+checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py 
 
 clear.sh:
 clears recordoff folders, run after submitting recordoff.py
@@ -81,6 +85,10 @@ analyzejobs.sh:
 puts respective jobs into respective folders;
 args: test folder, starting job, ending job, report name (point/rod) 
 
+check.sh
+checks if Data_Files was successfully copied and reports was loaded successfully;
+args: starting job, ending jobs
+
 clear.sh:
 clears test folders;
 args: starting job, ending job
@@ -102,9 +110,13 @@ copies outs.txt files from jobs
 
 how to run simulations:
 bash copytest.sh OR maketest.sh -> bash runsubmitrecordoff.sh -> bash runanalyzejobs.sh -> sftp -> get
-bash anchormaketest.sh -> bash runsubmitrecordoff.sh -> bash runanalyzejobs.sh -> sftp -> get
+bash anchormaketest.sh -> bash runsubmitrecordoff.sh ->  bash metadatacollect.sh -> bash runanalyzejobs.sh -> 
+sftp -> get
 
 /gitrepo/
 
 copyscripts.sh:
 copies scripts and text files from all other folders to send to repository
+
+workflow:
+bash copyscripts.sh -> git add -A -> git commit -m "message" -> git push
