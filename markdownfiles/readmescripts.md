@@ -5,11 +5,11 @@ name of .cym files should be a descriptor of what is changing in each simulation
 backup.sh (RUN ONLY IN LOGIN cyms/ DIR):
 backs up share folder
 
-check.sh
+checkcyms.sh
 checks if test files were loaded successfully;
 args: starting test, ending test
 
-clear.sh:
+clearcyms.sh:
 clears job files
 
 copysims.sh (run in test dir):
@@ -58,10 +58,10 @@ args: target text, replacement text
 
 /datacollection/
 
-check.sh:
+checkdatacollection.sh:
 checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py 
 
-clear.sh:
+cleardatacollection.sh:
 clears recordoff folders, run after submitting recordoff.py
 
 metadatacollect.sh:
@@ -85,17 +85,18 @@ analyzejobs.sh:
 puts respective jobs into respective folders;
 args: test folder, starting job, ending job, report name (point/rod) 
 
-check.sh
+checkdata.sh
 checks if Data_Files was successfully copied and reports was loaded successfully;
 args: starting job, ending jobs
 
-clear.sh:
+cleardata.sh:
 clears test folders;
 args: starting job, ending job
 
 runanalyzejobs.sh:
 runs analyzejobs.sh for successive job batches by accessing submitanalyzejobs.csh;
-args: starting test folder, ending test folder
+args: starting test folder, ending test folder, report type
+report types: "pointcom", "pointattach", "rodcom", "rodattach"
 
 submitanalyzejobs.csh:
 submits analyzejobs.sh to cluster

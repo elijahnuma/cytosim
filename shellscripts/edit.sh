@@ -1,3 +1,1 @@
-for f in ./*.cym
-do sed -i "s/${1}/${2}/g" $f
-done
+sed -i "s/${1}/${2}/g" $3

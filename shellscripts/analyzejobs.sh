@@ -10,9 +10,13 @@ cp -r ./Data_Files/ $z/$i/
 mkdir $z/$i/reports/
 for d in ./run****/
 do cd $d && n=$(basename $d)
-if [[ "$4" == "point" ]]
-then reportGIT solid > ${n}report.txt 
-elif [[ "$4" == "rod" ]]
+if [[ "$4" == "pointcom" ]]
+then reportGIT couple:myosin > ${n}report.txt 
+elif [[ "$4" == "pointattach" ]]
+then reportGIT couple > ${n}report.txt
+elif [[ "$4" == "rodcom" ]]
+then reportGIT solid > ${n}report.txt
+elif [[ "$4" == "rodattach" ]]
 then reportGIT single > ${n}report.txt
 fi
 cp ${n}report.txt $z/$i/reports && cd .. 

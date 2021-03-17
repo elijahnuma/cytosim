@@ -6,7 +6,7 @@
 #BSUB -o stdout.%J
 #BSUB -e stderr.%J
 #BSUB -R select[avx]
-bash analyzejobs.sh 578 0 9 point
+bash analyzejobs.sh 579 0 24 pointcom
 
 
 
