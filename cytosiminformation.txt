@@ -578,6 +578,8 @@ Format: (names, var_range, motor_type)
 575: 'Rod 8 heads' (3, 1, 5, 'rod')
 576: 'Rod 16 heads' (3, 1, 5, 'rod')
 577: 'Rod 32 heads' (3, 1, 5, 'rod')
+578: 'Rod Diffusion' (2, 1, 10, 'rod')
+579: 'Point Diffusion' (2, 1, 10, 'point')
 ------------------------------------Groups------------------------------------
 inf unbinding force: ([27, 31, 32], False, '(infinite binding force)')
 with motor velocity: ([33, 34, 35, 36, 37, 38], True, '(with motor velocity)') 
@@ -690,10 +692,10 @@ Variable Range 6: pd.Series([round(0.9+0.05*i, 2) for i in range(9)])
 Variable Range 7: pd.Series([''])
 Variable Range 8: pd.Series([round(0.9+0.1*i, 2) for i in range(9)])
 Variable Range 9: pd.Series(sorted(list(set([round(i*10**-j,5) for i in range(1, 11, 3) for j in range(5, 0, -1)]))))
-----------------------------------Motors Types----------------------------------
-Motor Type None: None
-Motor Type point: myosin
-Motor Type rod: myosin
+----------------------------------Attach Names----------------------------------
+Attach Name None: None
+Attach Name point: myosin
+Attach Name rod: myosin
 ---------------------------------Metadata Motors--------------------------------
 Motors 3: [2, 64]
 Motors 4: [2**i for i in range(0, 7)]

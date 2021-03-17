@@ -26,15 +26,15 @@ def searchcytosiminfo(request, mode):
             test_line = [s for s in file if f"{test_number}:" in s][0]
             description = re.search("\'([a-z]|[A-Z]|[0-9]|\s)+\'", test_line).group(0)[1:-1] # [1:-1] to strip quotation marks
             test_info = re.search("\(.*\)", test_line).group(0)
-            names_key, test_range_key, sim_time, motor_type_name = eval(test_info)
+            names_key, test_range_key, sim_time, motor_type = eval(test_info)
             # regex for names, test range list, and motor type
             names_line = [s for s in file if f"Names {names_key}:" in s][0]
             names = eval(re.sub(f'Names {names_key}: ', '', names_line))
             test_range_line = [s for s in file if f"Variable Range {test_range_key}:" in s][0]
             test_range = eval(re.sub(f'Variable Range {test_range_key}: ', '', test_range_line))
-            motor_type_line = [s for s in file if f"Motor Type {motor_type_name}:" in s][0]
-            motor_type = re.sub(f'Motor Type {motor_type_name}: ', '', motor_type_line)
-        return (description, names, test_range, sim_time, motor_type)
+            attach_name_line = [s for s in file if f"Attach Name {motor_type}:" in s][0]
+            attach_name = re.sub(f'Attach Name {motor_type}: ', '', attach_name_line)
+        return (description, names, test_range, sim_time, motor_type, attach_name)
     if mode == 'group':
         group_name = request
         with open('cytosiminformation.txt', 'r') as f:
@@ -85,28 +85,28 @@ def metadata(info_num, log=True, show_plot=True):
         log (bool): sets log scale; default True
         show_plot (bool): shows plot; default True
     
-    returns average computational times as dict
+    returns average computational times and memory usages for each variable as dict of dicts
     """
     # motor count list, heads count, variable range, simulated time, number of simulations
     motor_list, heads_list, var_range, var_name, sim_time, sim_num = searchcytosiminfo(info_num, 'metadata')
     cwd = os.getcwd()
     # number of messagescmo files, messagescmo and outtxt numbers should be equal 
     msg_num = len(os.listdir(os.path.join(cwd, 'metadata', f'messages_{info_num}')))
+    messages_dicts, memorys_dicts = [], []
     # index of binding_range = 0.01 um is at 3
     for i, var in enumerate(var_range):
-        messages_seconds = []
-        memory_seconds = []
-        for j in range(i, msg_num, sim_num):
+        messages, memorys = [], []
+        for j in range(i, msg_num, len(var_range)):
             with open(cwd + f'\\metadata\\messages_{info_num}\\messages{j}.cmo', 'r') as f:
                 file = f.readlines()
                 seconds = file[-1]
                 seconds = re.search('[0-9]+', seconds)[0]
-                messages_seconds.append(seconds)
+                messages.append(seconds)
             with open(cwd + f'\\metadata\\outs_{info_num}\\out{j}.txt', 'r') as f:
                 file = f.readlines()
                 seconds = [s for s in file if "Max Memory" in s][0]
                 seconds = re.search('[0-9]+\.[0-9]+', seconds)[0]
-                memory_seconds.append(seconds)
+                memorys.append(seconds)
         # number of times motors variable is changed
         motor_num = len(motor_list)
         # number of times heads variable is changed
@@ -114,22 +114,22 @@ def metadata(info_num, log=True, show_plot=True):
         # standard deviation calculator for array
         std = lambda arr: np.sqrt(sum((arr-np.mean(arr))**2)/len(arr))
         # reshape arrays
-        messages_seconds = np.array(messages_seconds).astype(np.float64).reshape(motor_num, heads_num, sim_num)
-        memory_seconds = np.array(memory_seconds).astype(np.float64).reshape(motor_num, heads_num, sim_num)
+        messages = np.array(messages).astype(np.float64).reshape(motor_num, heads_num, sim_num)
+        memorys = np.array(memorys).astype(np.float64).reshape(motor_num, heads_num, sim_num)
         # standard deivations
-        messages_errors = np.apply_along_axis(std, 2, messages_seconds)
-        memory_errors = np.apply_along_axis(std, 2, memory_seconds)
+        messages_errors = np.apply_along_axis(std, 2, messages)
+        memory_errors = np.apply_along_axis(std, 2, memorys)
         # average by simulation
-        messages_seconds = np.mean(messages_seconds, axis=2)
-        memory_seconds = np.mean(memory_seconds, axis=2)
+        messages = np.mean(messages, axis=2)
+        memorys = np.mean(memorys, axis=2)
         # sort arrays organized by motor multiplier -> heads count
-        messages_seconds = np.column_stack(messages_seconds)
-        memory_seconds = np.column_stack(memory_seconds)
+        messages = np.column_stack(messages)
+        memorys = np.column_stack(memorys)
         messages_errors = np.column_stack(messages_errors)
         memory_errors = np.column_stack(memory_errors)
         # sort into dictionaries for easier indexing
-        messages_seconds_dict = {h: messages_seconds[i] for i, h in enumerate(heads_list)}
-        memory_seconds_dict = {h: memory_seconds[i] for i, h in enumerate(heads_list)}
+        messages_dict = {h: messages[i] for i, h in enumerate(heads_list)}
+        memorys_dict = {h: memorys[i] for i, h in enumerate(heads_list)}
         messages_errors_dict = {h: messages_errors[i] for i, h in enumerate(heads_list)}
         memory_errors_dict = {h: memory_errors[i] for i, h in enumerate(heads_list)}
         if show_plot:
@@ -142,9 +142,9 @@ def metadata(info_num, log=True, show_plot=True):
             if log:
                 ax.set_xscale('log')
                 ax.set_yscale('log')
-            for head in sorted(messages_seconds_dict.keys()):
-                ax.scatter(motor_list, messages_seconds_dict[head], label=f'{head} heads')
-                ax.errorbar(motor_list, messages_seconds_dict[head], yerr=messages_errors_dict[head], fmt='none')
+            for head in sorted(messages_dict.keys()):
+                ax.scatter(motor_list, messages_dict[head], label=f'{head} heads')
+                ax.errorbar(motor_list, messages_dict[head], yerr=messages_errors_dict[head], fmt='none')
             ax.legend()
             ax.grid(True, which='both')
             plt.savefig(cwd + f"\\cytosimplots\\messages{info_num}{fignamelog}{var_name.replace(' ', '').lower()}{var}.png")
@@ -157,22 +157,27 @@ def metadata(info_num, log=True, show_plot=True):
             if log:
                 ax.set_xscale('log')
                 ax.set_yscale('log')
-            for head in sorted(memory_seconds_dict.keys()):
-                ax.scatter(motor_list, memory_seconds_dict[head], label=f'{head} heads')
-                ax.errorbar(motor_list, memory_seconds_dict[head], yerr=memory_errors_dict[head], fmt='none')
+            for head in sorted(memorys_dict.keys()):
+                ax.scatter(motor_list, memorys_dict[head], label=f'{head} heads')
+                ax.errorbar(motor_list, memorys_dict[head], yerr=memory_errors_dict[head], fmt='none')
             ax.legend()
             ax.grid(True, which='both')
             plt.savefig(cwd + f"\\cytosimplots\\memory{info_num}{fignamelog}{var_name.replace(' ', '').lower()}{var}.png")
-    return messages_seconds_dict, memory_seconds_dict
+        messages_dicts.append(messages_dict)
+        memorys_dicts.append(memorys_dict)
+    messages_dicts = dict(zip(var_range, messages_dicts)) 
+    memorys_dicts = dict(zip(var_range, memorys_dicts)) 
+    return messages_dicts, memorys_dicts
         
-def plot_handler(df, title, fig_name, y_label):
+def plot_handler(df, title, test_num, description, y_label):
     """
     handles plots with many lines
     
     args:
         df (pandas.DataFrame): dataframe of interest
         title (str): title of plot
-        fig_name (str): figure is saved as
+        test_num (int): test number
+        description (str): description of plot for fig
         y_label (str): y label
         
     """
@@ -181,7 +186,7 @@ def plot_handler(df, title, fig_name, y_label):
     df.plot(kind='line', y=test_range[:len(test_range)//3], figsize=(plot_length, plot_height), title=f'{title}', ax=axes[0]).set(ylabel=f'{y_label}')
     df.plot(kind='line', y=test_range[len(test_range)//3:2*len(test_range)//3], figsize=(plot_length, plot_height), ax=axes[1]).set(ylabel=f'{y_label}')
     df.plot(kind='line', y=test_range[2*len(test_range)//3:], figsize=(plot_length, plot_height), ax=axes[2]).set(ylabel=f'{y_label}')
-    fig.savefig(cwd + f'\\cytosimplots\\{fig_name}.png', bbox_inches='tight')
+    fig.savefig(cwd + f'\\cytosimplots\\{description}\\test{test_num}_{description}.png', bbox_inches='tight')
 # %% Main loops
 # saves dfs from each group to compare
 compared_cluster_delta_dfs = []
@@ -189,7 +194,7 @@ compared_max_contraction_dfs = []
 compared_max_contraction_time_dfs = []
 compared_attach_dfs = []
 # groups under consideration
-groups = [f'{m} motors (5 sec)' for m in sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))]
+groups = [f'{m} motors (2 sec)' for m in sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))]
 for group in groups:  
     # color linestyle pairs generator
     linestyles = ['-', '--', ':', '-.']
@@ -207,16 +212,16 @@ for group in groups:
     test_group_max_contraction_time_dfs = []
     test_group_attach_dfs = []
     # sets group information
-    group_tests, group_log, title_parenthetical = searchcytosiminfo(group, 'group')
+    group_tests, group_log, title_parenthetical, metadata_num = searchcytosiminfo(group, 'group')
     # runs through each test
     for test_number in group_tests:
         # sets test information
-        test_description, names_list, test_range, sim_time, motor = searchcytosiminfo(test_number, 'test')
+        test_description, names_list, test_range, sim_time, motor_type, attach_name = searchcytosiminfo(test_number, 'test')
         # color linestyle pairs
         color, linestyle = next(color_linestyles)
         cwd = os.getcwd()
         # number of sims of one run
-        sim_count = len(os.listdir(os.path.join(cwd, 'tests', f'test_{test_number}')))
+        sim_num = len(os.listdir(os.path.join(cwd, 'tests', f'test_{test_number}')))
         # number of runs
         try:
             run_count = len(os.listdir(os.path.join(cwd, 'tests', f'test_{test_number}', '0', 'reports')))
@@ -226,7 +231,7 @@ for group in groups:
         # concats csv files together as DataFrame
         df_cluster_size_list = []
         df_contraction_list = []
-        for sim in range(sim_count): 
+        for sim in range(sim_num): 
             df_cluster_size_list.append(pd.read_csv(cwd + f'\\tests\\test_{test_number}\\{sim}\\Data_Files\\Rdata.csv', names=names_list).set_index(test_range).transpose().rename_axis('Second (s)'))
             df_contraction_list.append(pd.read_csv(cwd + f'\\tests\\test_{test_number}\\{sim}\\Data_Files\\Cdata.csv', names=names_list).set_index(test_range).transpose().rename_axis('Second (s)'))
         df_cluster_concat = pd.concat(df_cluster_size_list)
@@ -245,9 +250,9 @@ for group in groups:
         df_max_contraction_time = pd.DataFrame(df_contraction.idxmin()).rename(columns={df_contraction.index[0]: test_description}).rename_axis('Binding Range (um)')
         test_group_max_contraction_time_dfs.append(df_max_contraction_time.copy())          
         # attachment of hands over time   
-        if motor != None:
+        if attach_name != None:
             df_dict = {float(run): [] for run in range(run_count)}
-            for sim in range(sim_count):
+            for sim in range(sim_num):
                 for run in range(run_count):
                     run_str = f'run000{run+1}' if run+1 < 10 else f'run00{run+1}' if run+1 < 100 else f'run0{run+1}'
                     filename = cwd + f'\\tests\\test_{test_number}\\{sim}\\reports\\{run_str}report.txt'
@@ -255,7 +260,7 @@ for group in groups:
                         # puts each line into as a string into a list
                         lines = f.read().splitlines()
                     # keeps all strings with the motor name
-                    lines = [line for line in lines if motor in line]
+                    lines = [line for line in lines if attach_name in line]
                     # keeps value in last column
                     lines = [line.split()[-1] for line in lines]
                     df = pd.DataFrame(lines).set_index(names_list)
@@ -275,7 +280,7 @@ for group in groups:
             df_report = pd.concat(df_concats, axis=1).fillna(0)
             # attachment of hands over time
             attach_title = f'{test_description} attachment of hands {title_parenthetical}'
-            plot_handler(df=df_report, title=attach_title, fig_name=f'test{test_number}_attachovertime', y_label='Hands attached')
+            plot_handler(df=df_report, title=attach_title, test_num=test_number, description=f'attachhandsovertime', y_label='Hands attached')
             # divides final value by maximum number of hands
             df_attach_delta = pd.DataFrame(df_report.iloc[-1]/df_report.max().max())
             # attachment of hands delta as percent, renames column to description, renames index
@@ -285,11 +290,11 @@ for group in groups:
             test_group_attach_dfs.append(df_attach_delta.copy())
         ## plots
         # cluster size over time plot
-        cluster_title = f'{test_description} {title_parenthetical} (Average over {sim_count} sims)'
-        plot_handler(df=df_cluster, title=cluster_title, fig_name=f'test{test_number}_clustersize', y_label='Cluster size')
+        cluster_title = f'{test_description} {title_parenthetical} (Average over {sim_num} sims)'
+        plot_handler(df=df_cluster, title=cluster_title, test_num=test_number, description=f'clustersizeovertime', y_label='Cluster size')
         # contraction rate over time plot
-        contraction_title = f'{test_description} {title_parenthetical} (Average over {sim_count} sims)'
-        plot_handler(df=df_contraction, title=contraction_title, fig_name=f'test{test_number}_contractionrate', y_label='Contraction rate')
+        contraction_title = f'{test_description} {title_parenthetical} (Average over {sim_num} sims)'
+        plot_handler(df=df_contraction, title=contraction_title, test_num=test_number, description=f'contractionrateovertime', y_label='Contraction rate')
         # cluster size delta from beginning to end plot
         df_cluster_delta.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_cluster_delta, title=f'Cluster size delta {title_parenthetical}', logx=group_log).set(ylabel='Cluster size delta (um)')
         # max contraction rate plot
@@ -298,10 +303,10 @@ for group in groups:
         df_max_contraction_time.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_max_contraction_time, title=f'Max contraction time {title_parenthetical}', logx=group_log).set(ylabel='Max contraction time (s)')  
     # save delta, doesn't save if individual test done
     if group != 'manual':
-        fig_cluster_delta.savefig(cwd + f"\\cytosimplots\\clusterdelta{group.replace(' ', '')}.png", bbox_inches='tight')
-        fig_max_contraction.savefig(cwd + f"\\cytosimplots\\maxcontraction{group.replace(' ', '')}.png", bbox_inches='tight')
-        fig_max_contraction_time.savefig(cwd + f"\\cytosimplots\\maxcontractiontime{group.replace(' ', '')}.png", bbox_inches='tight')
-        fig_attach_delta.savefig(cwd + f"\\cytosimplots\\attachdelta{group.replace(' ', '')}.png", bbox_inches='tight')
+        fig_cluster_delta.savefig(cwd + f"\\cytosimplots\\clusterdelta\\clusterdelta{group.replace(' ', '')}.png", bbox_inches='tight')
+        fig_max_contraction.savefig(cwd + f"\\cytosimplots\\maxcontraction\\maxcontraction{group.replace(' ', '')}.png", bbox_inches='tight')
+        fig_max_contraction_time.savefig(cwd + f"\\cytosimplots\\maxcontractiontime\\maxcontractiontime{group.replace(' ', '')}.png", bbox_inches='tight')
+        fig_attach_delta.savefig(cwd + f"\\cytosimplots\\attachdelta\\attachdelta{group.replace(' ', '')}.png", bbox_inches='tight')
     compared_cluster_delta_dfs.append(pd.concat(test_group_cluster_delta_dfs, axis=1))
     compared_max_contraction_dfs.append(pd.concat(test_group_max_contraction_dfs, axis=1))
     compared_max_contraction_time_dfs.append(pd.concat(test_group_max_contraction_time_dfs, axis=1))
@@ -310,7 +315,7 @@ for group in groups:
 motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 heads_list = [2, 4, 6, 8, 16, 32]
 binding_ranges = [0.001, 0.004, 0.007, 0.01, 0.04, 0.07, 0.1, 0.4, 0.7, 1]
-metadata_num = 8
+metadata_num = 6
 # %% Motor-head superposition
 # creates copies of DataFrames for list of DataFrames
 df_copier = lambda df_list: [df.copy() for df in df_list]
@@ -336,7 +341,7 @@ for motor in motor_list:
     # Baseline motor counts are black, others are assorted colors
     styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + colors[:len(clusterdeltasmotors[motor_multiplier].columns)]
     pd.concat(dfs, axis=1).plot(kind='line', figsize=(plot_length, plot_height), style=styles, title='Cluster size delta', logx=True).set(ylabel='Cluster size delta difference (um)')
-    plt.savefig(cwd + f"\\cytosimplots\\clustersizedeltasmotors{vs_title}.png")
+    plt.savefig(cwd + f"\\cytosimplots\\motorheadsuperposition\\clustersizedeltasmotors{sim_time}sec{vs_title}.png")
     plt.close()
 # compared heads
 for head in heads_list:
@@ -347,15 +352,15 @@ for head in heads_list:
     # Baseline motor counts are black, others are assorted colors
     styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + colors[:len(clusterdeltasheads[head_count].columns)]
     pd.concat(dfs, axis=1).plot(kind='line', figsize=(plot_length, plot_height), style=styles, title='Cluster size delta', logx=True).set(ylabel='Cluster size delta difference (um)')
-    plt.savefig(cwd + f"\\cytosimplots\\clustersizedeltasheads{vs_title}.png")
+    plt.savefig(cwd + f"\\cytosimplots\\motorheadsuperposition\\clustersizedeltasheads{sim_time}sec{vs_title}.png")
     plt.close()
 # %% Analyzing rod data with respect to motor count
 # metadata
 times, memory = metadata(info_num=metadata_num, show_plot=False)
-times_df = pd.DataFrame(times, index=motor_list)
-memory_df = pd.DataFrame(memory, index=motor_list)
 # binding ranges of interest
 for binding_range in binding_ranges:
+    times_df = pd.DataFrame(times[binding_range], index=motor_list)
+    memory_df = pd.DataFrame(memory[binding_range], index=motor_list)
     ## contraction delta per computational time vs motor (contraction time efficiency)
     deltas = [df.loc[binding_range] for df in df_copier(compared_cluster_delta_dfs)]
     # negative for contraction to be a positive value
@@ -363,42 +368,72 @@ for binding_range in binding_ranges:
     efficiency_df = deltas_df/times_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta magnitude per computational time vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude per computational time (um/s)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\contractiontimeefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\efficiency\\contractiondelta\\contractiontimeefficiency{sim_time}sec{binding_range}bindingrange.png")
     ## contraction delta per memory usage vs motor (contraction memory efficiency)
     efficiency_df = deltas_df/memory_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta magnitude per memory usage vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude per memory usage (um/MB)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\contractionmemoryefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\efficiency\\contractiondelta\\contractionmemoryefficiency{sim_time}sec{binding_range}bindingrange.png")
     ## contraction delta magnitude vs motor (work)
     deltas_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta magnitude vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude (um)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\work{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\work\\work{sim_time}sec{binding_range}bindingrange.png")
     ## contraction delta rate per computational time vs motor (contraction rate time efficiency)
     contractions = [df.loc[binding_range] for df in df_copier(compared_max_contraction_dfs)]
     contractions_df = -pd.DataFrame(contractions, index=motor_list).rename_axis('Motor count')
     efficiency_df = contractions_df/times_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Max contraction rate magnitude per computational time vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Max contraction rate magnitude per computational time (um/s/S)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\contractionratetimeefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\efficiency\\contractionrate\\contractionratetimeefficiency{sim_time}sec{binding_range}bindingrange.png")
     ## contraction delta rate per memory usage vs motor (contraction rate memory efficiency)
     efficiency_df = contractions_df/memory_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta rate magnitude per memory usage vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude per memory usage (um/MB)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\contractionratememoryefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\efficiency\\contractionrate\\contractionratememoryefficiency{sim_time}sec{binding_range}bindingrange.png")
     ## max contraction rate vs motor (max power)
     contractions_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Max contraction rate magnitude vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction rate magnitude (um/s)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\maxpower{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\maxpower\\maxpower{sim_time}sec{binding_range}bindingrange.png")
     ## max contraction rate time vs motor (max power time)
     contraction_times = [df.loc[binding_range] for df in df_copier(compared_max_contraction_time_dfs)]
     contraction_times_df = pd.DataFrame(contraction_times, index=motor_list).rename_axis('Motor count')
     contraction_times_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Max contraction rate time vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Seconds (s)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\maxpowertime{sim_time}sec{binding_range}bindingrange.png")
-# %% analyzing cluster data with respect to motor count
-# metadata
-times, memory = metadata(info_num=metadata_num, show_plot=False)
-times_df = pd.DataFrame(times, index=motor_list)
+    plt.savefig(cwd + f"\\cytosimplots\\maxpowertime\\maxpowertime{sim_time}sec{binding_range}bindingrange.png")
+# %% Tracking diffusion
+# intializers
+test_number = 578
+_, times, *_, motor_type, _ = searchcytosiminfo(test_number, 'test')
+sim_num = len(os.listdir(os.path.join(os.getcwd(), 'tests', f'test_{test_number}')))
+coord_columns = ['cenX', 'cenY'] if motor_type == 'rod' else ['posX', 'posY']
+actin_num = 1000
+# store displacement magnitudes
+displacements = []
+for sim in range(sim_num): 
+    filename = os.getcwd() + f'\\tests\\test_{test_number}\\{sim}\\reports\\run0001report.txt'
+    with open(filename) as f:
+        # puts each line into as a string into a list
+        lines = f.read().splitlines()
+    # column names located on this line
+    col_names = lines[4].split()[1:]
+    # keeps all strings with the relevant information
+    lines = [line.split() for line in lines if len(line.split()) == (8 if motor_type == 'rod' else 9)]
+    # center of mass coordinates 
+    df = pd.DataFrame(lines, columns=col_names)[coord_columns].astype('float64')
+    # starting coordinates repeated for proper row subtraction
+    xy_series = pd.concat([df[coord_columns][0:actin_num]]*len(times), ignore_index=True)
+    # difference in center of mass coordinates at time frame
+    diff = ((df[coord_columns] - xy_series)**2).assign(dummy=df.index//actin_num).groupby(by='dummy').mean()
+    # magnitude of displacement 
+    displ = diff.apply(lambda x: x[0] + x[1], axis=1)
+    displacements.append(list(displ))
+displacements = np.array(displacements).mean(axis=0)
+fig, ax = plt.subplots(figsize=(plot_length, plot_height))
+ax.set_title(f'Motor displacement over time (1000 motors) (Average over {sim_num} simulations)')
+ax.set_xlabel('Seconds (s)')
+ax.set_ylabel('Displacement Squared (um^2)')
+ax.plot(times, displacements)
+plt.savefig(os.getcwd() + f"\\cytosimplots\\{motor_type}diffusion.png")
 # %% Compiler data
 starting_job = 410
 names_list = 3
