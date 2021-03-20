@@ -16,13 +16,6 @@ set space cell
 
 new space cell
 
-set fiber actin
-{
-    rigidity = 0.075
-    segmentation = 0.1
-    display = ( line_width=1; )
-}
-
 set hand motor
 {
     binding_rate = 0
@@ -38,17 +31,21 @@ set hand motor
     display = ( color=orange; size=7; width=7; )
 }
 
-set couple myosin
+set solid minifilament
 {
-    hand1 = motor
-    hand2 = motor
-    diffusion = 0.45
-    length = 0
-    stiffness = 100
+    display = ( coloring = 1; size = 2; style = 4; );
 }
 
-new 1000 myosin
+set single myosin
 {
+    hand = motor;
+    stiffness = 100;
+}
+
+new 1000 solid minifilament
+{
+    point1 = -0.4 0 0, 0.005, myosin;
+    point2 = +0.4 0 0, 0.005, myosin;
     position = 0 0
 }
 
