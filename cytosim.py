@@ -357,38 +357,38 @@ for binding_range in binding_ranges:
     efficiency_df = deltas_df/times_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta magnitude per computational time vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude per computational time (um/s)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\work\\work{motor_type}timeefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\work\\computationaltime\\worktimeefficiency{sim_time}sec{binding_range}bindingrange{motor_type}motor.png")
     ## contraction delta per memory usage vs motor (contraction memory efficiency)
     efficiency_df = deltas_df/memory_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta magnitude per memory usage vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude per memory usage (um/MB)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\work\\work{motor_type}memoryefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\work\\memoryusage\\workmemoryefficiency{sim_time}sec{binding_range}bindingrange{motor_type}motor.png")
     ## contraction delta magnitude vs motor (work)
     deltas_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta magnitude vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude (um)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\work\\work{motor_type}{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\work\\work{sim_time}sec{binding_range}bindingrange{motor_type}motor.png")
     ## contraction delta rate per computational time vs motor (contraction rate time efficiency)
     contractions = [df.loc[binding_range] for df in df_copier(compared_max_contraction_dfs)]
     contractions_df = -pd.DataFrame(contractions, index=motor_list).rename_axis('Motor count')
     efficiency_df = contractions_df/times_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Max contraction rate magnitude per computational time vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Max contraction rate magnitude per computational time (um/s/S)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\power\\power{motor_type}timeefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\power\\computationaltime\\powertimeefficiency{sim_time}sec{binding_range}bindingrange{motor_type}motor.png")
     ## contraction delta rate per memory usage vs motor (contraction rate memory efficiency)
     efficiency_df = contractions_df/memory_df.values
     efficiency_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Contraction delta rate magnitude per memory usage vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction delta magnitude per memory usage (um/MB)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\power\\power{motor_type}memoryefficiency{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\efficiency\\power\\memoryusage\\powermemoryefficiency{sim_time}sec{binding_range}bindingrange{motor_type}motor.png")
     ## max contraction rate vs motor (max power)
     contractions_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Max contraction rate magnitude vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Contraction rate magnitude (um/s)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\maxpower\\maxpower{motor_type}{sim_time}sec{binding_range}bindingrange.png")     
+    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\maxpower\\maxpower{sim_time}sec{binding_range}bindingrange{motor_type}motor.png")     
     ## max contraction rate time vs motor (max power time)
     contraction_times = [df.loc[binding_range] for df in df_copier(compared_max_contraction_time_dfs)]
     contraction_times_df = pd.DataFrame(contraction_times, index=motor_list).rename_axis('Motor count')
     contraction_times_df.plot(figsize=(plot_length, plot_height), logx=True, title=f'Max contraction rate time vs motor count over {sim_time} seconds (binding range = {binding_range} um)').set(ylabel='Seconds (s)')
     plt.grid(True, which='both')
-    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\maxpowertime\\maxpowertime{motor_type}{sim_time}sec{binding_range}bindingrange.png")
+    plt.savefig(cwd + f"\\cytosimplots\\plotsvsmotors\\maxpowertime\\maxpowertime{sim_time}sec{binding_range}bindingrange{motor_type}motor.png")
 # %% Tracking diffusion
 # intializers
 test_number = 579
