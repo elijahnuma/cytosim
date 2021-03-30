@@ -19,6 +19,9 @@ bash checkdatacollection.sh | grep 'Rdata.csv' | wc -l
 run FiberPoints.dat manually while in job folder:
 scan.py "reportGIT fiber:points > FiberPoints.dat" run* 
 
+find rootdir -type f -delete
+delete all files within subdirectories
+
 git url:
 https://github.com/elijahnuma/cytosim.git
 

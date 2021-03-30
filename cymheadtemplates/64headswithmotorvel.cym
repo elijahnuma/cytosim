@@ -32,7 +32,7 @@ set hand motor
     unbinding_force = 6
 
     activity = move
-    unloaded_speed = 1
+    unloaded_speed = 0
     stall_force = 4
     hold_growing_end = 1
 

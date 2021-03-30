@@ -27,7 +27,7 @@ set fiber actin
 set hand motor
 {
     binding_rate = 0
-    binding_range = 1.0
+    binding_range = [[R]]
     unbinding_rate = 0.1
     unbinding_force = 6
 
@@ -43,8 +43,8 @@ set couple myosin
 {
     hand1 = motor
     hand2 = motor
-    diffusion = 10
-    length = 0.8
+    diffusion = 0.45
+    length = 0
     stiffness = 100
 }
 
