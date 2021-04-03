@@ -22,6 +22,9 @@ scan.py "reportGIT fiber:points > FiberPoints.dat" run*
 find rootdir -type f -delete
 delete all files within subdirectories
 
+find rootdir -name "*.ext" -type f -delete
+delete all files with specific extension in subdirectories
+
 git url:
 https://github.com/elijahnuma/cytosim.git
 
