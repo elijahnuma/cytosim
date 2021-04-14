@@ -14,7 +14,7 @@ check if jobs successfully ran:
 CheckSims.py ../job* | grep 'FINISHED:  10' | wc -l
 
 check if jobs successfully analyzed:
-bash checkdatacollection.sh | grep 'Rdata.csv' | wc -l
+bash checkdatacollectiondatafiles.sh | grep 'Rdata.csv' | wc -l
 
 run FiberPoints.dat manually while in job folder:
 scan.py "reportGIT fiber:points > FiberPoints.dat" run* 
