@@ -134,7 +134,7 @@ def metadata(info_num, log=True, show_plot=True):
             # messages plot
             fig, ax = plt.subplots(figsize=(plot_length, plot_height))
             fignamelog = 'comptimelog' if log else 'comptimenolog'
-            ax.set_title(f'Computational time vs. motors ({sim_time} second simulation) (binding range = {br})')
+            ax.set_title(f'Computational time vs. motors ({sim_time} second simulation) (binding range = {br} um)')
             ax.set_xlabel('Motor #')
             ax.set_ylabel('Seconds (S)')
             if log:
@@ -369,16 +369,16 @@ for group_num in [6, 7, 8, 9]:
         deltas_df.plot(figsize=(plot_length, plot_height), title=f'Contraction delta magnitude vs motor count over {sim_time} seconds (binding range = {binding_range} um)', logx=True).set(ylabel='Contraction delta magnitude (um)')
         plt.grid(True, which='both')
         plt.savefig(cwd + f"\\plots\\plotsvsmotors\\work\\work{filename_suffix}.png")
-        ## contraction delta rate per computational time vs motor (contraction rate time efficiency)
+        ## max contraction rate per computational time vs motor (contraction rate time efficiency)
         contractions = pd.DataFrame(max_contraction_dfs.loc[binding_range].values.reshape((max_contraction_dfs.shape[1]//len(cols), len(cols))), index=motor_list, columns=cols)
         contractions_df = -pd.DataFrame(contractions, index=motor_list).rename_axis('Motor count')
         efficiency_df = contractions_df/times_df.values
         efficiency_df.plot(figsize=(plot_length, plot_height), title=f'Max contraction rate magnitude per computational time vs motor count over {sim_time} seconds (binding range = {binding_range} um)', logx=True).set(ylabel='Max contraction rate magnitude per computational time (um/s/S)')
         plt.grid(True, which='both')
         plt.savefig(cwd + f"\\plots\\plotsvsmotors\\efficiency\\power\\computationaltime\\powertimeefficiency{filename_suffix}.png")
-        ## contraction delta rate per memory usage vs motor (contraction rate memory efficiency)
+        ## max contraction rate per memory usage vs motor (contraction rate memory efficiency)
         efficiency_df = contractions_df/memory_df.values
-        efficiency_df.plot(figsize=(plot_length, plot_height), title=f'Contraction delta rate magnitude per memory usage vs motor count over {sim_time} seconds (binding range = {binding_range} um)', logx=True).set(ylabel='Contraction delta magnitude per memory usage (um/MB)')
+        efficiency_df.plot(figsize=(plot_length, plot_height), title=f'Max contraction rate magnitude per memory usage vs motor count over {sim_time} seconds (binding range = {binding_range} um)', logx=True).set(ylabel='Contraction delta magnitude per memory usage (um/MB)')
         plt.grid(True, which='both')
         plt.savefig(cwd + f"\\plots\\plotsvsmotors\\efficiency\\power\\memoryusage\\powermemoryefficiency{filename_suffix}.png")
         ## max contraction rate vs motor (max power)
