@@ -5,12 +5,9 @@ name of .cym files should be a descriptor of what is changing in each simulation
 backup.sh (RUN ONLY IN LOGIN cyms/ DIR):
 backs up share folder
 
-checkcyms.sh
+cymscheck.sh:
 checks if test files were loaded successfully;
 args: starting test, ending test
-
-clearcyms.sh:
-clears job files
 
 copysims.sh (run in test dir):
 copies test files for however many simulations needed;
@@ -24,13 +21,16 @@ deletetests.sh:
 deletes range of test folders;
 args: starting test, ending test
 
-editconfigs.sh:
+edit.sh:
 edits config files;
 args: text to be replaced, replacing text, file name
 
 insert.sh:
 inserts test into desired location;
 args: test to insert, desired test location
+
+jobsclear.sh:
+clears job files
 
 maketest.sh: 
 creates new folder given .cym file;
@@ -46,23 +46,41 @@ args: test number, target text, replacement text
 runjobs.sh (run in test dir):
 goes into every folder in current directory and runs submit job as a separate job for that folder
 
-/cyms/anchortemplates/
+/cyms/motortemplates/
 
-anchormaketest.sh:
-runs maketest.sh for each .cym template for every folder in an anchor folder, requires modification of for 
-loop directory
+flexible.cym:
+flexible rod template
 
-edit.sh:
-edits every .cym file in folder;
-args: target text, replacement text
+pointdiffusion.cym:
+point diffusion template
+
+pointmaketest.sh:
+runs maketest.sh for each stallforce.cym rod template, requires modification of for loop to specify motor count
+
+roddiffusion.cym:
+rod diffusion template
+
+rodmaketest.sh:
+runs maketest.sh for each #heads.cym rod template, requires modification of for loop to specify motor count
+
+stallforce.cym:
+point motor template
 
 /datacollection/
 
-checkdatacollection.sh:
+datafilescheck.sh:
 checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py 
 
-cleardatacollection.sh:
-clears recordoff folders, run after submitting recordoff.py
+datafilesclear.sh
+clears Data_Files folders in jobs
+
+failedjobscheck.sh:
+runs CheckSims.py on jobs and compiles results in checks folder;
+args: check folder number
+
+finishedcheck.sh:
+scans checks folder for failed jobs;
+args: check folder number
 
 metadatacollect.sh:
 collects metadata from job files
@@ -70,11 +88,17 @@ collects metadata from job files
 pendingrunningjobs.sh:
 checks running and pending jobs in bjobs
 
+recordoffchecksclear.sh:
+clears recordoff folders, run after submitting recordoff.py
+
 recordoff.py:
 creates Data_Files for job number
 
 runsubmitrecordoff.sh:
 creates readable data files in each job folder
+
+submitfailedjobscheck.csh:
+submits failedjobscheck.sh
 
 submitrecordoff.csh:
 submits recordoff.py
@@ -85,17 +109,17 @@ analyzejobs.sh:
 puts respective jobs into respective folders;
 args: test folder, starting job, ending job, report name (point/rod) 
 
-checkdata.sh
+datacheck.sh:
 checks if Data_Files was successfully copied and reports was loaded successfully;
 args: starting job, ending jobs
 
-cleardata.sh:
+dataclear.sh:
 clears test folders;
-args: starting job, ending job
+args: starting test, ending test
 
 runanalyzejobs.sh:
 runs analyzejobs.sh for successive job batches by accessing submitanalyzejobs.csh;
-args: starting test folder, ending test folder, report type
+args: starting test folder, ending test folder, report type;
 report types: "pointcom", "pointattach", "rodcom", "rodattach"
 
 submitanalyzejobs.csh:
@@ -119,5 +143,5 @@ sftp -> get
 copyscripts.sh:
 copies scripts and text files from all other folders to send to repository
 
-workflow:
+git workflow:
 bash copyscripts.sh -> git add -A -> git commit -m "message" -> git push

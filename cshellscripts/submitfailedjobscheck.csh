@@ -6,7 +6,4 @@
 #BSUB -o stdout.%J
 #BSUB -e stderr.%J
 #BSUB -R select[avx]
-bash analyzejobs.sh 819 1350 1359 rodattach
-
-
-
+CheckReRun.py f ../../../job100
