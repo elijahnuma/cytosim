@@ -6,6 +6,6 @@ if [[ $i -ge 0 && $i -lt 10 ]]
 then j=0$i
 else j=$i
 fi
-cp ../../submitcheckfailedjobs.csh . && sed -i -r "s/job[0-9]*/job$j/g" submitcheckfailedjobs.csh
-bsub < submitcheckfailedjobs.csh && cd ../.. && echo $j
+cp ../../submitfailedjobscheck.csh . && sed -i -r "s/job[0-9]*/job$j/g" submitfailedjobscheck.csh
+bsub < submitfailedjobscheck.csh && cd ../.. && echo $j
 done

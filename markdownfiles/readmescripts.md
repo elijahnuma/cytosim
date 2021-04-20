@@ -76,11 +76,11 @@ clears Data_Files folders in jobs
 
 failedjobscheck.sh:
 runs CheckSims.py on jobs and compiles results in checks folder;
-args: check folder number
+args: checks folder number
 
 finishedcheck.sh:
 scans checks folder for failed jobs;
-args: check folder number
+args: checks folder number
 
 metadatacollect.sh:
 collects metadata from job files
@@ -134,8 +134,8 @@ getoutstxt.sh (run in outs folder):
 copies outs.txt files from jobs
 
 how to run simulations:
-bash copytest.sh OR maketest.sh -> bash runsubmitrecordoff.sh -> bash runanalyzejobs.sh -> sftp -> get
-bash anchormaketest.sh -> bash runsubmitrecordoff.sh ->  bash metadatacollect.sh -> bash runanalyzejobs.sh -> 
+bash copytest.sh OR maketest.sh OR anchormaketest.sh -> bash failedjobscheck.sh -> bash finishedcheck.sh ->
+bash runsubmitrecordoff.sh -> bash metadatacollect.sh -> bash runanalyzejobs.sh -> bash datacheck.sh ->
 sftp -> get
 
 /gitrepo/

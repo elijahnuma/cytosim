@@ -6,7 +6,7 @@
 #BSUB -o stdout.%J
 #BSUB -e stderr.%J
 #BSUB -R select[avx]
-bash analyzejobs.sh 819 1350 1359 rodattach
+bash analyzejobs.sh 819 1250 1259 rodattach
 
 
 
