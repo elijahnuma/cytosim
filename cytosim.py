@@ -179,11 +179,16 @@ def plot_handler(df, title, test_num, figname, y_label):
         y_label (str): y label
         
     """
+    # creates figures and axes
     fig, axes = plt.subplots(nrows=3, ncols=1)
     plt.subplots_adjust(hspace=0.5)
-    df.plot(kind='line', y=binding_ranges[:len(binding_ranges)//3], figsize=(plot_length, plot_height), title=f'{title}', ax=axes[0]).set(ylabel=f'{y_label}')
-    df.plot(kind='line', y=binding_ranges[len(binding_ranges)//3:2*len(binding_ranges)//3], figsize=(plot_length, plot_height), ax=axes[1]).set(ylabel=f'{y_label}')
-    df.plot(kind='line', y=binding_ranges[2*len(binding_ranges)//3:], figsize=(plot_length, plot_height), ax=axes[2]).set(ylabel=f'{y_label}')
+    # adds label to legend
+    df = df.add_prefix('Binding Range = ')
+    # plot
+    df.plot(kind='line', y=df.columns[:len(df.columns)//3], figsize=(plot_length, plot_height), title=f'{title}', ax=axes[0]).set(ylabel=f'{y_label}')
+    df.plot(kind='line', y=df.columns[len(df.columns)//3:2*len(df.columns)//3], figsize=(plot_length, plot_height), ax=axes[1]).set(ylabel=f'{y_label}')
+    df.plot(kind='line', y=df.columns[2*len(df.columns)//3:], figsize=(plot_length, plot_height), ax=axes[2]).set(ylabel=f'{y_label}')
+    # adds grid
     for a in axes:
         a.grid(True, which='both')
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
@@ -193,7 +198,7 @@ linestyles = ['-', '--', ':', '-.']
 colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'yellow', 'orange']
 color_linestyles = itertools.cycle([(c, l) for l in linestyles for c in colors])
 # group under consideration
-for group_num in [6, 7, 8, 9]:
+for group_num in [10]:
     # saves dfs from each group to compare
     cluster_delta_dfs = []
     max_contraction_dfs = []
@@ -234,7 +239,7 @@ for group_num in [6, 7, 8, 9]:
             df_contraction_list.append(pd.read_csv(cwd + f'\\tests\\test_{test_number}\\{sim}\\Data_Files\\Cdata.csv', names=time_frames).set_index(binding_ranges).transpose().rename_axis('Second (s)'))
         df_cluster_concat = pd.concat(df_cluster_size_list)
         df_contraction_concat = pd.concat(df_contraction_list)
-        # averaging the concat dfs over simulations
+        # averages the concat dfs over simulations
         df_cluster = df_cluster_concat.groupby(df_cluster_concat.index).mean()
         df_contraction = df_contraction_concat.groupby(df_contraction_concat.index).mean()
         ## further analyzes csv DataFrames
