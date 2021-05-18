@@ -95,7 +95,8 @@ recordoff.py:
 creates Data_Files for job number
 
 runsubmitrecordoff.sh:
-creates readable data files in each job folder
+creates readable data files in each job folder;
+args: recordoffs folder number
 
 submitfailedjobscheck.csh:
 submits failedjobscheck.sh

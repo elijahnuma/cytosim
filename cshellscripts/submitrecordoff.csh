@@ -1,5 +1,6 @@
 #!/bin/tcsh
 #BSUB -n 1
+#BSUB -q belmonte
 #BSUB -W 720
 #BSUB -M 10GB
 #BSUB -J mycode

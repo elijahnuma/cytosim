@@ -1,5 +1,5 @@
-gd=$PWD
-cd ../cyms 
+gd=$PWD # git directory
+cd .. && cd /share/belmonte/egnuma/cyms
 cp *.sh $gd/shellscripts
 cp *.csh $gd/cshellscripts
 cp *.md $gd/markdownfiles

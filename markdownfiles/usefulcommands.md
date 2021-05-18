@@ -26,7 +26,7 @@ find rootdir -name "*.ext" -type f -delete
 delete all files with specific extension in subdirectories
 
 /usr/local/usrapps/belmonte/bin/
-file location for lgobal python files
+file location for global python files
 
 git url:
 git clone https://github.com/elijahnuma/cytosim.git

@@ -55,7 +55,7 @@ new 600 actin
     length = 2
 }
 
-new 30000 solid minifilament
+new 100000 solid minifilament
 {
     point1 = -0.4 0 0, 0.005, myosin;
     point2 = +0.4 0 0, 0.005, myosin;
