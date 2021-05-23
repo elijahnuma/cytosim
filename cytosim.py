@@ -433,16 +433,16 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
 # needed for group
-group_num = 10
-starting_test = 694
-motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
-motor_type = 'rod'
-var_list = [2, 4, 6, 8, 16, 32]
+group_num = 11
+starting_test = 862
+motor_list = sorted(set([10**o + j*10**o for o in range(3, 5) for j in range(0, 10)]))
+motor_type = 'point'.title()
+var_list = [4]
 sim_time = 5
-group_name = f'{motor_type.capitalize()} (no motor velocity) ({sim_time} sec)'
+group_name = f'{motor_type} (no motor velocity) ({sim_time} sec)'
 # needed for test
 binding_ranges = sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)])))
-var_name = 'Heads'
+var_name = 'stall force'.title()
 sim_num = 10
 time_frames = 3
 binding_ranges_key = 1
@@ -452,7 +452,7 @@ starting_test = group_tests[0]
 # %% Tests in cytosiminformation.txt 
 for t, tup in enumerate([(i, k) for i in motor_list for k in var_list], starting_test):
     m, v = tup
-    test_str = f"{t}: '{var_name} = {v} {motor_type}' ({time_frames}, {binding_ranges_key}, {sim_time}, '{motor_type}')"
+    test_str = f"{t}: '{var_name} = {v}' ({time_frames}, {binding_ranges_key}, {sim_time}, '{motor_type}')"
     print(test_str) if v != var_list[0] else print(test_str + f" # {m} motors")
 # %% Groups in cytosiminformation.txt 
 var_num = len(var_list)

@@ -694,174 +694,193 @@ Format: (time frames, binding_range, motor_type)
 691: 'Stall Force = 8' (3, 1, 5, 'point')
 692: 'Stall Force = 16' (3, 1, 5, 'point')
 693: 'Stall Force = 32' (3, 1, 5, 'point')
-694: 'Heads = 2 rod' (3, 1, 5, 'rod') # 100 motors
-695: 'Heads = 4 rod' (3, 1, 5, 'rod')
-696: 'Heads = 6 rod' (3, 1, 5, 'rod')
-697: 'Heads = 8 rod' (3, 1, 5, 'rod')
-698: 'Heads = 16 rod' (3, 1, 5, 'rod')
-699: 'Heads = 32 rod' (3, 1, 5, 'rod')
-700: 'Heads = 2 rod' (3, 1, 5, 'rod') # 200 motors
-701: 'Heads = 4 rod' (3, 1, 5, 'rod')
-702: 'Heads = 6 rod' (3, 1, 5, 'rod')
-703: 'Heads = 8 rod' (3, 1, 5, 'rod')
-704: 'Heads = 16 rod' (3, 1, 5, 'rod')
-705: 'Heads = 32 rod' (3, 1, 5, 'rod')
-706: 'Heads = 2 rod' (3, 1, 5, 'rod') # 300 motors
-707: 'Heads = 4 rod' (3, 1, 5, 'rod')
-708: 'Heads = 6 rod' (3, 1, 5, 'rod')
-709: 'Heads = 8 rod' (3, 1, 5, 'rod')
-710: 'Heads = 16 rod' (3, 1, 5, 'rod')
-711: 'Heads = 32 rod' (3, 1, 5, 'rod')
-712: 'Heads = 2 rod' (3, 1, 5, 'rod') # 400 motors
-713: 'Heads = 4 rod' (3, 1, 5, 'rod')
-714: 'Heads = 6 rod' (3, 1, 5, 'rod')
-715: 'Heads = 8 rod' (3, 1, 5, 'rod')
-716: 'Heads = 16 rod' (3, 1, 5, 'rod')
-717: 'Heads = 32 rod' (3, 1, 5, 'rod')
-718: 'Heads = 2 rod' (3, 1, 5, 'rod') # 500 motors
-719: 'Heads = 4 rod' (3, 1, 5, 'rod')
-720: 'Heads = 6 rod' (3, 1, 5, 'rod')
-721: 'Heads = 8 rod' (3, 1, 5, 'rod')
-722: 'Heads = 16 rod' (3, 1, 5, 'rod')
-723: 'Heads = 32 rod' (3, 1, 5, 'rod')
-724: 'Heads = 2 rod' (3, 1, 5, 'rod') # 600 motors
-725: 'Heads = 4 rod' (3, 1, 5, 'rod')
-726: 'Heads = 6 rod' (3, 1, 5, 'rod')
-727: 'Heads = 8 rod' (3, 1, 5, 'rod')
-728: 'Heads = 16 rod' (3, 1, 5, 'rod')
-729: 'Heads = 32 rod' (3, 1, 5, 'rod')
-730: 'Heads = 2 rod' (3, 1, 5, 'rod') # 700 motors
-731: 'Heads = 4 rod' (3, 1, 5, 'rod')
-732: 'Heads = 6 rod' (3, 1, 5, 'rod')
-733: 'Heads = 8 rod' (3, 1, 5, 'rod')
-734: 'Heads = 16 rod' (3, 1, 5, 'rod')
-735: 'Heads = 32 rod' (3, 1, 5, 'rod')
-736: 'Heads = 2 rod' (3, 1, 5, 'rod') # 800 motors
-737: 'Heads = 4 rod' (3, 1, 5, 'rod')
-738: 'Heads = 6 rod' (3, 1, 5, 'rod')
-739: 'Heads = 8 rod' (3, 1, 5, 'rod')
-740: 'Heads = 16 rod' (3, 1, 5, 'rod')
-741: 'Heads = 32 rod' (3, 1, 5, 'rod')
-742: 'Heads = 2 rod' (3, 1, 5, 'rod') # 900 motors
-743: 'Heads = 4 rod' (3, 1, 5, 'rod')
-744: 'Heads = 6 rod' (3, 1, 5, 'rod')
-745: 'Heads = 8 rod' (3, 1, 5, 'rod')
-746: 'Heads = 16 rod' (3, 1, 5, 'rod')
-747: 'Heads = 32 rod' (3, 1, 5, 'rod')
-748: 'Heads = 2 rod' (3, 1, 5, 'rod') # 1000 motors
-749: 'Heads = 4 rod' (3, 1, 5, 'rod')
-750: 'Heads = 6 rod' (3, 1, 5, 'rod')
-751: 'Heads = 8 rod' (3, 1, 5, 'rod')
-752: 'Heads = 16 rod' (3, 1, 5, 'rod')
-753: 'Heads = 32 rod' (3, 1, 5, 'rod')
-754: 'Heads = 2 rod' (3, 1, 5, 'rod') # 2000 motors
-755: 'Heads = 4 rod' (3, 1, 5, 'rod')
-756: 'Heads = 6 rod' (3, 1, 5, 'rod')
-757: 'Heads = 8 rod' (3, 1, 5, 'rod')
-758: 'Heads = 16 rod' (3, 1, 5, 'rod')
-759: 'Heads = 32 rod' (3, 1, 5, 'rod')
-760: 'Heads = 2 rod' (3, 1, 5, 'rod') # 3000 motors
-761: 'Heads = 4 rod' (3, 1, 5, 'rod')
-762: 'Heads = 6 rod' (3, 1, 5, 'rod')
-763: 'Heads = 8 rod' (3, 1, 5, 'rod')
-764: 'Heads = 16 rod' (3, 1, 5, 'rod')
-765: 'Heads = 32 rod' (3, 1, 5, 'rod')
-766: 'Heads = 2 rod' (3, 1, 5, 'rod') # 4000 motors
-767: 'Heads = 4 rod' (3, 1, 5, 'rod')
-768: 'Heads = 6 rod' (3, 1, 5, 'rod')
-769: 'Heads = 8 rod' (3, 1, 5, 'rod')
-770: 'Heads = 16 rod' (3, 1, 5, 'rod')
-771: 'Heads = 32 rod' (3, 1, 5, 'rod')
-772: 'Heads = 2 rod' (3, 1, 5, 'rod') # 5000 motors
-773: 'Heads = 4 rod' (3, 1, 5, 'rod')
-774: 'Heads = 6 rod' (3, 1, 5, 'rod')
-775: 'Heads = 8 rod' (3, 1, 5, 'rod')
-776: 'Heads = 16 rod' (3, 1, 5, 'rod')
-777: 'Heads = 32 rod' (3, 1, 5, 'rod')
-778: 'Heads = 2 rod' (3, 1, 5, 'rod') # 6000 motors
-779: 'Heads = 4 rod' (3, 1, 5, 'rod')
-780: 'Heads = 6 rod' (3, 1, 5, 'rod')
-781: 'Heads = 8 rod' (3, 1, 5, 'rod')
-782: 'Heads = 16 rod' (3, 1, 5, 'rod')
-783: 'Heads = 32 rod' (3, 1, 5, 'rod')
-784: 'Heads = 2 rod' (3, 1, 5, 'rod') # 7000 motors
-785: 'Heads = 4 rod' (3, 1, 5, 'rod')
-786: 'Heads = 6 rod' (3, 1, 5, 'rod')
-787: 'Heads = 8 rod' (3, 1, 5, 'rod')
-788: 'Heads = 16 rod' (3, 1, 5, 'rod')
-789: 'Heads = 32 rod' (3, 1, 5, 'rod')
-790: 'Heads = 2 rod' (3, 1, 5, 'rod') # 8000 motors
-791: 'Heads = 4 rod' (3, 1, 5, 'rod')
-792: 'Heads = 6 rod' (3, 1, 5, 'rod')
-793: 'Heads = 8 rod' (3, 1, 5, 'rod')
-794: 'Heads = 16 rod' (3, 1, 5, 'rod')
-795: 'Heads = 32 rod' (3, 1, 5, 'rod')
-796: 'Heads = 2 rod' (3, 1, 5, 'rod') # 9000 motors
-797: 'Heads = 4 rod' (3, 1, 5, 'rod')
-798: 'Heads = 6 rod' (3, 1, 5, 'rod')
-799: 'Heads = 8 rod' (3, 1, 5, 'rod')
-800: 'Heads = 16 rod' (3, 1, 5, 'rod')
-801: 'Heads = 32 rod' (3, 1, 5, 'rod')
-802: 'Heads = 2 rod' (3, 1, 5, 'rod') # 10000 motors
-803: 'Heads = 4 rod' (3, 1, 5, 'rod')
-804: 'Heads = 6 rod' (3, 1, 5, 'rod')
-805: 'Heads = 8 rod' (3, 1, 5, 'rod')
-806: 'Heads = 16 rod' (3, 1, 5, 'rod')
-807: 'Heads = 32 rod' (3, 1, 5, 'rod')
-808: 'Heads = 2 rod' (3, 1, 5, 'rod') # 20000 motors
-809: 'Heads = 4 rod' (3, 1, 5, 'rod')
-810: 'Heads = 6 rod' (3, 1, 5, 'rod')
-811: 'Heads = 8 rod' (3, 1, 5, 'rod')
-812: 'Heads = 16 rod' (3, 1, 5, 'rod')
-813: 'Heads = 32 rod' (3, 1, 5, 'rod')
-814: 'Heads = 2 rod' (3, 1, 5, 'rod') # 30000 motors
-815: 'Heads = 4 rod' (3, 1, 5, 'rod')
-816: 'Heads = 6 rod' (3, 1, 5, 'rod')
-817: 'Heads = 8 rod' (3, 1, 5, 'rod')
-818: 'Heads = 16 rod' (3, 1, 5, 'rod')
-819: 'Heads = 32 rod' (3, 1, 5, 'rod')
-820: 'Heads = 2 rod' (3, 1, 5, 'rod') # 40000 motors
-821: 'Heads = 4 rod' (3, 1, 5, 'rod')
-822: 'Heads = 6 rod' (3, 1, 5, 'rod')
-823: 'Heads = 8 rod' (3, 1, 5, 'rod')
-824: 'Heads = 16 rod' (3, 1, 5, 'rod')
-825: 'Heads = 32 rod' (3, 1, 5, 'rod')
-826: 'Heads = 2 rod' (3, 1, 5, 'rod') # 50000 motors
-827: 'Heads = 4 rod' (3, 1, 5, 'rod')
-828: 'Heads = 6 rod' (3, 1, 5, 'rod')
-829: 'Heads = 8 rod' (3, 1, 5, 'rod')
-830: 'Heads = 16 rod' (3, 1, 5, 'rod')
-831: 'Heads = 32 rod' (3, 1, 5, 'rod')
-832: 'Heads = 2 rod' (3, 1, 5, 'rod') # 60000 motors
-833: 'Heads = 4 rod' (3, 1, 5, 'rod')
-834: 'Heads = 6 rod' (3, 1, 5, 'rod')
-835: 'Heads = 8 rod' (3, 1, 5, 'rod')
-836: 'Heads = 16 rod' (3, 1, 5, 'rod')
-837: 'Heads = 32 rod' (3, 1, 5, 'rod')
-838: 'Heads = 2 rod' (3, 1, 5, 'rod') # 70000 motors
-839: 'Heads = 4 rod' (3, 1, 5, 'rod')
-840: 'Heads = 6 rod' (3, 1, 5, 'rod')
-841: 'Heads = 8 rod' (3, 1, 5, 'rod')
-842: 'Heads = 16 rod' (3, 1, 5, 'rod')
-843: 'Heads = 32 rod' (3, 1, 5, 'rod')
-844: 'Heads = 2 rod' (3, 1, 5, 'rod') # 80000 motors
-845: 'Heads = 4 rod' (3, 1, 5, 'rod')
-846: 'Heads = 6 rod' (3, 1, 5, 'rod')
-847: 'Heads = 8 rod' (3, 1, 5, 'rod')
-848: 'Heads = 16 rod' (3, 1, 5, 'rod')
-849: 'Heads = 32 rod' (3, 1, 5, 'rod')
-850: 'Heads = 2 rod' (3, 1, 5, 'rod') # 90000 motors
-851: 'Heads = 4 rod' (3, 1, 5, 'rod')
-852: 'Heads = 6 rod' (3, 1, 5, 'rod')
-853: 'Heads = 8 rod' (3, 1, 5, 'rod')
-854: 'Heads = 16 rod' (3, 1, 5, 'rod')
-855: 'Heads = 32 rod' (3, 1, 5, 'rod')
-856: 'Heads = 2 rod' (3, 1, 5, 'rod') # 100000 motors
-857: 'Heads = 4 rod' (3, 1, 5, 'rod')
-858: 'Heads = 6 rod' (3, 1, 5, 'rod')
-859: 'Heads = 8 rod' (3, 1, 5, 'rod')
-860: 'Heads = 16 rod' (3, 1, 5, 'rod')
-861: 'Heads = 32 rod' (3, 1, 5, 'rod')
+694: 'Heads = 2' (3, 1, 5, 'rod') # 100 motors
+695: 'Heads = 4' (3, 1, 5, 'rod')
+696: 'Heads = 6' (3, 1, 5, 'rod')
+697: 'Heads = 8' (3, 1, 5, 'rod')
+698: 'Heads = 16' (3, 1, 5, 'rod')
+699: 'Heads = 32' (3, 1, 5, 'rod')
+700: 'Heads = 2' (3, 1, 5, 'rod') # 200 motors
+701: 'Heads = 4' (3, 1, 5, 'rod')
+702: 'Heads = 6' (3, 1, 5, 'rod')
+703: 'Heads = 8' (3, 1, 5, 'rod')
+704: 'Heads = 16' (3, 1, 5, 'rod')
+705: 'Heads = 32' (3, 1, 5, 'rod')
+706: 'Heads = 2' (3, 1, 5, 'rod') # 300 motors
+707: 'Heads = 4' (3, 1, 5, 'rod')
+708: 'Heads = 6' (3, 1, 5, 'rod')
+709: 'Heads = 8' (3, 1, 5, 'rod')
+710: 'Heads = 16' (3, 1, 5, 'rod')
+711: 'Heads = 32' (3, 1, 5, 'rod')
+712: 'Heads = 2' (3, 1, 5, 'rod') # 400 motors
+713: 'Heads = 4' (3, 1, 5, 'rod')
+714: 'Heads = 6' (3, 1, 5, 'rod')
+715: 'Heads = 8' (3, 1, 5, 'rod')
+716: 'Heads = 16' (3, 1, 5, 'rod')
+717: 'Heads = 32' (3, 1, 5, 'rod')
+718: 'Heads = 2' (3, 1, 5, 'rod') # 500 motors
+719: 'Heads = 4' (3, 1, 5, 'rod')
+720: 'Heads = 6' (3, 1, 5, 'rod')
+721: 'Heads = 8' (3, 1, 5, 'rod')
+722: 'Heads = 16' (3, 1, 5, 'rod')
+723: 'Heads = 32' (3, 1, 5, 'rod')
+724: 'Heads = 2' (3, 1, 5, 'rod') # 600 motors
+725: 'Heads = 4' (3, 1, 5, 'rod')
+726: 'Heads = 6' (3, 1, 5, 'rod')
+727: 'Heads = 8' (3, 1, 5, 'rod')
+728: 'Heads = 16' (3, 1, 5, 'rod')
+729: 'Heads = 32' (3, 1, 5, 'rod')
+730: 'Heads = 2' (3, 1, 5, 'rod') # 700 motors
+731: 'Heads = 4' (3, 1, 5, 'rod')
+732: 'Heads = 6' (3, 1, 5, 'rod')
+733: 'Heads = 8' (3, 1, 5, 'rod')
+734: 'Heads = 16' (3, 1, 5, 'rod')
+735: 'Heads = 32' (3, 1, 5, 'rod')
+736: 'Heads = 2' (3, 1, 5, 'rod') # 800 motors
+737: 'Heads = 4' (3, 1, 5, 'rod')
+738: 'Heads = 6' (3, 1, 5, 'rod')
+739: 'Heads = 8' (3, 1, 5, 'rod')
+740: 'Heads = 16' (3, 1, 5, 'rod')
+741: 'Heads = 32' (3, 1, 5, 'rod')
+742: 'Heads = 2' (3, 1, 5, 'rod') # 900 motors
+743: 'Heads = 4' (3, 1, 5, 'rod')
+744: 'Heads = 6' (3, 1, 5, 'rod')
+745: 'Heads = 8' (3, 1, 5, 'rod')
+746: 'Heads = 16' (3, 1, 5, 'rod')
+747: 'Heads = 32' (3, 1, 5, 'rod')
+748: 'Heads = 2' (3, 1, 5, 'rod') # 1000 motors
+749: 'Heads = 4' (3, 1, 5, 'rod')
+750: 'Heads = 6' (3, 1, 5, 'rod')
+751: 'Heads = 8' (3, 1, 5, 'rod')
+752: 'Heads = 16' (3, 1, 5, 'rod')
+753: 'Heads = 32' (3, 1, 5, 'rod')
+754: 'Heads = 2' (3, 1, 5, 'rod') # 2000 motors
+755: 'Heads = 4' (3, 1, 5, 'rod')
+756: 'Heads = 6' (3, 1, 5, 'rod')
+757: 'Heads = 8' (3, 1, 5, 'rod')
+758: 'Heads = 16' (3, 1, 5, 'rod')
+759: 'Heads = 32' (3, 1, 5, 'rod')
+760: 'Heads = 2' (3, 1, 5, 'rod') # 3000 motors
+761: 'Heads = 4' (3, 1, 5, 'rod')
+762: 'Heads = 6' (3, 1, 5, 'rod')
+763: 'Heads = 8' (3, 1, 5, 'rod')
+764: 'Heads = 16' (3, 1, 5, 'rod')
+765: 'Heads = 32' (3, 1, 5, 'rod')
+766: 'Heads = 2' (3, 1, 5, 'rod') # 4000 motors
+767: 'Heads = 4' (3, 1, 5, 'rod')
+768: 'Heads = 6' (3, 1, 5, 'rod')
+769: 'Heads = 8' (3, 1, 5, 'rod')
+770: 'Heads = 16' (3, 1, 5, 'rod')
+771: 'Heads = 32' (3, 1, 5, 'rod')
+772: 'Heads = 2' (3, 1, 5, 'rod') # 5000 motors
+773: 'Heads = 4' (3, 1, 5, 'rod')
+774: 'Heads = 6' (3, 1, 5, 'rod')
+775: 'Heads = 8' (3, 1, 5, 'rod')
+776: 'Heads = 16' (3, 1, 5, 'rod')
+777: 'Heads = 32' (3, 1, 5, 'rod')
+778: 'Heads = 2' (3, 1, 5, 'rod') # 6000 motors
+779: 'Heads = 4' (3, 1, 5, 'rod')
+780: 'Heads = 6' (3, 1, 5, 'rod')
+781: 'Heads = 8' (3, 1, 5, 'rod')
+782: 'Heads = 16' (3, 1, 5, 'rod')
+783: 'Heads = 32' (3, 1, 5, 'rod')
+784: 'Heads = 2' (3, 1, 5, 'rod') # 7000 motors
+785: 'Heads = 4' (3, 1, 5, 'rod')
+786: 'Heads = 6' (3, 1, 5, 'rod')
+787: 'Heads = 8' (3, 1, 5, 'rod')
+788: 'Heads = 16' (3, 1, 5, 'rod')
+789: 'Heads = 32' (3, 1, 5, 'rod')
+790: 'Heads = 2' (3, 1, 5, 'rod') # 8000 motors
+791: 'Heads = 4' (3, 1, 5, 'rod')
+792: 'Heads = 6' (3, 1, 5, 'rod')
+793: 'Heads = 8' (3, 1, 5, 'rod')
+794: 'Heads = 16' (3, 1, 5, 'rod')
+795: 'Heads = 32' (3, 1, 5, 'rod')
+796: 'Heads = 2' (3, 1, 5, 'rod') # 9000 motors
+797: 'Heads = 4' (3, 1, 5, 'rod')
+798: 'Heads = 6' (3, 1, 5, 'rod')
+799: 'Heads = 8' (3, 1, 5, 'rod')
+800: 'Heads = 16' (3, 1, 5, 'rod')
+801: 'Heads = 32' (3, 1, 5, 'rod')
+802: 'Heads = 2' (3, 1, 5, 'rod') # 10000 motors
+803: 'Heads = 4' (3, 1, 5, 'rod')
+804: 'Heads = 6' (3, 1, 5, 'rod')
+805: 'Heads = 8' (3, 1, 5, 'rod')
+806: 'Heads = 16' (3, 1, 5, 'rod')
+807: 'Heads = 32' (3, 1, 5, 'rod')
+808: 'Heads = 2' (3, 1, 5, 'rod') # 20000 motors
+809: 'Heads = 4' (3, 1, 5, 'rod')
+810: 'Heads = 6' (3, 1, 5, 'rod')
+811: 'Heads = 8' (3, 1, 5, 'rod')
+812: 'Heads = 16' (3, 1, 5, 'rod')
+813: 'Heads = 32' (3, 1, 5, 'rod')
+814: 'Heads = 2' (3, 1, 5, 'rod') # 30000 motors
+815: 'Heads = 4' (3, 1, 5, 'rod')
+816: 'Heads = 6' (3, 1, 5, 'rod')
+817: 'Heads = 8' (3, 1, 5, 'rod')
+818: 'Heads = 16' (3, 1, 5, 'rod')
+819: 'Heads = 32' (3, 1, 5, 'rod')
+820: 'Heads = 2' (3, 1, 5, 'rod') # 40000 motors
+821: 'Heads = 4' (3, 1, 5, 'rod')
+822: 'Heads = 6' (3, 1, 5, 'rod')
+823: 'Heads = 8' (3, 1, 5, 'rod')
+824: 'Heads = 16' (3, 1, 5, 'rod')
+825: 'Heads = 32' (3, 1, 5, 'rod')
+826: 'Heads = 2' (3, 1, 5, 'rod') # 50000 motors
+827: 'Heads = 4' (3, 1, 5, 'rod')
+828: 'Heads = 6' (3, 1, 5, 'rod')
+829: 'Heads = 8' (3, 1, 5, 'rod')
+830: 'Heads = 16' (3, 1, 5, 'rod')
+831: 'Heads = 32' (3, 1, 5, 'rod')
+832: 'Heads = 2' (3, 1, 5, 'rod') # 60000 motors
+833: 'Heads = 4' (3, 1, 5, 'rod')
+834: 'Heads = 6' (3, 1, 5, 'rod')
+835: 'Heads = 8' (3, 1, 5, 'rod')
+836: 'Heads = 16' (3, 1, 5, 'rod')
+837: 'Heads = 32' (3, 1, 5, 'rod')
+838: 'Heads = 2' (3, 1, 5, 'rod') # 70000 motors
+839: 'Heads = 4' (3, 1, 5, 'rod')
+840: 'Heads = 6' (3, 1, 5, 'rod')
+841: 'Heads = 8' (3, 1, 5, 'rod')
+842: 'Heads = 16' (3, 1, 5, 'rod')
+843: 'Heads = 32' (3, 1, 5, 'rod')
+844: 'Heads = 2' (3, 1, 5, 'rod') # 80000 motors
+845: 'Heads = 4' (3, 1, 5, 'rod')
+846: 'Heads = 6' (3, 1, 5, 'rod')
+847: 'Heads = 8' (3, 1, 5, 'rod')
+848: 'Heads = 16' (3, 1, 5, 'rod')
+849: 'Heads = 32' (3, 1, 5, 'rod')
+850: 'Heads = 2' (3, 1, 5, 'rod') # 90000 motors
+851: 'Heads = 4' (3, 1, 5, 'rod')
+852: 'Heads = 6' (3, 1, 5, 'rod')
+853: 'Heads = 8' (3, 1, 5, 'rod')
+854: 'Heads = 16' (3, 1, 5, 'rod')
+855: 'Heads = 32' (3, 1, 5, 'rod')
+856: 'Heads = 2' (3, 1, 5, 'rod') # 100000 motors
+857: 'Heads = 4' (3, 1, 5, 'rod')
+858: 'Heads = 6' (3, 1, 5, 'rod')
+859: 'Heads = 8' (3, 1, 5, 'rod')
+860: 'Heads = 16' (3, 1, 5, 'rod')
+861: 'Heads = 32' (3, 1, 5, 'rod')
+862: 'Stall Force = 4' (3, 1, 5, 'Point') # 1000 motors
+863: 'Stall Force = 4' (3, 1, 5, 'Point') # 2000 motors
+864: 'Stall Force = 4' (3, 1, 5, 'Point') # 3000 motors
+865: 'Stall Force = 4' (3, 1, 5, 'Point') # 4000 motors
+866: 'Stall Force = 4' (3, 1, 5, 'Point') # 5000 motors
+867: 'Stall Force = 4' (3, 1, 5, 'Point') # 6000 motors
+868: 'Stall Force = 4' (3, 1, 5, 'Point') # 7000 motors
+869: 'Stall Force = 4' (3, 1, 5, 'Point') # 8000 motors
+870: 'Stall Force = 4' (3, 1, 5, 'Point') # 9000 motors
+871: 'Stall Force = 4' (3, 1, 5, 'Point') # 10000 motors
+872: 'Stall Force = 4' (3, 1, 5, 'Point') # 20000 motors
+873: 'Stall Force = 4' (3, 1, 5, 'Point') # 30000 motors
+874: 'Stall Force = 4' (3, 1, 5, 'Point') # 40000 motors
+875: 'Stall Force = 4' (3, 1, 5, 'Point') # 50000 motors
+876: 'Stall Force = 4' (3, 1, 5, 'Point') # 60000 motors
+877: 'Stall Force = 4' (3, 1, 5, 'Point') # 70000 motors
+878: 'Stall Force = 4' (3, 1, 5, 'Point') # 80000 motors
+879: 'Stall Force = 4' (3, 1, 5, 'Point') # 90000 motors
+880: 'Stall Force = 4' (3, 1, 5, 'Point') # 100000 motors
 ------------------------------------Groups------------------------------------
 Group 0: ([30], 'manual title')
 Group 6: ([74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241], 'Rod motors (with motor velocity) (2 sec)')
@@ -869,6 +888,7 @@ Group 7: ([242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255,
 Group 8: ([410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467, 468, 469, 470, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 494, 495, 496, 497, 498, 499, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543, 544, 545, 546, 547, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577], 'Rod (with motor velocity) (5 sec)')
 Group 9: ([580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598, 599, 600, 601, 602, 603, 604, 605, 606, 607, 608, 609, 610, 611, 612, 613, 614, 615, 616, 617, 618, 619, 620, 621, 622, 623, 624, 625, 626, 627, 628, 629, 630, 631, 632, 633, 634, 635, 636, 637, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 656, 657, 658, 659, 660, 661, 662, 663, 664, 665, 666, 667, 668, 669, 670, 671, 672, 673, 674, 675, 676, 677, 678, 679, 680, 681, 682, 683, 684, 685, 686, 687, 688, 689, 690, 691, 692, 693], 'Point (with motor velocity) (5 sec)')
 Group 10: ([694, 695, 696, 697, 698, 699, 700, 701, 702, 703, 704, 705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 718, 719, 720, 721, 722, 723, 724, 725, 726, 727, 728, 729, 730, 731, 732, 733, 734, 735, 736, 737, 738, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 817, 818, 819, 820, 821, 822, 823, 824, 825, 826, 827, 828, 829, 830, 831, 832, 833, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848, 849, 850, 851, 852, 853, 854, 855, 856, 857, 858, 859, 860, 861], 'Rod (no motor velocity) (5 sec)')
+Group 11: ([862, 863, 864, 865, 866, 867, 868, 869, 870, 871, 872, 873, 874, 875, 876, 877, 878, 879, 880], 'Point (no motor velocity) (5 sec)')
 ----------------------------------Time Frames-----------------------------------
 Time Frames 1: np.linspace(0, sim_time, 100)
 Time Frames 2: np.concatenate([np.linspace(0, 0.25, 2), np.linspace(0.5, sim_time + 0.5, 101)])
@@ -896,6 +916,7 @@ Motors 7: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)
 Motors 8: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 Motors 9: sorted(set([10**o + j*10**o for o in range(3, 5) for j in range(0, 10)]))
 Motors 10: sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
+Motors 11: sorted(set([10**o + j*10**o for o in range(3, 5) for j in range(0, 10)]))
 --------------------------------Metadata Variable-------------------------------
 Variable 3: [2, 4, 8, 16, 32]
 Variable 4: [2, 4, 8, 16, 32]
@@ -905,6 +926,7 @@ Variable 7: [2, 4, 6, 8, 16, 32]
 Variable 8: [2, 4, 6, 8, 16, 32]
 Variable 9: [2, 4, 6, 8, 16, 32]
 Variable 10: [2, 4, 6, 8, 16, 32]
+Variable 11: [4]
 ------------------------------Metadata Binding Ranges---------------------------
 Metadata Binding Ranges 3: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
 Metadata Binding Ranges 4: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
@@ -914,6 +936,7 @@ Metadata Binding Ranges 7: pd.Series(sorted(list(set([round(i*10**-j,3) for i in
 Metadata Binding Ranges 8: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
 Metadata Binding Ranges 9: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
 Metadata Binding Ranges 10: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
+Metadata Binding Ranges 11: pd.Series(sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))))
 ---------------------------Metadata Variable Names (sec)-------------------------
 Variable Name 3: Heads
 Variable Name 4: Heads
@@ -923,6 +946,7 @@ Variable Name 7: Heads
 Variable Name 8: Heads
 Variable Name 9: Stall Force
 Variable Name 10: Heads
+Variable Name 11: Stall Force
 ------------------------------Metadata Sim Time (sec)----------------------------
 Sim Time 3: 10
 Sim Time 4: 2
@@ -932,6 +956,7 @@ Sim Time 7: 10
 Sim Time 8: 5
 Sim Time 9: 5
 Sim Time 10: 5
+Sim Time 11: 5
 ------------------------------Metadata Sim Number--------------------------------
 Sim Num 1: 5
 Sim Num 2: 5
@@ -943,3 +968,4 @@ Sim Num 7: 5
 Sim Num 8: 10
 Sim Num 9: 10
 Sim Num 10: 10
+Sim Num 11: 10
