@@ -17,7 +17,7 @@ check if jobs successfully analyzed:
 bash checkdatacollectiondatafiles.sh | grep 'Rdata.csv | wc -l
 
 run FiberPoints.dat manually while in job folder:
-scan.py "reportGIT fiber:ponints > FiberPoints.day" run*
+scan.py "reportGIT fiber:points > FiberPoints.dat" run*
 
 find rootdir -type f -delete
 delete all files within subdirectories

@@ -70,6 +70,7 @@ point motor template
 
 datafilescheck.sh:
 checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py 
+args: starting job, ending job
 
 datafilesclear.sh
 clears Data_Files folders in jobs
@@ -96,7 +97,7 @@ creates Data_Files for job number
 
 runsubmitrecordoff.sh:
 creates readable data files in each job folder;
-args: recordoffs folder number
+args: recordoffs folder number, starting job, ending job
 
 submitfailedjobscheck.csh:
 submits failedjobscheck.sh

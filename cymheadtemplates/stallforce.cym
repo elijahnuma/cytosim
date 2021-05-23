@@ -33,7 +33,7 @@ set hand motor
 
     activity = move
     unloaded_speed = 1
-    stall_force = 32
+    stall_force = 4
     hold_growing_end = 1
 
     display = ( color=orange; size=7; width=7; )
