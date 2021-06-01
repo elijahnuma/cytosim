@@ -1,15 +1,12 @@
 job_num=$(($(ls ../.. | grep 'job' | wc -l)-1))
-run_num=$(ls *.txt | wc -l)
-for i in {0..9}
-do echo Grabbing out $i && for o in {1..10}
-do cp ../../job0$i/logs/out_${o}.txt ./out$run_num.txt && run_num=$(($run_num + 1))
+out_num=$(ls *.txt | wc -l)
+run_num=$(ls -d ../../job00/save/run* | wc -l)
+for job in $(seq 0 $job_num)
+do if [[ $job -ge 0 && $job -lt 10 ]]
+then j=0$job
+else j=$job
+fi
+echo Grabbing outs from job $j && for o in $(seq 1 $run_num)
+do cp ../../job$j/logs/out_${o}.txt ./out$out_num.txt && out_num=$(($out_num + 1))
 done
 done
-
-for i in $(seq 10 $job_num)
-do echo Grabbing out $i && for o in {1..10}
-do cp ../../job$i/logs/out_${o}.txt ./out$run_num.txt && run_num=$(($run_num + 1))
-done
-done
-
-

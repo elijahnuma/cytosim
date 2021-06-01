@@ -4,6 +4,9 @@ for i in $(seq $1 $2)
 addition:
 sum=$(($addend_1 + $addend_2))
 
+check equality:
+if [[ $i -ge 0 && $i -lt 10 ]]
+
 disk usgae in current folder:
 du -hs
 
