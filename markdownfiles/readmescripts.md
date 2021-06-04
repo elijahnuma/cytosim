@@ -77,7 +77,6 @@ clears Data_Files folders in jobs
 
 failedjobscheck.sh:
 runs CheckSims.py on jobs and compiles results in checks folder;
-args: checks folder number
 
 finishedcheck.sh:
 scans checks folder for failed jobs;
@@ -97,7 +96,7 @@ creates Data_Files for job number
 
 runsubmitrecordoff.sh:
 creates readable data files in each job folder;
-args: recordoffs folder number, starting job, ending job
+args: starting job, ending job
 
 submitfailedjobscheck.csh:
 submits failedjobscheck.sh

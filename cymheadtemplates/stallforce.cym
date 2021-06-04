@@ -44,7 +44,7 @@ set couple myosin
     hand1 = motor
     hand2 = motor
     diffusion = 0.45
-    length = 0
+    length = 0.02
     stiffness = 100
 }
 
