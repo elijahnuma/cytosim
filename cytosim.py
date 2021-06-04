@@ -202,7 +202,7 @@ colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange', 'yellow']
 color_linestyles = [(c, l) for l in linestyles for c in colors]
 color_linestyles_cycle = itertools.cycle(color_linestyles)
 # group under consideration
-for group_num in [11]:
+for group_num in [*range(6, 12)]:
     # saves dfs from each group to compare
     cluster_delta_dfs = []
     max_contraction_dfs = []
@@ -487,13 +487,13 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
 # needed for group
-group_num = 11
-starting_test = 862
+group_num = 12
+starting_test = 881
 motor_list = sorted(set([10**o + j*10**o for o in range(3, 5) for j in range(0, 10)]))
 motor_type = 'point'
 var_list = [4]
 sim_time = 5
-group_name = f'{motor_type} (with motor velocity) ({sim_time} sec)'
+group_name = f'({motor_type} motor) ({sim_time} sec) (minimum motor velocity) (no rest length)'
 # needed for test
 var_name = 'stall force'
 time_frames_key = 3
