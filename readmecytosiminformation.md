@@ -7,6 +7,7 @@ Real time seconds (S)
 In-sim seconds (s)
 
 Terminology:
+
 Computational time: time taken to simulate test
 
 Memory usage: max memory taken up on the cluster for simulation
