@@ -68,28 +68,28 @@ point motor template
 
 /datacollection/
 
-datafilescheck.sh:
-checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py 
-args: starting job, ending job
-
-datafilesclear.sh
-clears Data_Files folders in jobs
+checksrecordoffclear.sh:
+clears checks and recordoff folders
 
 failedjobscheck.sh:
-runs CheckSims.py on jobs and compiles results in checks folder;
+runs CheckSims.py on jobs and compiles results in checks folder
 
 finishedcheck.sh:
 scans checks folder for failed jobs;
 args: checks folder number
+
+jobdatafilescheck.sh:
+checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py;
+args: starting job, ending job    
+                                                                               
+jobdatafilesclear.sh
+clears Data_Files folders in jobs 
 
 metadatacollect.sh:
 collects metadata from job files
 
 pendingrunningjobs.sh:
 checks running and pending jobs in bjobs
-
-recordoffchecksclear.sh:
-clears recordoff folders, run after submitting recordoff.py
 
 recordoff.py:
 creates Data_Files for job number
