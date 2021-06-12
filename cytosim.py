@@ -137,7 +137,7 @@ def metadata(info_num, log=True, show_plot=True):
             # messages plot
             fig, ax = plt.subplots(figsize=(plot_length, plot_height))
             fignamelog = 'comptimelog' if log else 'comptimenolog'
-            ax.set_title(f'Computational time vs. motors {title_suffix}')
+            ax.set_title(f'Computational time vs. motors {title_suffix}', fontdict={'fontsize':font_size})
             ax.set_xlabel('Motor count')
             ax.set_ylabel('Seconds (S)')
             if log:
@@ -152,7 +152,7 @@ def metadata(info_num, log=True, show_plot=True):
             # memory plot
             fig, ax = plt.subplots(figsize=(plot_length, plot_height))
             fignamelog = 'memorylog' if log else 'memorynolog'
-            ax.set_title(f'Memory used vs. motors {title_suffix}')
+            ax.set_title(f'Memory used vs. motors {title_suffix}', fontdict={'fontsize':font_size})
             ax.set_xlabel('Motor count')
             ax.set_ylabel('Memory (MB)')
             if log:
@@ -202,7 +202,7 @@ colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange', 'yellow']
 color_linestyles = [(c, l) for l in linestyles for c in colors]
 color_linestyles_cycle = itertools.cycle(color_linestyles)
 # group under consideration
-for group_num in [*range(6, 12)]:
+for group_num in [*range(6, 13)]:
     # saves dfs from each group to compare
     cluster_delta_dfs = []
     max_contraction_dfs = []
@@ -347,22 +347,24 @@ for group_num in [*range(6, 12)]:
     baseline_motor = 1000
     # motor multipler of interest
     for motor in motor_list:
+        filename_suffix = f"{motor}motors{group_name.replace(' ', '').lower()}"
         dfs = [clusterdeltasmotors[baseline_motor], clusterdeltasmotors[motor]]
         # Baseline motor counts are black, others are assorted colors
         styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + [c[0]+l for (c,l) in color_linestyles[:len(clusterdeltasmotors[motor].columns)]]
         pd.concat(dfs, axis=1).plot(kind='line', figsize=(plot_length, plot_height), style=styles, title=f'Contraction delta {group_name}', logx=True).set(ylabel='Contraction delta magnitude (um)')
         plt.grid(True, which='both')
         plt.legend(title=f'{var_name}:')
-        plt.savefig(cwd + f"\\plots\\plotsvsbindingrange\\motorvariablesuperposition\\clustersizedeltasmotors{motor}motors{sim_time}sec{motor_type}motor.png")
+        plt.savefig(cwd + f"\\plots\\plotsvsbindingrange\\motorvariablesuperposition\\clustersizedeltas{filename_suffix}.png")
     # compared variables
     for var in var_list:
+        filename_suffix = f"{var}{var_name.lower().replace(' ', '')}{group_name.replace(' ', '').lower()}"
         dfs = [clusterdeltasmotors[baseline_motor], clusterdeltasvariables[var].drop(f'{var} ({baseline_motor} motors)', axis=1)]
         # Baseline motor counts are black, others are assorted colors
         styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + [c[0]+l for (c,l) in color_linestyles[:len(clusterdeltasvariables[var].columns)]]
         pd.concat(dfs, axis=1).plot(kind='line', figsize=(plot_length, plot_height), style=styles, title=f'Contraction delta {group_name}', logx=True).set(ylabel='Contraction delta magnitude (um)')
         plt.grid(True, which='both')
         plt.legend(title=f'{var_name}:')
-        plt.savefig(cwd + f"\\plots\\plotsvsbindingrange\\motorvariablesuperposition\\clustersizedeltas{var_name.lower().replace(' ', '')}{var}{sim_time}sec{motor_type}motor.png")
+        plt.savefig(cwd + f"\\plots\\plotsvsbindingrange\\motorvariablesuperposition\\clustersizedeltas{filename_suffix}.png")
     # % Analyzing motor data with respect to motor count
     # metadata
     times, memory = metadata(info_num=group_num, show_plot=True)
