@@ -577,8 +577,8 @@ All relevant cytosim information for cytosim.py
 575: (3, 1, 8, 5, 'rod')
 576: (3, 1, 16, 5, 'rod')
 577: (3, 1, 32, 5, 'rod')
-578: (2, 1, 10, 'rod') # Rod Diffusion
-579: (2, 1, 10, 'point') # Point Diffusion
+578: (2, 1, 2, 10, 'rod') # Rod Diffusion
+579: (2, 1, 'NaN', 10, 'point') # Point Diffusion
 580: (3, 1, 2, 5, 'point') # 1000 motors
 581: (3, 1, 4, 5, 'point')
 582: (3, 1, 6, 5, 'point')

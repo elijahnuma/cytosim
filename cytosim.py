@@ -62,21 +62,29 @@ def searchcytosiminfo(request, mode):
         # test numbers, group description, motor values, variable values, binding ranges, variable name, simtulation time, number of simulations
         return (group_tests, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num)
     
-def anchor_maker(anchor_num, bare=True):
+def anchor_maker(heads_num, motor_type):
     """ 
     makes anchors for rod motors in .cym file
     
     args:
-        anchor_num (int): number of anchors
-        bare (bool): creates bare zone from 0.3 to 0.7 of rod
-        
+        heads_num (int): number of heads
+        motor_type (str): rod type
+    
+    note the bare zone from the middle 30-70% of the rod
     """
-    if bare:
-        x = list(np.linspace(0.05, 0.3, anchor_num//2)) + list(np.linspace(0.7, 0.95, anchor_num//2))
-    else:
-        x = list(np.linspace(0.05, 0.95, anchor_num))
-    for i, per in enumerate(x, 1):
-        print(f'    anchor{i} = point1, point2, {round(per, 2)}, myosin;')  
+    L = 0.8 # 0.8 um rod length
+    b = 0.3 # bare zone marker
+    if motor_type == 'rigid':
+        # subtracting heads number by two because a two head motor has anchors at ends
+        anchors = sorted((b - np.linspace(0, b, (heads_num-2)//2, endpoint=False))) + list(np.linspace(1-b, 1, (heads_num-2)//2, endpoint=False))
+        for i, per in enumerate(anchors, 1):
+            print(f'    anchor{i} = point1, point2, {round(per, 3)}, myosin;')  
+    if motor_type == 'flexible':
+        anchors = sorted(b*L - np.linspace(0*L, b*L, (heads_num-2)//2, endpoint=False))
+        for i, ma in enumerate(anchors, 1):    
+            print(f'    anchor{i} = myosin, {round(ma, 3)}, minus_end')
+        for i, pa in enumerate(anchors[::-1], 1 + len(anchors)):
+            print(f'    anchor{i} = myosin, {round(pa, 3)}, plus_end')
 
 def metadata(info_num, log=True, show_plot=True):
     """ 
@@ -196,13 +204,13 @@ def plot_handler(df, title, test_num, figname, y_label):
         a.grid(True, which='both')
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
-# color linestyle pairs generator, cycles forever, for groups
-linestyles = ['-', '--', ':', '-.']
-colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange', 'yellow']
-color_linestyles = [(c, l) for l in linestyles for c in colors]
-color_linestyles_cycle = itertools.cycle(color_linestyles)
 # group under consideration
 for group_num in [*range(6, 13)]:
+    # color linestyle pairs generator, cycles forever, for groups
+    linestyles = ['-', '--', ':', '-.']
+    colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
+    color_linestyles = [(c, l) for l in linestyles for c in colors]
+    color_linestyles_cycle = itertools.cycle(color_linestyles)
     # saves dfs from each group to compare
     cluster_delta_dfs = []
     max_contraction_dfs = []
@@ -454,8 +462,8 @@ for group_num in [*range(6, 13)]:
 # %% Tracking diffusion
 # need to update searchcytosiminfo 
 # intializers
-test_number = 578
-_, times, *_, motor_type, _ = searchcytosiminfo(test_number, 'test')
+test_number = 579
+times, *_, motor_type, _ = searchcytosiminfo(test_number, 'test')
 sim_num = len(os.listdir(os.path.join(os.getcwd(), 'tests', f'test_{test_number}')))
 coord_columns = ['cenX', 'cenY'] if motor_type == 'rod' else ['posX', 'posY']
 actin_num = 1000

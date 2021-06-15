@@ -1,4 +1,4 @@
-Test descriptions format: (time frames, binding range, variable value, motor type)
+Test descriptions format: (time frames, binding range, variable value, simulation time, motor type)
 
 Units:
 
