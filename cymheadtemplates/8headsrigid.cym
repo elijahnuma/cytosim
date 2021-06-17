@@ -1,5 +1,5 @@
-[[ R = sorted(list(set([round(i*10**-j,5) for i in range(1, 11, 3) for j in range(5, 0, -1)]))) ]]
-% binding_range = [[R]]    
+[[ R = sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))) ]]
+% binding_range = [[R]]
 % Filament Sliding
 % 5 seconds
 
@@ -39,13 +39,15 @@ set hand motor
     display = ( color=orange; size=7; width=7; )
 }
 
-set couple myosin
+set solid minifilament
 {
-    hand1 = motor
-    hand2 = motor
-    diffusion = 0.45
-    length = 0.02
-    stiffness = 100
+    display = ( coloring = 1; size = 2; style = 4; );
+}
+
+set single myosin
+{
+    hand = motor;
+    stiffness = 100;
 }
 
 new 600 actin
@@ -53,9 +55,16 @@ new 600 actin
     length = 2
 }
 
-new 100000 myosin
+new 100000 solid minifilament
 {
-
+    point1 = -0.4 0 0, 0.005, myosin;
+    point2 = +0.4 0 0, 0.005, myosin;
+    anchor1 = point1, point2, 0.05, myosin;
+    anchor2 = point1, point2, 0.18, myosin;
+    anchor3 = point1, point2, 0.3, myosin;
+    anchor4 = point1, point2, 0.7, myosin;
+    anchor5 = point1, point2, 0.82, myosin;
+    anchor6 = point1, point2, 0.95, myosin; 
 }
 
 run system
@@ -72,7 +81,7 @@ change hand motor
 
 run system
 {
-    nb_frames = 75
+    nb_frames = 75 
     nb_steps = 300
         solve = 1
 }
@@ -81,5 +90,6 @@ run system
 {
     nb_frames = 10
     nb_steps = 200
-        solve = 1                                                                                                               
-}  
+        solve = 1
+}
+

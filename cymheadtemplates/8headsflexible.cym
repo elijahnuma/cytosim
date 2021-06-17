@@ -1,0 +1,110 @@
+[[ R = sorted(list(set([round(i*10**-j,5) for i in range(1, 11, 3) for j in range(3, 0, -1)]))) ]]
+% binding_range = [[R]]
+% Filament Sliding
+% 5 seconds
+
+set simul system
+{
+    time_step = 0.01
+    viscosity = 0.05
+    display = ( style=2; )
+}
+
+set space cell
+{
+    geometry = ( circle 6 )
+}
+
+new space cell
+
+set fiber actin
+{
+    rigidity = 0.075
+    segmentation = 0.1
+    display = ( line_width=1; )
+    binding_key = 1
+}
+
+set hand motor
+{
+    binding_rate = 0
+    binding_range = [[R]]
+    unbinding_rate = 0.1
+    unbinding_force = 6
+
+    activity = move
+    unloaded_speed = 0
+    stall_force = 4
+    hold_growing_end = 1
+    
+    binding_key = 1
+    display = ( color=orange; size=7; width=7; )
+}
+
+set hand motor_base
+{
+    binding_rate = 10
+    binding_range = 0.0
+    unbinding_rate = 0
+    unbinding_force = inf
+    binding_key = 2
+}
+
+set couple myosin
+{
+    hand1 = motor_base
+    hand2 = motor
+    stiffness = 100
+}
+
+set fiber minifilament
+{
+    display = ( coloring = 1; size = 2; style = 4; );
+    rigidity = 0.075
+    segmentation = 0.1
+    binding_key = 2
+}
+
+new 600 actin
+{
+    length = 2
+}
+
+new 4000 fiber minifilament
+{
+    length = 0.8
+    point1 = myosin, 0, minus_end
+    point2 = myosin, 0, plus_end
+    anchor1 = myosin, 0.08, minus_end
+    anchor2 = myosin, 0.16, minus_end
+    anchor3 = myosin, 0.24, minus_end
+    anchor4 = myosin, 0.24, plus_end
+    anchor5 = myosin, 0.16, plus_end
+    anchor6 = myosin, 0.08, plus_end
+}
+
+run system
+{
+    nb_frames = 2
+    nb_steps = 50
+        solve = 0
+}
+
+change hand motor
+{
+    binding_rate = 10
+}
+
+run system
+{
+    nb_frames = 75
+    nb_steps = 300
+        solve = 1
+}
+
+run system
+{
+    nb_frames = 10
+    nb_steps = 200
+        solve = 1
+}

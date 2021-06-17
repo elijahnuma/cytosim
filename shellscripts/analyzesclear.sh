@@ -1,4 +1,4 @@
-for a in ./analyzes/*
+for a in ./analyzes*/*
 do echo Removing $a && rm -r $a
 done
-rm -r analyzes
+rm -r analyzes[0-9]*

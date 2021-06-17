@@ -1,0 +1,119 @@
+[[ R = sorted(list(set([round(i*10**-j,3) for i in range(1, 11, 3) for j in range(3, 0, -1)]))) ]]
+% binding_range = [[R]]
+% Filament Sliding
+% 5 seconds
+
+set simul system
+{
+    time_step = 0.01
+    viscosity = 0.05
+    display = ( style=2; )
+}
+
+set space cell
+{
+    geometry = ( circle 6 )
+}
+
+new space cell
+
+set fiber actin
+{
+    rigidity = 0.075
+    segmentation = 0.1
+    display = ( line_width=1; )
+}
+
+set hand motor
+{
+    binding_rate = 0
+    binding_range = [[R]]
+    unbinding_rate = 0.1
+    unbinding_force = 6
+
+    activity = move
+    unloaded_speed = 0
+    stall_force = 4
+    hold_growing_end = 1
+
+    display = ( color=orange; size=7; width=7; )
+}
+
+set solid minifilament
+{
+    display = ( coloring = 1; size = 2; style = 4; );
+}
+
+set single myosin
+{
+    hand = motor;
+    stiffness = 100;
+}
+
+new 600 actin
+{
+    length = 2
+}
+
+new 100000 solid minifilament
+{
+    point1 = -0.4 0 0, 0.005, myosin;
+    point2 = +0.4 0 0, 0.005, myosin;
+    anchor1 = point1, point2, 0.05, myosin;
+    anchor2 = point1, point2, 0.07, myosin;
+    anchor3 = point1, point2, 0.09, myosin;
+    anchor4 = point1, point2, 0.1, myosin;
+    anchor5 = point1, point2, 0.12, myosin;
+    anchor6 = point1, point2, 0.14, myosin;
+    anchor7 = point1, point2, 0.16, myosin;
+    anchor8 = point1, point2, 0.18, myosin;
+    anchor9 = point1, point2, 0.19, myosin;
+    anchor10 = point1, point2, 0.21, myosin;
+    anchor11 = point1, point2, 0.23, myosin;
+    anchor12 = point1, point2, 0.25, myosin;
+    anchor13 = point1, point2, 0.26, myosin;
+    anchor14 = point1, point2, 0.28, myosin;
+    anchor15 = point1, point2, 0.3, myosin;
+    anchor16 = point1, point2, 0.7, myosin;
+    anchor17 = point1, point2, 0.72, myosin;
+    anchor18 = point1, point2, 0.74, myosin;
+    anchor19 = point1, point2, 0.75, myosin;
+    anchor20 = point1, point2, 0.77, myosin;
+    anchor21 = point1, point2, 0.79, myosin;
+    anchor22 = point1, point2, 0.81, myosin;
+    anchor23 = point1, point2, 0.82, myosin;
+    anchor24 = point1, point2, 0.84, myosin;
+    anchor25 = point1, point2, 0.86, myosin;
+    anchor26 = point1, point2, 0.88, myosin;
+    anchor27 = point1, point2, 0.9, myosin;
+    anchor28 = point1, point2, 0.91, myosin;
+    anchor29 = point1, point2, 0.93, myosin;
+    anchor30 = point1, point2, 0.95, myosin; 
+}
+
+run system
+{
+    nb_frames = 2
+    nb_steps = 50
+	solve = 0
+}
+
+change hand motor
+{
+	binding_rate = 10
+}
+
+run system
+{
+    nb_frames = 75 
+    nb_steps = 300
+        solve = 1
+}
+
+run system
+{
+    nb_frames = 10
+    nb_steps = 200
+        solve = 1
+}
+
