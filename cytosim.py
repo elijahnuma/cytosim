@@ -497,15 +497,15 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
 # needed for group
-group_num = 12
-starting_test = 881
-motor_list = sorted(set([10**o + j*10**o for o in range(3, 5) for j in range(0, 10)]))
-motor_type = 'point'
-var_list = [4]
+group_num = 13
+starting_test = 900
+motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
+motor_type = 'rod'
+var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
-group_name = f'({motor_type} motor) ({sim_time} sec) (minimum motor velocity) (no rest length)'
+group_name = f'(flexible {motor_type} motor) ({sim_time} sec) (no motor velocity)'
 # needed for test
-var_name = 'stall force'
+var_name = 'heads'
 time_frames_key = 3
 binding_ranges_key = 1
 sim_num = 10
