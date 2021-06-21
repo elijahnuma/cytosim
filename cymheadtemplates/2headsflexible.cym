@@ -70,7 +70,7 @@ new 600 actin
     length = 2
 }
 
-new 4000 fiber minifilament
+new 40000 fiber minifilament
 {
     length = 0.8
     point1 = myosin, 0, minus_end
