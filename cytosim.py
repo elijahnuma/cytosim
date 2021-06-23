@@ -498,7 +498,7 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # initialization
 # needed for group
 group_num = 13
-starting_test = 900
+starting_test = 1002
 motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
@@ -518,6 +518,7 @@ for t, tup in enumerate([(i, k) for i in motor_list for k in var_list], starting
 var_num = len(var_list)
 print(f"Group {group_num}: ({[starting_test + var_num*i + j for i in range(len(motor_list)) for j in range(var_num)]}, '{group_name}')")
 # %% Test-job matcher 
+motor_list = [9000, 10000, 20000, 30000, 40000]
 test = starting_test
 for i, m in enumerate(motor_list):
     for j, v in enumerate(var_list):
