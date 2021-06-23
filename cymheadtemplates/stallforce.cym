@@ -53,7 +53,7 @@ new 600 actin
     length = 2
 }
 
-new 100000 myosin
+new 3000 myosin
 {
 
 }
