@@ -88,11 +88,19 @@ clears Data_Files folders in jobs
 metadatacollect.sh:
 collects metadata from job files
 
+movejobs.sh:
+moves new jobs created from rerunjobs.sh to appropriate place in job order;
+args: previously failed job number
+
 pendingrunningjobs.sh:
 checks running and pending jobs in bjobs
 
 recordoff.py:
 creates Data_Files for job number
+
+rerunjobs.sh:
+re-runs job by re-reunning entire test and respective jobs;
+args: failed job number
 
 runsubmitrecordoff.sh:
 creates readable data files in each job folder;

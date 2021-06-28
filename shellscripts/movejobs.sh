@@ -1,6 +1,6 @@
 finaltest_num=$(ls data/tests | wc -l)
 sim_num=$(ls data/tests/test_${finaltest_num} | wc -l)
-job_num=$(ls -d ../job* | wc -l)
+job_num=$(($(ls -d ../job* | wc -l) - $sim_num))
 i=$(($finaltest_num + 1)) && j=$(($job_num / $sim_num)) && k=$(($1 / $sim_num))
 rerun_test=$(($(($i - $j)) + $k))
 startingjobbatch_num=$(($1 - $(($1 % $sim_num))))
