@@ -81,10 +81,12 @@ def anchor_maker(heads_num, motor_type):
             print(f'    anchor{i} = point1, point2, {round(per, 3)}, myosin;')  
     if motor_type == 'flexible':
         anchors = sorted(b*L - np.linspace(0*L, b*L, (heads_num-2)//2, endpoint=False))
-        for i, ma in enumerate(anchors, 1):    
-            print(f'    anchor{i} = myosin, {round(ma, 3)}, minus_end')
-        for i, pa in enumerate(anchors[::-1], 1 + len(anchors)):
-            print(f'    anchor{i} = myosin, {round(pa, 3)}, plus_end')
+        # starts at three as first two as ends of rod
+        for i, ma in enumerate(anchors, 3):    
+            print(f'    attach{i} = myosin, {round(ma, 3)}, minus_end')
+        # iterating anchors position backwards, enumerate starts where last for loop left off
+        for i, pa in enumerate(anchors[::-1], 3 + len(anchors)):
+            print(f'    attach{i} = myosin, {round(pa, 3)}, plus_end')
 
 def metadata(info_num, log=True, show_plot=True):
     """ 
