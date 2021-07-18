@@ -3,7 +3,7 @@ job_num=$(($(ls .. | grep 'job' | wc -l)-1))
 mkdir checks$checks_num
 for i in $(seq 0 $job_num)
 do mkdir checks$checks_num/check$i && cd checks$checks_num/check$i
-if [[ $i -ge 0 && $i -lt 10 ]]
+if [[ $i -lt 10 ]]
 then j=0$i
 else j=$i
 fi

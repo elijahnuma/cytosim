@@ -1,6 +1,6 @@
 failed_jobs=()
 for i in $(seq $1 $2)
-do if [[ $i -ge 0 && $i -lt 10 ]]
+do if [[ $i -lt 10 ]]
 then j=0$i
 else j=$i
 fi

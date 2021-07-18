@@ -102,8 +102,7 @@ rerunjobs.sh:
 re-runs job by re-reunning entire test and respective jobs, uses jobs from failedjobs.txt;
 
 runsubmitrecordoff.sh:
-creates readable data files in each job folder;
-args: starting job, ending job
+creates readable data files in job folders without data file;
 
 submitfailedjobscheck.csh:
 submits failedjobscheck.sh
