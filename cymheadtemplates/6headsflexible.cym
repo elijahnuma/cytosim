@@ -70,15 +70,15 @@ new 600 actin
     length = 2
 }
 
-new 80000 fiber minifilament
+new 1000 fiber minifilament
 {
     length = 0.8
-    point1 = myosin, 0, minus_end
-    point2 = myosin, 0, plus_end
-    anchor1 = myosin, 0.12, minus_end
-    anchor2 = myosin, 0.24, minus_end
-    anchor3 = myosin, 0.24, plus_end
-    anchor4 = myosin, 0.12, plus_end
+    attach1 = myosin, 0, minus_end
+    attach2 = myosin, 0, plus_end
+    attach3 = myosin, 0.12, minus_end
+    attach4 = myosin, 0.24, minus_end
+    attach5 = myosin, 0.24, plus_end
+    attach6 = myosin, 0.12, plus_end
 }
 
 run system

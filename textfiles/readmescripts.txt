@@ -79,7 +79,8 @@ scans checks folder for failed jobs;
 args: checks folder number
 
 jobdatafilescheck.sh:
-checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py;
+checks if runrecordoff.sh has properly loaded Data_Files, run after submitting recordoff.py, 
+generates failedjobs.txt with array of failed jobs;
 args: starting job, ending job    
                                                                                
 jobdatafilesclear.sh
@@ -89,8 +90,7 @@ metadatacollect.sh:
 collects metadata from job files
 
 movejobs.sh:
-moves new jobs created from rerunjobs.sh to appropriate place in job order;
-args: previously failed job number
+moves new jobs created from rerunjobs.sh to appropriate place in job order, uses jobs from failedjobs.txt;
 
 pendingrunningjobs.sh:
 checks running and pending jobs in bjobs
@@ -99,8 +99,7 @@ recordoff.py:
 creates Data_Files for job number
 
 rerunjobs.sh:
-re-runs job by re-reunning entire test and respective jobs;
-args: failed job number
+re-runs job by re-reunning entire test and respective jobs, uses jobs from failedjobs.txt;
 
 runsubmitrecordoff.sh:
 creates readable data files in each job folder;

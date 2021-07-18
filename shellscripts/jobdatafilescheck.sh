@@ -1,6 +1,13 @@
+failed_jobs=()
 for i in $(seq $1 $2)
 do if [[ $i -ge 0 && $i -lt 10 ]]
-then echo Job0$i... && ls ../job0$i/save/Data_Files
-else echo Job$i... && ls ../job$i/save/Data_Files
+then j=0$i
+else j=$i
+fi
+echo Job$j && ls ../job$j/save/Data_Files
+output=$(ls ../job$j/save/Data_Files)
+if ! [[ $output =~ 'Rdata.csv' ]]
+then failed_jobs+=($i)
 fi
 done
+echo ${failed_jobs[@]} > failedjobs.txt

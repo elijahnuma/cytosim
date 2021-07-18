@@ -7,4 +7,4 @@
 #BSUB -o stdout.%J
 #BSUB -e stderr.%J
 #BSUB -R select[avx]
-CheckReRun.py f ../../../job100
+CheckReRun.py f mem=32GB ../../../job100
