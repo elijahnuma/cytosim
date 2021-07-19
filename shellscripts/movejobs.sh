@@ -16,8 +16,8 @@ then newjobdir_num=0$m
 else newjobdir_num=$m
 fi
 echo Deleting ../job$oldjobdir_num 
-echo rm -r ../job$oldjobdir_num
-echo mv ../job$newjobdir_num ../job$oldjobdir_num
+rm -r ../job$oldjobdir_num
+mv ../job$newjobdir_num ../job$oldjobdir_num
 done
 lc=$(($lc + $sim_num))
 done

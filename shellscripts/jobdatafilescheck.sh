@@ -1,5 +1,6 @@
+job_num=$(ls -d ../job* | wc -l)
 failed_jobs=()
-for i in $(seq $1 $2)
+for i in $(seq 0 $(($job_num - 1)))
 do if [[ $i -lt 10 ]]
 then j=0$i
 else j=$i

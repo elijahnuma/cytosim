@@ -141,9 +141,9 @@ getoutstxt.sh (run in outs folder):
 copies outs.txt files from jobs
 
 how to run simulations:
-bash copytest.sh OR maketest.sh OR anchormaketest.sh -> bash failedjobscheck.sh -> bash finishedcheck.sh ->
-bash runsubmitrecordoff.sh -> bash metadatacollect.sh -> bash runanalyzejobs.sh -> bash datacheck.sh ->
-sftp -> get
+maketest.sh -> failedjobscheck.sh -> finishedcheck.sh -> runsubmitrecordoff.sh -> jobdatafilescheck.sh ->
+rerunjobs.sh -> failedjobscheck.sh -> finishedcheck.sh -> runsubmitrecordoff.sh -> movejobs.sh -> 
+runanalyzejobs.sh -> datacheck.sh -> metadatacollect.sh -> sftp -> get
 
 /gitrepo/
 
