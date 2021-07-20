@@ -207,7 +207,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [*range(6, 13)]:
+for group_num in [13]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
@@ -499,13 +499,13 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
 # needed for group
-group_num = 13
-starting_test = 1002
+group_num = 14
+starting_test = 919
 motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
-group_name = f'(flexible {motor_type} motor) ({sim_time} sec) (no motor velocity)'
+group_name = f'(flexible {motor_type} motor) ({sim_time} sec) (with motor velocity)'
 # needed for test
 var_name = 'heads'
 time_frames_key = 3
