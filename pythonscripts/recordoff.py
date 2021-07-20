@@ -84,8 +84,7 @@ for folder in sorted(os.listdir(opath)):
 
     ## extract sim results, calculate cluster sizes, rates, lengths etc... 
      
-                fiberdict=read_fiber_points(os.getcwd())
-
+                fiberdict=read_fiber_points(os.getcwd(), 1)
                 times=sorted(fiberdict.keys())
                 tdata.append(times)
             

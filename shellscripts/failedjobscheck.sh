@@ -8,5 +8,5 @@ then j=0$i
 else j=$i
 fi
 cp ../../submitfailedjobscheck.csh . && sed -i -r "s/job[0-9]*/job$j/g" submitfailedjobscheck.csh
-bsub < submitfailedjobscheck.csh && cd ../.. && echo $j
+bsub < submitfailedjobscheck.csh && cd ../.. && echo Checking if job $j failed
 done
