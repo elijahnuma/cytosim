@@ -70,10 +70,10 @@ def anchor_maker(heads_num, motor_type):
         heads_num (int): number of heads
         motor_type (str): rod type
     
-    note the bare zone from the middle 30-70% of the rod
+    note the bare zone from the middle 40% of the rod
     """
-    L = 0.8 # 0.8 um rod length
-    b = 0.3 # bare zone marker
+    L = 0.8         # 0.8 um rod length
+    b = 0.5 - 0.4/2 # left end bare zone marker
     if motor_type == 'rigid':
         # subtracting heads number by two because a two head motor has anchors at ends
         anchors = sorted((b - np.linspace(0, b, (heads_num-2)//2, endpoint=False))) + list(np.linspace(1-b, 1, (heads_num-2)//2, endpoint=False))
@@ -207,7 +207,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [13]:
+for group_num in [*range(9, 14)]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
