@@ -2,9 +2,6 @@ name of .cym files should be a descriptor of what is changing in each simulation
 
 /cyms/
 
-backup.sh (RUN ONLY IN LOGIN cyms/ DIR):
-backs up share folder
-
 cymscheck.sh:
 checks if test files were loaded successfully;
 args: starting test, ending test
@@ -13,10 +10,6 @@ copysims.sh (run in test dir):
 copies test files for however many simulations needed;
 args: simulation number
 
-copytest.sh: 
-copies .cym file from selected test and changes .cym file;
-args: test copy, target text, replacement text
-
 deletetests.sh:
 deletes range of test folders;
 args: starting test, ending test
@@ -24,10 +17,6 @@ args: starting test, ending test
 edit.sh:
 edits config files;
 args: text to be replaced, replacing text, file name
-
-insert.sh:
-inserts test into desired location;
-args: test to insert, desired test location
 
 jobsclear.sh:
 clears job files
@@ -39,10 +28,6 @@ args: cym file name, simulation number
 preconfigs.sh (run in test dir):
 looks for templete .cym files and runs pre_config_JMB.py for each folder in current directory
 
-redotest.sh: 
-redoes test;
-args: test number, target text, replacement text
-
 runjobs.sh (run in test dir):
 goes into every folder in current directory and runs submit job as a separate job for that folder
 
@@ -51,17 +36,14 @@ goes into every folder in current directory and runs submit job as a separate jo
 flexible.cym:
 flexible rod template
 
+*maketest.sh:
+runs maketest.sh for each motormodel.cym template, requires modification of for loop to specify motor count
+
 pointdiffusion.cym:
 point diffusion template
 
-pointmaketest.sh:
-runs maketest.sh for each stallforce.cym rod template, requires modification of for loop to specify motor count
-
 roddiffusion.cym:
 rod diffusion template
-
-rodmaketest.sh:
-runs maketest.sh for each #heads.cym rod template, requires modification of for loop to specify motor count
 
 stallforce.cym:
 point motor template
