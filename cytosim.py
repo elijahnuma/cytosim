@@ -207,7 +207,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [*range(9, 14)]:
+for group_num in [*range(6, 14)]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
@@ -233,7 +233,7 @@ for group_num in [*range(9, 14)]:
         time_frames, _, var_value, _, motor_type, attach_name = searchcytosiminfo(test_number, 'test')
         motor_count = motor_list[m//len(var_list)]
         # extra information in the title
-        title_parenthetical = f'{motor_count} motors'
+        title_parentheticals = f'({sim_time} sec) ({motor_count} motors)'
         # color linestyle pairs
         color, linestyle = next(color_linestyles_cycle)
         cwd = os.getcwd()
@@ -301,7 +301,7 @@ for group_num in [*range(9, 14)]:
         df_attach_delta = df_attach_delta.rename(columns={df_cluster.index[-1]: var_value}).rename_axis('Binding range (um)')
         attach_dfs.append(df_attach_delta.copy())
         ## plots
-        title_suffix = f'{group_name} ({title_parenthetical})'
+        title_suffix = f'{group_name} {title_parentheticals}'
         # cluster size over time plot
         cluster_title = f'Cluster size over time {title_suffix}'
         plot_handler(df=df_cluster, title=cluster_title, test_num=test_number, figname='work', y_label='Cluster size')
