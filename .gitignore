@@ -4,5 +4,6 @@ plots
 localbackup
 metadata
 tests
+data
 scratch.py
 failedjobs.txt
