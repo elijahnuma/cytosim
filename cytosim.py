@@ -107,12 +107,12 @@ def metadata(info_num, log=True, show_plot=True):
     for i, br in enumerate(binding_ranges):
         messages, memorys = [], []
         for j in range(i, msg_num, len(binding_ranges)):
-            with open(cwd + f'\\metadata\\messages_{info_num}\\messages{j}.cmo', 'r') as f:
+            with open(cwd + f'\\data\\messages_{info_num}\\messages{j}.cmo', 'r') as f:
                 file = f.readlines()
                 seconds = file[-1]
                 seconds = re.search('[0-9]+', seconds)[0]
                 messages.append(seconds)
-            with open(cwd + f'\\metadata\\outs_{info_num}\\out{j}.txt', 'r') as f:
+            with open(cwd + f'\\data\\outs_{info_num}\\out{j}.txt', 'r') as f:
                 file = f.readlines()
                 seconds = [s for s in file if "Max Memory" in s][0]
                 seconds = re.search('[0-9]+\.[0-9]+', seconds)[0]
@@ -207,7 +207,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [*range(6, 14)]:
+for group_num in [14]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
@@ -238,10 +238,10 @@ for group_num in [*range(6, 14)]:
         color, linestyle = next(color_linestyles_cycle)
         cwd = os.getcwd()
         # number of sims of one run
-        sim_num = len(os.listdir(os.path.join(cwd, 'tests', f'test_{test_number}')))
+        sim_num = len(os.listdir(os.path.join(cwd, 'data', f'test_{test_number}')))
         # number of runs
         try:
-            run_count = len(os.listdir(os.path.join(cwd, 'tests', f'test_{test_number}', '0', 'reports')))
+            run_count = len(os.listdir(os.path.join(cwd, 'data', f'test_{test_number}', '0', 'reports')))
         except FileNotFoundError:
             print('FileNotFoundError: There is no report')
         ## csv compiling
@@ -249,8 +249,8 @@ for group_num in [*range(6, 14)]:
         df_cluster_size_list = []
         df_contraction_list = []
         for sim in range(sim_num): 
-            df_cluster_size_list.append(pd.read_csv(cwd + f'\\tests\\test_{test_number}\\{sim}\\Data_Files\\Rdata.csv', names=time_frames).set_index(binding_ranges).transpose().rename_axis('Second (s)'))
-            df_contraction_list.append(pd.read_csv(cwd + f'\\tests\\test_{test_number}\\{sim}\\Data_Files\\Cdata.csv', names=time_frames).set_index(binding_ranges).transpose().rename_axis('Second (s)'))
+            df_cluster_size_list.append(pd.read_csv(cwd + f'\\data\\test_{test_number}\\{sim}\\Data_Files\\Rdata.csv', names=time_frames).set_index(binding_ranges).transpose().rename_axis('Second (s)'))
+            df_contraction_list.append(pd.read_csv(cwd + f'\\data\\test_{test_number}\\{sim}\\Data_Files\\Cdata.csv', names=time_frames).set_index(binding_ranges).transpose().rename_axis('Second (s)'))
         df_cluster_concat = pd.concat(df_cluster_size_list)
         df_contraction_concat = pd.concat(df_contraction_list)
         # averages the concat dfs over simulations
@@ -272,7 +272,7 @@ for group_num in [*range(6, 14)]:
         for sim in range(sim_num):
             for run in range(run_count):
                 run_str = f'run000{run+1}' if run+1 < 10 else f'run00{run+1}' if run+1 < 100 else f'run0{run+1}'
-                filename = cwd + f'\\tests\\test_{test_number}\\{sim}\\reports\\{run_str}report.txt'
+                filename = cwd + f'\\data\\test_{test_number}\\{sim}\\reports\\{run_str}report.txt'
                 with open(filename) as f:
                     # puts each line into as a string into a list
                     lines = f.read().splitlines()
@@ -472,7 +472,7 @@ actin_num = 1000
 # store displacement magnitudes
 displacements = []
 for sim in range(sim_num): 
-    filename = os.getcwd() + f'\\tests\\test_{test_number}\\{sim}\\reports\\run0001report.txt'
+    filename = os.getcwd() + f'\\data\\test_{test_number}\\{sim}\\reports\\run0001report.txt'
     with open(filename) as f:
         # puts each line into as a string into a list
         lines = f.read().splitlines()
