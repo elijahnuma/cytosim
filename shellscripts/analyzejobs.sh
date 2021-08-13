@@ -14,10 +14,12 @@ if [[ "$4" == "pointcom" ]]
 then reportGIT couple:myosin > ${n}report.txt
 elif [[ "$4" == "pointattach" ]]
 then reportGIT couple > ${n}report.txt
-elif [[ "$4" == "rodcom" ]]
+elif [[ "$4" == "rigidcom" ]]
 then reportGIT solid > ${n}report.txt
-elif [[ "$4" == "rodattach" ]]
+elif [[ "$4" == "rigidattach" ]]
 then reportGIT single > ${n}report.txt
+elif [[ "$4" == "flexibleattach" ]]
+then reportGIT couple > ${n}report.txt
 fi
 cp ${n}report.txt $z/$i/reports && cd ..
 done
