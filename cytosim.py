@@ -102,7 +102,7 @@ def metadata(info_num, log=True, show_plot=True):
     _, group_name, motor_list, var_list, binding_ranges, var_name, _, sim_num = searchcytosiminfo(info_num, 'group')
     cwd = os.getcwd()
     # number of messagescmo files, messagescmo and outtxt numbers should be equal 
-    msg_num = len(os.listdir(os.path.join(cwd, 'metadata', f'messages_{info_num}')))
+    msg_num = len(os.listdir(os.path.join(cwd, 'data', f'messages_{info_num}')))
     messages_dicts, memorys_dicts = [], []
     for i, br in enumerate(binding_ranges):
         messages, memorys = [], []
@@ -499,13 +499,13 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
 # needed for group
-group_num = 14
-starting_test = 919
-motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
+group_num = 15
+starting_test = 937
+motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))
 motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
-group_name = f'(flexible {motor_type} motor) ({sim_time} sec) (with motor velocity)'
+group_name = f'(flexible {motor_type} motor) (with motor velocity)'
 # needed for test
 var_name = 'heads'
 time_frames_key = 3
@@ -520,7 +520,7 @@ for t, tup in enumerate([(i, k) for i in motor_list for k in var_list], starting
 var_num = len(var_list)
 print(f"Group {group_num}: ({[starting_test + var_num*i + j for i in range(len(motor_list)) for j in range(var_num)]}, '{group_name}')")
 # %% Test-job matcher 
-motor_list = [9000, 10000, 20000, 30000, 40000]
+motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))[:-7]
 test = starting_test
 for i, m in enumerate(motor_list):
     for j, v in enumerate(var_list):
