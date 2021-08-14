@@ -1,8 +1,8 @@
 lc=0 # loop counter
 failed_jobs=(`cat failedjobs.txt`)
 fj_num=${#failed_jobs[@]}
-finaltest_num=$(ls data/tests | wc -l)
-sim_num=$(ls data/tests/test_${finaltest_num} | wc -l)
+ft_num=$(ls data/tests | wc -l) # final test number
+sim_num=$(ls data/tests/test_${ft_num} | wc -l)
 job_num=$(($(ls -d ../job* | wc -l) - $((fj_num * $sim_num))))
 for fj in ${failed_jobs[@]}
 do sjb_num=$(($fj - $(($fj % $sim_num)))) # starting job batch number

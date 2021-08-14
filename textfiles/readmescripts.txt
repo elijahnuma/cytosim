@@ -108,8 +108,8 @@ args: starting test, ending test
 
 runanalyzejobs.sh:
 runs analyzejobs.sh for successive job batches by accessing submitanalyzejobs.csh;
-args: starting test folder, ending test folder, report type;
-report types: "pointcom", "pointattach", "rodcom", "rodattach"
+args: report type;
+report types: "pointcom", "pointattach", "rodcom", "rodattach". "flexibleattach"
 
 submitanalyzejobs.csh:
 submits analyzejobs.sh to cluster
