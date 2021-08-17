@@ -207,7 +207,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [14]:
+for group_num in [14, 15]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
@@ -501,7 +501,7 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # needed for group
 group_num = 15
 starting_test = 937
-motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))
+motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
 motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
@@ -509,7 +509,7 @@ group_name = f'(flexible {motor_type} motor) (with motor velocity)'
 # needed for test
 var_name = 'heads'
 time_frames_key = 3
-binding_ranges_key = 1
+binding_ranges_key = 10
 sim_num = 10
 # %% Tests in cytosiminformation.txt 
 for t, tup in enumerate([(i, k) for i in motor_list for k in var_list], starting_test):
@@ -520,10 +520,16 @@ for t, tup in enumerate([(i, k) for i in motor_list for k in var_list], starting
 var_num = len(var_list)
 print(f"Group {group_num}: ({[starting_test + var_num*i + j for i in range(len(motor_list)) for j in range(var_num)]}, '{group_name}')")
 # %% Test-job matcher 
-motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))[:-7]
+motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))
 test = starting_test
 for i, m in enumerate(motor_list):
     for j, v in enumerate(var_list):
         for k in range(sim_num):
             print(f'{sim_time} seconds test_{test} job{sim_num*len(var_list)*i + sim_num*j + k}: {m} motors, {var_name} = {v}')
         test += 1
+# %% Group information
+group = 15
+group_tests, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num = searchcytosiminfo(group, 'group')
+print(f'Tests: {group_tests} \nGroup Name: {group_name} \nMotor Counts: {motor_list} \nVariable List: {var_list} \n'
+      f'Binding Ranges: {list(binding_ranges)} \nVariable Name: {var_name.capitalize()} \nSimulation Time: {sim_time} \n'
+      f'Number of Simulations: {sim_num}')
