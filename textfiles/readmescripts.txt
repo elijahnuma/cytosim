@@ -72,7 +72,7 @@ metadatacollect.sh:
 collects metadata from job files
 
 movejobs.sh:
-moves new jobs created from rerunjobs.sh to appropriate place in job order, uses jobs from failedjobs.txt;
+moves new jobs created from rerunjobs.sh to appropriate place in job order, uses jobs from failedjobs.txt
 
 pendingrunningjobs.sh:
 checks running and pending jobs in bjobs
@@ -81,10 +81,10 @@ recordoff.py:
 creates Data_Files for job number
 
 rerunjobs.sh:
-re-runs job by re-reunning entire test and respective jobs, uses jobs from failedjobs.txt;
+re-runs job by re-reunning entire test and respective jobs, uses jobs from failedjobs.txt
 
 runsubmitrecordoff.sh:
-creates readable data files in job folders without data file;
+creates readable data files in job folders without data file
 
 submitfailedjobscheck.csh:
 submits failedjobscheck.sh

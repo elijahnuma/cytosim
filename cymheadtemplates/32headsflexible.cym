@@ -33,7 +33,7 @@ set hand motor
     unbinding_force = 6
 
     activity = move
-    unloaded_speed = 0
+    unloaded_speed = 1
     stall_force = 4
     hold_growing_end = 1
     
@@ -70,7 +70,7 @@ new 600 actin
     length = 2
 }
 
-new 3000 fiber minifilament
+new 60000 fiber minifilament
 {
     length = 0.8
     attach1 = myosin, 0, minus_end
