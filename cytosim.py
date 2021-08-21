@@ -70,10 +70,11 @@ def anchor_maker(heads_num, motor_type):
         heads_num (int): number of heads
         motor_type (str): rod type
     
-    note the bare zone from the middle 40% of the rod
+    note the bare zone from the middle 15% of the rod
     """
     L = 0.8         # 0.8 um rod length
-    b = 0.5 - 0.4/2 # left end bare zone marker
+    mp = 0.15        # middle percent
+    b = 0.5 - mp/2  # left end bare zone marker
     if motor_type == 'rigid':
         # subtracting heads number by two because a two head motor has anchors at ends
         anchors = sorted((b - np.linspace(0, b, (heads_num-2)//2, endpoint=False))) + list(np.linspace(1-b, 1, (heads_num-2)//2, endpoint=False))
@@ -207,7 +208,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [14, 15]:
+for group_num in [*range(6, 17)]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
@@ -499,13 +500,13 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
 # needed for group
-group_num = 15
-starting_test = 937
-motor_list = sorted(set([10**o + j*10**o for o in range(2, 5) for j in range(0, 10)]))
+group_num = 17
+starting_test = 1165
+motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))
 motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
-group_name = f'(flexible {motor_type} motor) (with motor velocity)'
+group_name = f'(flexible {motor_type} motor) (with motor velocity) (segmentation = 0.8 um)'
 # needed for test
 var_name = 'heads'
 time_frames_key = 3
@@ -528,7 +529,7 @@ for i, m in enumerate(motor_list):
             print(f'{sim_time} seconds test_{test} job{sim_num*len(var_list)*i + sim_num*j + k}: {m} motors, {var_name} = {v}')
         test += 1
 # %% Group information
-group = 15
+group = 16
 group_tests, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num = searchcytosiminfo(group, 'group')
 print(f'Tests: {group_tests} \nGroup Name: {group_name} \nMotor Counts: {motor_list} \nVariable List: {var_list} \n'
       f'Binding Ranges: {list(binding_ranges)} \nVariable Name: {var_name.capitalize()} \nSimulation Time: {sim_time} \n'
