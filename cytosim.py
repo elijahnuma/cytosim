@@ -500,13 +500,13 @@ plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
 # needed for group
-group_num = 17
-starting_test = 1165
+group_num = 21
+starting_test = 1621
 motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))
 motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
-group_name = f'(flexible {motor_type} motor) (no motor velocity) (segmentation = 0.8 um)'
+group_name = f'(flexible {motor_type} motor) (with motor velocity) (0% bare zone)'
 # needed for test
 var_name = 'heads'
 time_frames_key = 3
