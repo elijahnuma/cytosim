@@ -62,32 +62,32 @@ def searchcytosiminfo(request, mode):
         # test numbers, group description, motor values, variable values, binding ranges, variable name, simtulation time, number of simulations
         return (group_tests, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num)
     
-def anchor_maker(heads_num, motor_type):
+def anchor_maker(heads_num, motor_type, barezone):
     """ 
     makes anchors for rod motors in .cym file
     
     args:
         heads_num (int): number of heads
         motor_type (str): rod type
+        barezone (float): middle bare zone as percentage
     
-    note the bare zone from the middle 15% of the rod
     """
-    L = 0.8         # 0.8 um rod length
-    mp = 0.15        # middle percent
-    b = 0.5 - mp/2  # left end bare zone marker
+    L = 0.8                 # 0.8 um rod length
+    mp = barezone/100       # middle percent
+    b = 0.5 - mp/2          # left end bare zone marker
     if motor_type == 'rigid':
         # subtracting heads number by two because a two head motor has anchors at ends
         anchors = sorted((b - np.linspace(0, b, (heads_num-2)//2, endpoint=False))) + list(np.linspace(1-b, 1, (heads_num-2)//2, endpoint=False))
         for i, per in enumerate(anchors, 1):
-            print(f'    anchor{i} = point1, point2, {round(per, 3)}, myosin;')  
+            print(f'    anchor{i} = point1, point2, {round(per, 4)}, myosin;')  
     if motor_type == 'flexible':
-        anchors = sorted(b*L - np.linspace(0*L, b*L, (heads_num-2)//2, endpoint=False))
-        # starts at three as first two as ends of rod
+        anchors = np.linspace(0*L, b*L, heads_num//2, endpoint=False)[1:]
+        # starts counting at three as first two as ends of rod
         for i, ma in enumerate(anchors, 3):    
-            print(f'    attach{i} = myosin, {round(ma, 3)}, minus_end')
+            print(f'    attach{i} = myosin, {round(ma, 4)}, minus_end')
         # iterating anchors position backwards, enumerate starts where last for loop left off
         for i, pa in enumerate(anchors[::-1], 3 + len(anchors)):
-            print(f'    attach{i} = myosin, {round(pa, 3)}, plus_end')
+            print(f'    attach{i} = myosin, {round(pa, 4)}, plus_end')
 
 def metadata(info_num, log=True, show_plot=True):
     """ 
@@ -208,7 +208,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [*range(6, 17)]:
+for group_num in [17]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
@@ -506,7 +506,7 @@ motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 
 motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
-group_name = f'(flexible {motor_type} motor) (with motor velocity) (segmentation = 0.8 um)'
+group_name = f'(flexible {motor_type} motor) (no motor velocity) (segmentation = 0.8 um)'
 # needed for test
 var_name = 'heads'
 time_frames_key = 3
