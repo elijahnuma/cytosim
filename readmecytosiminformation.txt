@@ -1,5 +1,3 @@
-Test descriptions format: (time frames, binding range, variable value, simulation time, motor type)
-
 Units:
 
 Real time seconds (S)
