@@ -208,7 +208,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
-for group_num in [18, 19, 20]:
+for group_num in [21]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
