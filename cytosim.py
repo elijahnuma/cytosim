@@ -100,7 +100,7 @@ def metadata(info_num, log=True, show_plot=False):
     
     returns average computational times and memory usages for each variable as dict of dicts
     """
-    _, group_name, motor_list, var_list, binding_ranges, var_name, _, sim_num = searchcytosiminfo(info_num, 'group')
+    _, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num = searchcytosiminfo(info_num, 'group')
     cwd = os.getcwd()
     # number of messagescmo files, messagescmo and outtxt numbers should be equal 
     msg_num = len(os.listdir(os.path.join(cwd, 'data', f'messages_{info_num}')))
@@ -147,8 +147,8 @@ def metadata(info_num, log=True, show_plot=False):
             # messages plot
             fig, ax = plt.subplots(figsize=(plot_length, plot_height))
             fignamelog = 'comptimelog' if log else 'comptimenolog'
-            title_suffix = f'{group_name} (binding range = {br} um)'
-            fig_suffix = f"{br}bindingrange{fignamelog}{group_name.replace(' ', '').lower()}"
+            title_suffix = f'{group_name} (binding range = {br} um) ({sim_time} seconds)'
+            fig_suffix = f"{br}bindingrange{sim_time}seconds{fignamelog}{group_name.replace(' ', '').lower()}"
             ax.set_title(f'Computational time vs. motors {title_suffix}', fontdict={'fontsize':font_size})
             ax.set_xlabel('Motor count')
             ax.set_ylabel('Seconds (S)')
@@ -178,7 +178,7 @@ def metadata(info_num, log=True, show_plot=False):
             plt.savefig(cwd + f"\\plots\\metadata\\memoryusage\\memoryusage{fig_suffix}.png")
         messages_dicts.append(messages_dict)
         memorys_dicts.append(memorys_dict)
-    csv_suffix = f"{group_name.replace(' ', '').lower()}"
+    csv_suffix = f"{sim_time}seconds{group_name.replace(' ', '').lower()}"
     messages_dicts = dict(zip(binding_ranges, messages_dicts)) 
     memorys_dicts = dict(zip(binding_ranges, memorys_dicts)) 
     messages_df = pd.DataFrame.from_dict(messages_dicts, 'index').stack().rename_axis(['Binding Range', 'Heads'])
@@ -189,14 +189,14 @@ def metadata(info_num, log=True, show_plot=False):
     memorys_df.to_csv(path_or_buf=cwd + f"\\csvs\\metadata\\memoryusage\\memoryusage{csv_suffix}.csv", index=False)
     return messages_df, memorys_df
         
-def plot_handler(df, title, test_num, figname, y_label):
+def plot_handler(df, title, metric, figname, y_label):
     """
     handles plots with many lines
     
     args:
         df (pandas.DataFrame): dataframe of interest
         title (str): title of plot
-        test_num (int): test number
+        metric (str): metric for plot
         figname (str): description of plot for fig save
         y_label (str): y label
         
@@ -213,7 +213,7 @@ def plot_handler(df, title, test_num, figname, y_label):
     # adds grid
     for a in axes:
         a.grid(True, which='both')
-    fig.savefig(cwd + f'\\plots\\plotsvstime\\{figname}\\test{test_num}_{figname}.png', bbox_inches='tight')
+    fig.savefig(cwd + f'\\plots\\plotsvstime\\{metric}\\{metric}{figname}.png', bbox_inches='tight')
 # %% Main loops
 # group under consideration
 for group_num in [21]:
@@ -241,8 +241,6 @@ for group_num in [21]:
         # sets test information
         time_frames, _, var_value, _, motor_type, attach_name = searchcytosiminfo(test_number, 'test')
         motor_count = motor_list[m//len(var_list)]
-        # extra information in the title
-        title_parentheticals = f'({sim_time} sec) ({motor_count} motors)'
         # color linestyle pairs
         color, linestyle = next(color_linestyles_cycle)
         cwd = os.getcwd()
@@ -310,13 +308,14 @@ for group_num in [21]:
         df_attach_delta = df_attach_delta.rename(columns={df_cluster.index[-1]: var_value}).rename_axis('Binding range (um)')
         attach_dfs.append(df_attach_delta.copy())
         ## plots
-        title_suffix = f'{group_name} {title_parentheticals}'
+        title_suffix = f'({motor_count} motors) ({sim_time} sec) {group_name}'
+        fig_suffix = f"{motor_count}motors{sim_time}seconds{group_name.replace(' ', '').lower()}"
         # cluster size over time plot
         cluster_title = f'Cluster size over time {title_suffix}'
-        plot_handler(df=df_cluster, title=cluster_title, test_num=test_number, figname='work', y_label='Cluster size')
+        plot_handler(df=df_cluster, title=cluster_title, metric='work', figname=fig_suffix, y_label='Cluster size')
         # contraction rate over time plot
         contraction_title = f'Contraction rate magnitude over time {title_suffix}'
-        plot_handler(df=df_contraction, title=contraction_title, test_num=test_number, figname='power', y_label='Contraction rate magnitude')
+        plot_handler(df=df_contraction, title=contraction_title, metric='power', figname=fig_suffix, y_label='Contraction rate magnitude')
         # cluster size delta from beginning to end plot
         cluster_delta_title = f'Contraction delta magnitude {title_suffix}'
         df_cluster_delta.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_cluster_delta, title=cluster_delta_title, logx=True).set(ylabel='Contraction delta magnitude (um)')
@@ -334,7 +333,7 @@ for group_num in [21]:
         ax_max_contraction_time.legend(title=f'{var_name}:')
         # attachment of hands over time
         attach_title = f'Attachment of hands {title_suffix}'
-        plot_handler(df=df_attach, title=attach_title, test_num=test_number, figname='attachhands', y_label='Hands attached')
+        plot_handler(df=df_attach, title=attach_title, metric='attachhands', figname=fig_suffix, y_label='Hands attached')
         # attachment of hands % delta from beginning to end plot
         attach_delta_title = f'Attachment of hands % delta {title_suffix}'
         df_attach_delta.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_attach_delta, title=attach_delta_title, logx=True).set(ylabel='Attachment of hands delta (%)')
@@ -342,7 +341,6 @@ for group_num in [21]:
         ax_attach_delta.legend(title=f'{var_name}:')
         # save figures before variable cycle resets
         if (m % len(var_list) == len(var_list)-1):
-            fig_suffix = f"{motor_count}motors{group_name.replace(' ', '').lower()}"
             fig_cluster_delta.savefig(cwd + f"\\plots\\plotsvsbindingrange\\work\\work{fig_suffix}.png", bbox_inches='tight')
             fig_max_contraction.savefig(cwd + f"\\plots\\plotsvsbindingrange\\maxpower\\maxpower{fig_suffix}.png", bbox_inches='tight')
             fig_max_contraction_time.savefig(cwd + f"\\plots\\plotsvsbindingrange\\maxpowertime\\maxpowertime{fig_suffix}.png", bbox_inches='tight')
@@ -366,7 +364,7 @@ for group_num in [21]:
     baseline_motor = 1000
     # motor multipler of interest
     for motor in motor_list:
-        fig_suffix = f"{motor}motors{group_name.replace(' ', '').lower()}"
+        fig_suffix = f"{motor}motors{sim_time}seconds{group_name.replace(' ', '').lower()}"
         dfs = [clusterdeltasmotors[baseline_motor], clusterdeltasmotors[motor]]
         # Baseline motor counts are black, others are assorted colors
         styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + [c[0]+l for (c,l) in color_linestyles[:len(clusterdeltasmotors[motor].columns)]]
@@ -376,7 +374,7 @@ for group_num in [21]:
         plt.savefig(cwd + f"\\plots\\plotsvsbindingrange\\motorvariablesuperposition\\clustersizedeltas{fig_suffix}.png")
     # compared variables
     for var in var_list:
-        fig_suffix = f"{var}{var_name.lower().replace(' ', '')}{group_name.replace(' ', '').lower()}"
+        fig_suffix = f"{var}{var_name.lower().replace(' ', '')}{sim_time}seconds{group_name.replace(' ', '').lower()}"
         dfs = [clusterdeltasmotors[baseline_motor], clusterdeltasvariables[var].drop(f'{var} ({baseline_motor} motors)', axis=1)]
         # Baseline motor counts are black, others are assorted colors
         styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + [c[0]+l for (c,l) in color_linestyles[:len(clusterdeltasvariables[var].columns)]]
@@ -390,8 +388,8 @@ for group_num in [21]:
     cols = col_names[:len(var_list)] # column names
     # binding ranges of interest
     for binding_range in binding_ranges:
-        title_suffix = f'{group_name} (binding range = {binding_range} um)'
-        fig_suffix = f"{binding_range}bindingrange{group_name.replace(' ', '').lower()}"
+        title_suffix = f'(binding range = {binding_range} um) ({sim_time} seconds) {group_name}'
+        fig_suffix = f"{binding_range}bindingrange{sim_time}seconds{group_name.replace(' ', '').lower()}"
         times_df = pd.DataFrame(times[binding_range], index=motor_list)
         memory_df = pd.DataFrame(memory[binding_range], index=motor_list)
         ## contraction delta magnitude vs motor (work)
