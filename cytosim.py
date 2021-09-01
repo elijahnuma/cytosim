@@ -10,55 +10,42 @@ import matplotlib.pyplot as plt
 plot_length, plot_height = 10, 10
 font_size = 8
 
-def searchcytosiminfo(request, mode):
+def searchcytosiminfo(group_num):
     """
-    finds information of request in cytosiminformation.txt
+    finds information of group in cytosiminformation.txt
     
     args: 
-        request (str): input to search text file
-        mode (str): section of file to search
+        group (int): group number
     
     returns information as tuple
     """
-    if mode == 'test':
-        test_number = request
-        with open('cytosiminformation.txt', 'r') as f:
-            # removes newlines
-            file = f.read().splitlines()
-            # grabs test information
-            # s for string
-            test_line = [s for s in file if f"{test_number}:" in s][0]
-            test_info = re.search("\(.*\)", test_line).group(0) # information within parathesis
-            time_frames_key, binding_ranges_key, variable_value, sim_time, motor_count = eval(test_info)
-            # regex for names and test range list using keys
-            time_frames_line = [s for s in file if f"Time Frames {time_frames_key}:" in s][0]
-            time_frames = eval(re.sub(f'Time Frames {time_frames_key}: ', '', time_frames_line))
-            binding_ranges_line = [s for s in file if f"Test Binding Ranges {binding_ranges_key}:" in s][0]
-            binding_ranges = eval(re.sub(f'Test Binding Ranges {binding_ranges_key}: ', '', binding_ranges_line))
-        # time subdivisions, binding ranges, variable value, simulation time, motor count
-        return (time_frames, binding_ranges, variable_value, sim_time, motor_count)
-    if mode == 'group':
-        group_num = request
-        with open('cytosiminformation.txt', 'r') as f:
-            file = f.read().splitlines()
-            group_line = [s for s in file if f"Group {group_num}:" in s][0]
-            group_info = group_line.split(": ")[1]
-            group_tests, motor_type, group_name = eval(group_info)
-            motor_key = var_key = sim_time_key = sim_num_key = binding_ranges_key = var_name_key = group_num
-            motors_line = [s for s in file if f"Motors {motor_key}:" in s][0]
-            motor_list = eval(re.sub(f'Motors {motor_key}: ', '', motors_line))
-            var_line = [s for s in file if f"Variable {var_key}:" in s][0]
-            var_list = eval(re.sub(f'Variable {var_key}: ', '', var_line))
-            binding_ranges_line = [s for s in file if f"Metadata Binding Ranges {binding_ranges_key}:" in s][0]
-            binding_ranges = eval(re.sub(f'Metadata Binding Ranges {binding_ranges_key}: ', '', binding_ranges_line))
-            var_name_line = [s for s in file if f"Variable Name {var_name_key}:" in s][0]
-            var_name = re.sub(f'Variable Name {var_name_key}: ', '', var_name_line)
-            sim_time_line = [s for s in file if f"Sim Time {sim_time_key}:" in s][0]
-            sim_time = eval(re.sub(f'Sim Time {sim_time_key}: ', '', sim_time_line))
-            sim_num_line = [s for s in file if f"Sim Num {sim_num_key}:" in s][0]
-            sim_num = eval(re.sub(f'Sim Num {sim_num_key}: ', '', sim_num_line))
-        # test numbers, motor type, group description, motor values, variable values, binding ranges, variable name, simtulation time, number of simulations
-        return (group_tests, motor_type, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num)
+    with open('cytosiminformation.txt', 'r') as f:
+        # removes newlines
+        file = f.read().splitlines()
+        # grabs test information
+        # s for string
+        group_line = [s for s in file if f"Group {group_num}:" in s][0]
+        group_info = group_line.split(": ")[1]
+        group_tests, group_name, motor_type, time_frames_key = eval(group_info)
+        motor_key = var_key = sim_time_key = sim_num_key = binding_ranges_key = var_name_key = group_num
+        # regex for names and test range list using keys
+        motors_line = [s for s in file if f"Motors {motor_key}:" in s][0]
+        motor_list = eval(re.sub(f'Motors {motor_key}: ', '', motors_line))
+        var_name_line = [s for s in file if f"Variable Name {var_name_key}:" in s][0]
+        var_name = re.sub(f'Variable Name {var_name_key}: ', '', var_name_line)
+        var_line = [s for s in file if f"Variable {var_key}:" in s][0]
+        var_list = eval(re.sub(f'Variable {var_key}: ', '', var_line))
+        binding_ranges_line = [s for s in file if f"Group Binding Ranges {binding_ranges_key}:" in s][0]
+        binding_ranges = eval(re.sub(f'Group Binding Ranges {binding_ranges_key}: ', '', binding_ranges_line))
+        time_frames_line = [s for s in file if f"Time Frames {time_frames_key}:" in s][0]
+        time_frames = eval(re.sub(f'Time Frames {time_frames_key}: ', '', time_frames_line))
+        sim_time_line = [s for s in file if f"Sim Time {sim_time_key}:" in s][0]
+        sim_time = eval(re.sub(f'Sim Time {sim_time_key}: ', '', sim_time_line))
+        sim_num_line = [s for s in file if f"Sim Num {sim_num_key}:" in s][0]
+        sim_num = eval(re.sub(f'Sim Num {sim_num_key}: ', '', sim_num_line))
+    # test numbers, group description, motor type, motor values, variable name, variable values, binding ranges, ...
+    # time subdivisions, simulation time, number of simulations
+    return (group_tests, group_name, motor_type, motor_list, var_name, var_list, binding_ranges, time_frames, sim_time, sim_num)
     
 def anchor_maker(heads_num, motor_type, barezone):
     """ 
@@ -98,7 +85,7 @@ def metadata(info_num, log=True, show_plot=False):
     
     returns average computational times and memory usages for each variable as dict of dicts
     """
-    *_, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num = searchcytosiminfo(info_num, 'group')
+    _, group_name, _, motor_list, var_name, var_list, binding_ranges, _, sim_time, sim_num, = searchcytosiminfo(info_num, 'group')
     cwd = os.getcwd()
     # number of messagescmo files, messagescmo and outtxt numbers should be equal 
     msg_num = len(os.listdir(os.path.join(cwd, 'data', f'messages_{info_num}')))
@@ -228,11 +215,12 @@ for group_num in [14]:
     group_max_contraction_time_dfs = []
     group_attach_dfs = []
     # sets group information
-    group_tests, motor_type, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num = searchcytosiminfo(group_num, 'group')
-    # runs through each test, enumerating for motor list
-    for test_number in group_tests:
+    group_tests, group_name, motor_type, motor_list, var_name, var_list, binding_ranges, time_frames, sim_time, sim_num = searchcytosiminfo(group_num)
+    # runs through each test, enumerating for variable and motor cycling
+    for t, test_number in enumerate(group_tests):
         ## test initialization
-        time_frames, _, var_value, sim_time, motor_count = searchcytosiminfo(test_number, 'test')
+        var_value = var_list[t//len(var_list)]
+        motor_count = motor_list[t % len(motor_list)]
         # plot and dataframe initialization when variable cycle resets
         if var_value == var_list[0]:
             # saves dfs at variable-level to compare
@@ -355,7 +343,7 @@ for group_num in [14]:
             fig_max_contraction.savefig(cwd + f"\\plots\\plotsvsbindingrange\\maxpower\\maxpower{fig_suffix}.png", bbox_inches='tight')
             fig_max_contraction_time.savefig(cwd + f"\\plots\\plotsvsbindingrange\\maxpowertime\\maxpowertime{fig_suffix}.png", bbox_inches='tight')
             fig_attach_delta.savefig(cwd + f"\\plots\\plotsvsbindingrange\\attachdelta\\attachdelta{fig_suffix}.png", bbox_inches='tight')
-    # flattens dfs
+    # %% flattens dfs
     group_cluster_delta_dfs = pd.concat(group_cluster_delta_dfs, axis=1)
     group_max_contraction_dfs = pd.concat(group_max_contraction_dfs, axis=1)
     group_max_contraction_time_dfs = pd.concat(group_max_contraction_time_dfs, axis=1)
@@ -480,9 +468,10 @@ for group_num in [14]:
         plt.savefig(cwd + f"\\plots\\plotsvsmotors\\maxpower\\maxpowertime\\maxpowertime{fig_suffix}.png")
 # %% Tracking diffusion
 # intializers
-test_number = 578
+test_number = 579
 motor_types = {578: 'rod', 579: 'point'}
-times, *_ = searchcytosiminfo(test_number, 'test')
+sim_time = 10
+times = np.concatenate([np.linspace(0, 0.25, 2), np.linspace(0.5, sim_time + 0.5, 101)])
 motor_type = motor_types[test_number]
 sim_num = len(os.listdir(os.path.join(os.getcwd(), 'data', f'test_{test_number}')))
 coord_columns = ['cenX', 'cenY'] if motor_type == 'rod' else ['posX', 'posY']
@@ -530,11 +519,6 @@ var_name = 'heads'
 time_frames_key = 3
 binding_ranges_key = 10
 sim_num = 10
-# %% Tests in cytosiminformation.txt 
-for t, tup in enumerate([(i, k) for i in motor_list for k in var_list], starting_test):
-    m, v = tup
-    test_str = f"{t}: ({time_frames_key}, {binding_ranges_key}, {v}, {sim_time}, {m})"
-    print(test_str)
 # %% Groups in cytosiminformation.txt 
 var_num = len(var_list)
 print(f"Group {group_num}: ({[starting_test + var_num*i + j for i in range(len(motor_list)) for j in range(var_num)]}, '{group_name}')")
@@ -547,17 +531,14 @@ for i, m in enumerate(motor_list):
             print(f'{sim_time} seconds test_{test} job{sim_num*len(var_list)*i + sim_num*j + k}: {m} motors, {var_name} = {v}')
         test += 1
 # %% Group information
-group = 13
-group_tests, motor_type, group_name, motor_list, var_list, binding_ranges, var_name, sim_time, sim_num = searchcytosiminfo(group, 'group')
-starting_test = group_tests[0]
-with open('cytosiminformation.txt', 'r') as f:
-    # removes newlines
-    file = f.read().splitlines()
-    # grabs test information
-    # s for string
-    test_line = [s for s in file if f"{starting_test}:" in s][0]
-    test_info = re.search("\(.*\)", test_line).group(0) # information within parathesis
-    time_frames_key, binding_ranges_key, variable_value, sim_time, _ = eval(test_info)
-print(f'Tests: {group_tests} \nMotor Type: {motor_type} \nGroup Name: {group_name} \nMotor Counts: {motor_list} \nVariable List: {var_list} \n'
-      f'Binding Ranges: {list(binding_ranges)} \nVariable Name: {var_name.capitalize()} \nSimulation Time: {sim_time} \n'
-      f'Number of Simulations: {sim_num}')
+group = 8
+# names of group info variables
+group_info_names = ['Tests', 'Group Name', 'Motor Type', 'Motor Counts', 'Variable Name', 'Variable List', 'Binding Ranges (um)',
+                    'Time Frames (s)', 'Simulation Time (s)', 'Number of Simulations']
+group_info = dict(zip(group_info_names, searchcytosiminfo(group)))
+starting_test = group_info['Tests'][0]
+# sets Pandas series to list
+group_info['Binding Ranges (um)'] = list(group_info['Binding Ranges (um)'])
+# finds test info for first test to print tests
+for name, info in group_info.items():
+    print(f'{name}: {info}')
