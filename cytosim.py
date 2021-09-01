@@ -480,9 +480,11 @@ for group_num in [14]:
         plt.savefig(cwd + f"\\plots\\plotsvsmotors\\maxpower\\maxpowertime\\maxpowertime{fig_suffix}.png")
 # %% Tracking diffusion
 # intializers
-test_number = 579
-times, *_, motor_type, _ = searchcytosiminfo(test_number, 'test')
-sim_num = len(os.listdir(os.path.join(os.getcwd(), 'tests', f'test_{test_number}')))
+test_number = 578
+motor_types = {578: 'rod', 579: 'point'}
+times, *_ = searchcytosiminfo(test_number, 'test')
+motor_type = motor_types[test_number]
+sim_num = len(os.listdir(os.path.join(os.getcwd(), 'data', f'test_{test_number}')))
 coord_columns = ['cenX', 'cenY'] if motor_type == 'rod' else ['posX', 'posY']
 actin_num = 1000
 # store displacement magnitudes
@@ -494,8 +496,9 @@ for sim in range(sim_num):
         lines = f.read().splitlines()
     # column names located on this line
     col_names = lines[4].split()[1:]
+    col_name_len = len(col_names)
     # keeps all strings with the relevant information
-    lines = [line.split() for line in lines if len(line.split()) == (8 if motor_type == 'rod' else 9)]
+    lines = [line.split() for line in lines if len(line.split()) == col_name_len]
     # center of mass coordinates 
     df = pd.DataFrame(lines, columns=col_names)[coord_columns].astype('float64')
     # starting coordinates repeated for proper row subtraction
