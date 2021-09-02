@@ -370,40 +370,7 @@ for group_num in [14]:
     group_cluster_delta_dfs = pd.concat(group_cluster_delta_dfs, axis=1)
     group_max_contraction_dfs = pd.concat(group_max_contraction_dfs, axis=1)
     group_max_contraction_time_dfs = pd.concat(group_max_contraction_time_dfs, axis=1)
-    # % Motor-variable superposition
-    # cluster delta copies
-    clusterdeltas = group_cluster_delta_dfs.copy()
-    # renames columns by adding motor count
-    col_names = list(clusterdeltas.columns)
-    column_suffixes = [f' ({m} motors)' for m in motor_list for _ in var_list]
-    clusterdeltas.columns = [str(c) + s for c, s in zip(col_names, column_suffixes)]
-    # filter by variable and motor count
-    clusterdeltasvariables = {v: clusterdeltas.filter(regex=f'{v}') for v in var_list}
-    clusterdeltasmotors = {m: clusterdeltas.filter(regex=f' \({m} motors\)') for m in motor_list}
-    ## plots
-    # Baseline motor count for comparison, must be from motor_list
-    baseline_motor = 1000
-    # motor multipler of interest
-    for motor in motor_list:
-        fig_suffix = f"({motor}motors)({sim_time}seconds){group_name.replace(' ', '').lower()}"
-        dfs = [clusterdeltasmotors[baseline_motor], clusterdeltasmotors[motor]]
-        # Baseline motor counts are black, others are assorted colors
-        styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + [c[0]+l for (c,l) in color_linestyles[:len(clusterdeltasmotors[motor].columns)]]
-        pd.concat(dfs, axis=1).plot(kind='line', figsize=(plot_length, plot_height), style=styles, title=f'Contraction delta {group_name}', logx=True).set(ylabel='Contraction delta magnitude (um)')
-        plt.grid(True, which='both')
-        plt.legend(title=f'{var_name}:')
-        plt.savefig(cwd + f"\\plots\\plotsvsbindingrange\\motorvariablesuperposition\\bymotors\\clustersizedeltas{fig_suffix}.png")
-    # compared variables
-    for var in var_list:
-        fig_suffix = f"({var}{var_name.lower().replace(' ', '')})({sim_time}seconds){group_name.replace(' ', '').lower()}"
-        dfs = [clusterdeltasmotors[baseline_motor], clusterdeltasvariables[var].drop(f'{var} ({baseline_motor} motors)', axis=1)]
-        # Baseline motor counts are black, others are assorted colors
-        styles = ['k' for _ in range(len(clusterdeltasmotors[baseline_motor].columns))] + [c[0]+l for (c,l) in color_linestyles[:len(clusterdeltasvariables[var].columns)]]
-        pd.concat(dfs, axis=1).plot(kind='line', figsize=(plot_length, plot_height), style=styles, title=f'Contraction delta {group_name}', logx=True).set(ylabel='Contraction delta magnitude (um)')
-        plt.grid(True, which='both')
-        plt.legend(title=f'{var_name}:')
-        plt.savefig(cwd + f"\\plots\\plotsvsbindingrange\\motorvariablesuperposition\\by{var_name}\\clustersizedeltas{fig_suffix}.png")
-    # % Analyzing motor data with respect to motor count
+    ## Analyzing motor data with respect to motor count
     # metadata
     times, memory = metadata(info_num=group_num, show_plot=True)
     col_names = list(group_cluster_delta_dfs.copy().columns)
