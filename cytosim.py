@@ -24,28 +24,29 @@ def searchcytosiminfo(group_num):
         file = f.read().splitlines()
         # grabs test information
         # s for string
-        group_line = [s for s in file if f"Group {group_num}:" in s][0]
-        group_info = group_line.split(": ")[1]
-        group_tests, group_name, motor_type, time_frames_key = eval(group_info)
-        motor_key = var_key = sim_time_key = sim_num_key = binding_ranges_key = var_name_key = group_num
-        # regex for names and test range list using keys
-        motors_line = [s for s in file if f"Motors {motor_key}:" in s][0]
-        motor_list = eval(re.sub(f'Motors {motor_key}: ', '', motors_line))
-        var_name_line = [s for s in file if f"Variable Name {var_name_key}:" in s][0]
-        var_name = re.sub(f'Variable Name {var_name_key}: ', '', var_name_line)
-        var_line = [s for s in file if f"Variable {var_key}:" in s][0]
-        var_list = eval(re.sub(f'Variable {var_key}: ', '', var_line))
-        binding_ranges_line = [s for s in file if f"Group Binding Ranges {binding_ranges_key}:" in s][0]
-        binding_ranges = eval(re.sub(f'Group Binding Ranges {binding_ranges_key}: ', '', binding_ranges_line))
-        time_frames_line = [s for s in file if f"Time Frames {time_frames_key}:" in s][0]
-        time_frames = eval(re.sub(f'Time Frames {time_frames_key}: ', '', time_frames_line))
-        sim_time_line = [s for s in file if f"Sim Time {sim_time_key}:" in s][0]
-        sim_time = eval(re.sub(f'Sim Time {sim_time_key}: ', '', sim_time_line))
-        sim_num_line = [s for s in file if f"Sim Num {sim_num_key}:" in s][0]
-        sim_num = eval(re.sub(f'Sim Num {sim_num_key}: ', '', sim_num_line))
+        group_line = [s for s in file if f"Group Tests {group_num}:" in s][0]
+        group_tests = eval(re.sub(f'Group Tests {group_num}: ', '', group_line))
+        group_name_line = [s for s in file if f"Group Name {group_num}:" in s][0]
+        group_name = re.sub(f'Group Name {group_num}: ', '', group_name_line)
+        motors_line = [s for s in file if f"Motors {group_num}:" in s][0]
+        motor_list = eval(re.sub(f'Motors {group_num}: ', '', motors_line))
+        motor_type_line = [s for s in file if f"Motor Type {group_num}:" in s][0]
+        motor_type = re.sub(f'Motor Type {group_num}: ', '', motor_type_line)
+        var_name_line = [s for s in file if f"Variable Name {group_num}:" in s][0]
+        var_name = re.sub(f'Variable Name {group_num}: ', '', var_name_line)
+        var_line = [s for s in file if f"Variable {group_num}:" in s][0]
+        var_list = eval(re.sub(f'Variable {group_num}: ', '', var_line))
+        binding_ranges_line = [s for s in file if f"Binding Ranges {group_num}:" in s][0]
+        binding_ranges = eval(re.sub(f'Binding Ranges {group_num}: ', '', binding_ranges_line))
+        time_frames_line = [s for s in file if f"Time Frames {group_num}:" in s][0]
+        time_frames = re.sub(f'Time Frames {group_num}: ', '', time_frames_line) # time_frames is evaled after sim_time
+        sim_time_line = [s for s in file if f"Sim Time {group_num}:" in s][0]
+        sim_time = eval(re.sub(f'Sim Time {group_num}: ', '', sim_time_line))
+        sim_num_line = [s for s in file if f"Sim Num {group_num}:" in s][0]
+        sim_num = eval(re.sub(f'Sim Num {group_num}: ', '', sim_num_line))
     # test numbers, group description, motor type, motor values, variable name, variable values, binding ranges, ...
     # time subdivisions, simulation time, number of simulations
-    return (group_tests, group_name, motor_type, motor_list, var_name, var_list, binding_ranges, time_frames, sim_time, sim_num)
+    return (group_tests, group_name, motor_type, motor_list, var_name, var_list, binding_ranges, eval(time_frames), sim_time, sim_num)
     
 def anchor_maker(heads_num, motor_type, barezone):
     """ 
@@ -85,7 +86,7 @@ def metadata(info_num, log=True, show_plot=False):
     
     returns average computational times and memory usages for each variable as dict of dicts
     """
-    _, group_name, _, motor_list, var_name, var_list, binding_ranges, _, sim_time, sim_num, = searchcytosiminfo(info_num, 'group')
+    _, group_name, _, motor_list, var_name, var_list, binding_ranges, _, sim_time, sim_num, = searchcytosiminfo(info_num)
     cwd = os.getcwd()
     # number of messagescmo files, messagescmo and outtxt numbers should be equal 
     msg_num = len(os.listdir(os.path.join(cwd, 'data', f'messages_{info_num}')))
@@ -257,16 +258,13 @@ for group_num in [14]:
         df_cluster = df_cluster_concat.groupby(df_cluster_concat.index).mean()
         # negative so we can capture magnitude
         df_contraction = -df_contraction_concat.groupby(df_contraction_concat.index).mean()
-        ## further analyzes csv DataFrames
+        ## further analyzes csv dataframes
         # cluster size delta from beginning to end (negative so we capture magnitude)
         df_cluster_delta = -pd.DataFrame(df_cluster.iloc[-1] - df_cluster.iloc[0]).rename(columns={df_cluster.index[0]: var_value}).rename_axis('Binding Range (um)')
-        group_cluster_delta_dfs.append(df_cluster_delta.copy())
         # max contraction rate
         df_max_contraction = pd.DataFrame(df_contraction.max()).rename(columns={df_contraction.index[0]: var_value}).rename_axis('Binding Range (um)')
-        group_max_contraction_dfs.append(df_max_contraction.copy())
         # max contraction rate time (min is because contraction is negative)
         df_max_contraction_time = pd.DataFrame(df_contraction.idxmax()).rename(columns={df_contraction.index[0]: var_value}).rename_axis('Binding Range (um)')
-        group_max_contraction_time_dfs.append(df_max_contraction_time.copy())          
         # attachment of hands over time   
         df_dict = {float(run): [] for run in range(run_count)}
         for sim in range(sim_num):
@@ -299,8 +297,17 @@ for group_num in [14]:
         df_attach_delta = pd.DataFrame(df_attach.iloc[-1]/df_attach.max().max())
         # attachment of hands delta as percent, renames column to description, renames index
         df_attach_delta = df_attach_delta.rename(columns={df_cluster.index[-1]: var_value}).rename_axis('Binding range (um)')
+        # add dataframes to running list
+        variable_cluster_delta_dfs.append(df_cluster_delta.copy())
+        group_cluster_delta_dfs.append(df_cluster_delta.copy())
+        variable_max_contraction_dfs.append(df_max_contraction.copy())
+        group_max_contraction_dfs.append(df_max_contraction.copy())
+        variable_max_contraction_time_dfs.append(df_max_contraction_time.copy())
+        group_max_contraction_time_dfs.append(df_max_contraction_time.copy())
+        variable_attach_dfs.append(df_attach_delta.copy())
         group_attach_dfs.append(df_attach_delta.copy())
         ## plots and csvs
+        # suffixes
         title_suffix = f'({motor_count} motors) ({sim_time} sec) {group_name}'
         fig_suffix = f"({motor_count}motors)({sim_time}seconds){group_name.replace(' ', '').lower()}"
         csv_suffix = fig_suffix
@@ -310,35 +317,40 @@ for group_num in [14]:
         # contraction rate over time plot
         contraction_title = f'Contraction rate magnitude over time {title_suffix}'
         plot_handler(df=df_contraction, title=contraction_title, metric='power', figname=fig_suffix, y_label='Contraction rate magnitude')
-        # cluster size delta from beginning to end plot
-        cluster_delta_title = f'Contraction delta magnitude {title_suffix}'
-        df_cluster_delta.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_cluster_delta, title=cluster_delta_title, logx=True).set(ylabel='Contraction delta magnitude (um)')
-        ax_cluster_delta.grid(True, which='both')
-        ax_cluster_delta.legend(title=f'{var_name}:')
-        df_cluster_delta.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\work\\work{csv_suffix}.csv", index=False)
-        # max contraction rate plot
-        max_contraction_title = f'Max contraction rate magnitude {title_suffix}'
-        df_max_contraction.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_max_contraction, title=max_contraction_title, logx=True, logy=True).set(ylabel='Max contraction rate magnitude (um/s)')        
-        ax_max_contraction.grid(True, which='both')
-        ax_max_contraction.legend(title=f'{var_name}:')
-        df_max_contraction.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\maxpower\\maxpower{csv_suffix}.csv", index=False)
-        # max contraction rate time plot
-        max_contraction_time_title = f'Max contraction rate time {title_suffix}'
-        df_max_contraction_time.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_max_contraction_time, title=max_contraction_time_title, logx=True).set(ylabel='Max contraction rate time (s)')  
-        ax_max_contraction_time.grid(True, which='both')
-        ax_max_contraction_time.legend(title=f'{var_name}:')
-        df_max_contraction_time.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\maxpowertime\\maxpowertime{csv_suffix}.csv", index=False)
         # attachment of hands over time
         attach_title = f'Attachment of hands {title_suffix}'
         plot_handler(df=df_attach, title=attach_title, metric='attachhands', figname=fig_suffix, y_label='Hands attached')
-        # attachment of hands % delta from beginning to end plot
-        attach_delta_title = f'Attachment of hands % delta {title_suffix}'
-        df_attach_delta.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_attach_delta, title=attach_delta_title, logx=True).set(ylabel='Attachment of hands delta (%)')
-        ax_attach_delta.grid(True, which='both')
-        ax_attach_delta.legend(title=f'{var_name}:')
-        df_attach_delta.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\attachdelta\\attachdelta{csv_suffix}.csv", index=False)
-        # save figures before variable cycle resets
+        # analysis before variable cycle reset
         if var_value == var_list[-1]:
+            # flatten variable dataframes to plot
+            variable_cluster_delta_dfs = pd.concat(group_cluster_delta_dfs, axis=1)
+            variable_max_contraction_dfs = pd.concat(group_max_contraction_dfs, axis=1)
+            variable_attach_dfs = pd.concat(group_max_contraction_time_dfs, axis=1)
+            # cluster size delta from beginning to end plot
+            cluster_delta_title = f'Contraction delta magnitude {title_suffix}'
+            variable_cluster_delta_dfs.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_cluster_delta, title=cluster_delta_title, logx=True).set(ylabel='Contraction delta magnitude (um)')
+            ax_cluster_delta.grid(True, which='both')
+            ax_cluster_delta.legend(title=f'{var_name}:')
+            variable_cluster_delta_dfs.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\work\\work{csv_suffix}.csv", index=False)
+            # max contraction rate plot
+            max_contraction_title = f'Max contraction rate magnitude {title_suffix}'
+            variable_max_contraction_dfs.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_max_contraction, title=max_contraction_title, logx=True, logy=True).set(ylabel='Max contraction rate magnitude (um/s)')        
+            ax_max_contraction.grid(True, which='both')
+            ax_max_contraction.legend(title=f'{var_name}:')
+            variable_max_contraction_dfs.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\maxpower\\maxpower{csv_suffix}.csv", index=False)
+            # max contraction rate time plot
+            max_contraction_time_title = f'Max contraction rate time {title_suffix}'
+            df_max_contraction_time.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_max_contraction_time, title=max_contraction_time_title, logx=True).set(ylabel='Max contraction rate time (s)')  
+            ax_max_contraction_time.grid(True, which='both')
+            ax_max_contraction_time.legend(title=f'{var_name}:')
+            df_max_contraction_time.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\maxpowertime\\maxpowertime{csv_suffix}.csv", index=False)
+            # attachment of hands % delta from beginning to end plot
+            attach_delta_title = f'Attachment of hands % delta {title_suffix}'
+            variable_attach_dfs.plot(kind='line', figsize=(plot_length, plot_height), color=color, linestyle=linestyle, ax=ax_attach_delta, title=attach_delta_title, logx=True).set(ylabel='Attachment of hands delta (%)')
+            ax_attach_delta.grid(True, which='both')
+            ax_attach_delta.legend(title=f'{var_name}:')
+            variable_attach_dfs.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\attachdelta\\attachdelta{csv_suffix}.csv", index=False)
+            # save figures
             fig_cluster_delta.savefig(cwd + f"\\plots\\plotsvsbindingrange\\work\\work{fig_suffix}.png", bbox_inches='tight')
             fig_max_contraction.savefig(cwd + f"\\plots\\plotsvsbindingrange\\maxpower\\maxpower{fig_suffix}.png", bbox_inches='tight')
             fig_max_contraction_time.savefig(cwd + f"\\plots\\plotsvsbindingrange\\maxpowertime\\maxpowertime{fig_suffix}.png", bbox_inches='tight')
@@ -506,7 +518,6 @@ ax.plot(times, displacements)
 plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
 # %% Compiler data
 # initialization
-# needed for group
 group_num = 20
 starting_test = 1525
 motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))
@@ -542,3 +553,4 @@ group_info['Binding Ranges (um)'] = list(group_info['Binding Ranges (um)'])
 # finds test info for first test to print tests
 for name, info in group_info.items():
     print(f'{name}: {info}')
+    
