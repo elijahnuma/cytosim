@@ -305,7 +305,7 @@ for group_num in [*range(6, 22)]:
         # divides final value by maximum number of hands
         df_attach_delta = pd.DataFrame(df_attach.iloc[-1]/df_attach.max().max())
         # attachment of hands delta as percent, renames column to description, renames index
-        df_attach_delta = df_attach_delta.rename(columns={df_cluster.index[-1]: var}).rename_axis('Binding range (um)')
+        df_attach_delta = df_attach_delta.rename(columns={df_cluster.index[-1]: var}).rename_axis('Binding range (um)')*100
         # add dataframes to running list
         variable_cluster_delta_dfs.append(df_cluster_delta.copy())
         group_cluster_delta_dfs.append(df_cluster_delta.copy())
@@ -491,7 +491,7 @@ ax.set_xlabel('Seconds (s)')
 ax.set_ylabel('Displacement Squared (um^2)')
 ax.plot(times, displacements)
 plt.savefig(os.getcwd() + f"\\plots\\\diffusion\\{motor_type}diffusion.png")
-# %% Compiler data
+# %% Group initialization compiler
 # initialization
 group_num = 20
 starting_test = 1525
@@ -500,32 +500,59 @@ motor_type = 'rod'
 var_list = [2, 4, 6, 8, 16, 32]
 sim_time = 5
 group_name = f'(flexible {motor_type} motor) (with motor velocity) (90% bare zone)'
-# needed for test
-var_name = 'heads'
-time_frames_key = 3
-binding_ranges_key = 10
-sim_num = 10
 # %% Groups in cytosiminformation.txt 
 var_num = len(var_list)
 print(f"Group {group_num}: ({[starting_test + var_num*i + j for i in range(len(motor_list)) for j in range(var_num)]}, '{group_name}')")
-# %% Test-job matcher 
-motor_list = sorted(set([10**o + j*10**o for o in range(2, 4) for j in range(0, 10)]))
+# %% Test-job matcher
+group = 21 
+*_, motor_list, _, var_list, _, _, sim_time, sim_num = searchcytosiminfo(group)
 test = starting_test
 for i, m in enumerate(motor_list):
     for j, v in enumerate(var_list):
         for k in range(sim_num):
             print(f'{sim_time} seconds test_{test} job{sim_num*len(var_list)*i + sim_num*j + k}: {m} motors, {var_name} = {v}')
         test += 1
-# %% Group information
-group = 8
-# names of group info variables
-group_info_names = ['Tests', 'Group Name', 'Motor Type', 'Motor Counts', 'Variable Name', 'Variable List', 'Binding Ranges (um)',
-                    'Time Frames (s)', 'Simulation Time (s)', 'Number of Simulations']
-group_info = dict(zip(group_info_names, searchcytosiminfo(group)))
-starting_test = group_info['Tests'][0]
-# sets Pandas series to list
-group_info['Binding Ranges (um)'] = list(group_info['Binding Ranges (um)'])
-# finds test info for first test to print tests
-for name, info in group_info.items():
-    print(f'{name}: {info}')
-    
+    if test > 1600:
+        break
+# %% Group and test file information
+with open('groupstestsinformation.txt', 'w') as f:
+    for group in range(6, 22):
+        # names of group info variables
+        group_info_names = ['Tests', 'Group Name', 'Motor Type', 'Motor Counts', 'Variable Name', 'Variable List', 'Binding Ranges (um)',
+                            'Time Frames (s)', 'Simulation Time (s)', 'Number of Simulations']
+        group_info = dict(zip(group_info_names, searchcytosiminfo(group)))
+        # sets Pandas series and numpy arrays to lists
+        group_info['Binding Ranges (um)'] = list(group_info['Binding Ranges (um)'])
+        group_info['Time Frames (s)'] = list(group_info['Time Frames (s)'].round(2))
+        # finds test info for first test to print tests
+        f.write(f'Group {group}\n')
+        for name, info in group_info.items():
+            f.write(f'{name}: {info}\n')
+        f.write('\n')
+    for group in range(6, 22):
+        # names of group info variables
+        group_info_names = ['Tests', 'Group Name', 'Motor Type', 'Motor Counts', 'Variable Name', 'Variable List', 'Binding Ranges (um)',
+                            'Time Frames (s)', 'Simulation Time (s)', 'Number of Simulations']
+        group_info = dict(zip(group_info_names, searchcytosiminfo(group)))
+        # sets Pandas series and numpy arrays to lists
+        group_info['Binding Ranges (um)'] = list(group_info['Binding Ranges (um)'])
+        group_info['Time Frames (s)'] = list(group_info['Time Frames (s)'].round(2))
+        for t, test in enumerate(group_info['Tests']):
+            test_info = group_info.copy()
+            # change variable and motor count lists to test variable and motor count
+            test_info['Variable List'] = group_info['Variable List'][t % len(group_info['Variable List'])]
+            test_info['Variable'] = test_info['Variable List']
+            del test_info['Variable List']
+            test_info['Motor Counts'] = group_info['Motor Counts'][t//len(group_info['Variable List'])]
+            test_info['Motor Count'] = test_info['Motor Counts']
+            del test_info['Motor Counts']
+            # delete unneeded group information
+            del test_info['Tests']
+            # finds test info for first test to print tests
+            f.write(f'Test {test}\n')
+            for name, info in test_info.items():
+                f.write(f'{name}: {info}\n')
+            f.write('\n')
+        if group == 8:
+            f.write('Test 578\nRod Diffusion\n\nTest 579\nPoint Diffusion\n\n')
+f.close()
