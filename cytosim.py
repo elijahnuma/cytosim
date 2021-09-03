@@ -1,11 +1,10 @@
 import os 
 import re 
-import itertools
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Units and terminology descriptions are in readme.md in plots directory
+# Units and terminology descriptions are in readmejargon.txt in cytosim directory
 
 plot_length, plot_height = 10, 10
 font_size = 8
@@ -15,7 +14,7 @@ def searchcytosiminfo(group_num):
     finds information of group in cytosiminformation.txt
     
     args: 
-        group (int): group number
+        group_num (int): group number
     
     returns information as tuple
     """
@@ -48,19 +47,19 @@ def searchcytosiminfo(group_num):
     # time subdivisions, simulation time, number of simulations
     return (group_tests, group_name, motor_type, motor_list, var_name, var_list, binding_ranges, eval(time_frames), sim_time, sim_num)
     
-def anchor_maker(heads_num, motor_type, barezone):
+def anchor_maker(heads_num, motor_type, bare_zone):
     """ 
     makes anchors for rod motors in .cym file
     
     args:
         heads_num (int): number of heads
         motor_type (str): rod type
-        barezone (float): middle bare zone as percentage
+        bare_zone (float): middle bare zone as percentage
     
     """
-    L = 0.8                 # 0.8 um rod length
-    mp = barezone/100       # middle percent
-    b = 0.5 - mp/2          # left end bare zone marker
+    L = 0.8                     # 0.8 um rod length
+    mp = bare_zone/100          # middle percent
+    b = 0.5 - mp/2              # left end bare zone marker
     if motor_type == 'rigid':
         # subtracting heads number by two because a two head motor has anchors at ends
         anchors = sorted((b - np.linspace(0, b, (heads_num-2)//2, endpoint=False))) + list(np.linspace(1-b, 1, (heads_num-2)//2, endpoint=False))
@@ -75,16 +74,16 @@ def anchor_maker(heads_num, motor_type, barezone):
         for i, pa in enumerate(anchors[::-1], 3 + len(anchors)):
             print(f'    attach{i} = myosin, {round(pa, 4)}, plus_end')
 
-def metadata(info_num, log=True, show_plot=False):
+def metadata(info_num, log=True, show_plot=True):
     """ 
     plots computational time and max memory used against motor count 
     
     args:
         info_num (int): information folders checked
         log (bool): sets log scale; default True
-        show_plot (bool): shows plot; default False
+        show_plot (bool): shows plot; default True
     
-    returns average computational times and memory usages for each variable as dict of dicts
+    returns computational times and memory usages as dict of dicts
     """
     _, group_name, _, motor_list, var_name, var_list, binding_ranges, _, sim_time, sim_num, = searchcytosiminfo(info_num)
     cwd = os.getcwd()
@@ -104,7 +103,7 @@ def metadata(info_num, log=True, show_plot=False):
                 seconds = [s for s in file if "Max Memory" in s][0]
                 seconds = re.search('[0-9]+\.[0-9]+', seconds)[0]
                 memorys.append(seconds)
-        # number of times motors variable is changed
+        # number of times motor count is changed
         motor_num = len(motor_list)
         # number of times variable is changed
         var_num = len(var_list)
@@ -119,7 +118,7 @@ def metadata(info_num, log=True, show_plot=False):
         # average by simulation
         messages = np.mean(messages, axis=2)
         memorys = np.mean(memorys, axis=2)
-        # sort arrays organized by motor multiplier -> variable count
+        # sort arrays organized by motor count -> variable count
         messages = np.column_stack(messages)
         memorys = np.column_stack(memorys)
         messages_errors = np.column_stack(messages_errors)
@@ -205,8 +204,10 @@ def plot_handler(df, plot_title, y_label, legend_label, vs_location, fig_locatio
             a.title.set_size(font_size)
     else:
         fig, ax = plt.subplots(nrows=1, ncols=1)
+        # check if df has NaN values
         has_nan = df.isnull().values.any()
         if has_nan:
+            # plots columns seperately if there are NaN values
             for c in df.columns:
                 df[c].dropna().plot(kind='line', figsize=(plot_length, plot_height), ax=ax, title=plot_title, logx=True).set(ylabel=y_label)
         else:
@@ -218,13 +219,8 @@ def plot_handler(df, plot_title, y_label, legend_label, vs_location, fig_locatio
     fig.savefig(cwd + f'\\plots\\plotsvs{vs_location}\\{fig_location}.png')
     df.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvs{vs_location}\\{fig_location}.csv", index=True)
 # %% Main loops
-# group under consideration
+# groups under consideration
 for group_num in [*range(6, 22)]:
-    # color linestyle pairs generator, cycles forever, for groups
-    linestyles = ['-', '--', ':', '-.']
-    colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
-    color_linestyles = [(c, l) for l in linestyles for c in colors]
-    color_linestyles_cycle = itertools.cycle(color_linestyles)
     # saves dfs at group-level to compare
     group_cluster_delta_dfs = []
     group_max_contraction_dfs = []
@@ -237,23 +233,18 @@ for group_num in [*range(6, 22)]:
         ## test initialization
         var = var_list[t % len(var_list)]
         motor_count = motor_list[t//len(var_list)]
-        # plot and dataframe initialization when variable cycle resets
+        # dataframe initialization when variable cycle resets
         if var == var_list[0]:
             # saves dfs at variable-level to compare
             variable_cluster_delta_dfs = []
             variable_max_contraction_dfs = []
             variable_max_contraction_time_dfs = []
             variable_attach_dfs = []
-        # color linestyle pairs
-        color, linestyle = next(color_linestyles_cycle)
         cwd = os.getcwd()
         # number of sims of one run
         sim_num = len(os.listdir(os.path.join(cwd, 'data', f'test_{test_number}')))
         # number of runs
-        try:
-            run_count = len(os.listdir(os.path.join(cwd, 'data', f'test_{test_number}', '0', 'reports')))
-        except FileNotFoundError:
-            print('FileNotFoundError: There is no report')
+        run_count = len(os.listdir(os.path.join(cwd, 'data', f'test_{test_number}', '0', 'reports')))
         ## csv compiling
         # concats all sims of csv files together as DataFrame
         df_cluster_size_list = []
@@ -368,9 +359,10 @@ for group_num in [*range(6, 22)]:
     group_max_contraction_time_dfs = pd.concat(group_max_contraction_time_dfs, axis=1)
     ## Analyzing motor data with respect to motor count
     # metadata
-    times, memory = metadata(info_num=group_num, show_plot=True)
+    times, memory = metadata(info_num=group_num)
+    # column names
     col_names = list(group_cluster_delta_dfs.copy().columns)
-    cols = col_names[:len(var_list)] # column names
+    cols = col_names[:len(var_list)]
     # binding ranges of interest
     for binding_range in binding_ranges:
         # suffixes
@@ -438,7 +430,7 @@ for group_num in [*range(6, 22)]:
         metric_description = 'Max contraction rate magnitude per computational time (um/s/S)'
         locations = ['maxpower', 'efficiency', 'computationaltime', f'maxpowertimeefficiency{fig_suffix}']
         plot_handler(df=max_contraction_time_efficiency_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs_location='motors', fig_location=locations, slice_plot=False)
-        # multiplies by number of heads per motor, for point motors there are only 2 heads
+        # max contraction rate per computational time vs motor (by scaling) (max power time efficiency)
         scaling_max_contraction_time_efficiency_title = f'Max contraction rate magnitude per computational time vs total head count {title_suffix}'
         metric_description = 'Max contraction rate magnitude per computational time (um/s/S)'
         locations = ['maxpower', 'efficiency', 'scalingcomputationaltime', f'scalingmaxpowertimeefficiency{fig_suffix}']
@@ -484,6 +476,7 @@ for sim in range(sim_num):
     # magnitude of displacement 
     displ = diff.apply(lambda x: x[0] + x[1], axis=1)
     displacements.append(list(displ))
+# averages displacements
 displacements = np.array(displacements).mean(axis=0)
 fig, ax = plt.subplots(figsize=(plot_length, plot_height))
 ax.set_title(f'{motor_type.capitalize()} motor displacement over time (1000 motors) (Average over {sim_num} simulations)')
@@ -512,8 +505,6 @@ for i, m in enumerate(motor_list):
         for k in range(sim_num):
             print(f'{sim_time} seconds test_{test} job{sim_num*len(var_list)*i + sim_num*j + k}: {m} motors, {var_name} = {v}')
         test += 1
-    if test > 1600:
-        break
 # %% Group and test file information
 with open('groupstestsinformation.txt', 'w') as f:
     for group in range(6, 22):
@@ -553,6 +544,7 @@ with open('groupstestsinformation.txt', 'w') as f:
             for name, info in test_info.items():
                 f.write(f'{name}: {info}\n')
             f.write('\n')
+        # writes in diffusion tests
         if group == 8:
             f.write('Test 578\nRod Diffusion\n\nTest 579\nPoint Diffusion\n\n')
 f.close()
