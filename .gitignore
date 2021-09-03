@@ -1,11 +1,11 @@
 clusterbackup
-cyms
 plots
 csvs
 localbackup
 metadata
 tests
 data
+cymtemplates
 scratch.py
 failedjobs.txt
 report.txt
