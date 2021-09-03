@@ -219,7 +219,7 @@ def plot_handler(df, plot_title, y_label, legend_label, vs_location, fig_locatio
     df.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvs{vs_location}\\{fig_location}.csv", index=True)
 # %% Main loops
 # group under consideration
-for group_num in [14]:
+for group_num in [*range(6, 22)]:
     # color linestyle pairs generator, cycles forever, for groups
     linestyles = ['-', '--', ':', '-.']
     colors = ['red', 'blue', 'green', 'cyan', 'magenta', 'orange']
@@ -347,25 +347,21 @@ for group_num in [14]:
             metric_description = 'Contraction delta magnitude (um)'
             locations = ['work', f'work{fig_suffix}']
             plot_handler(df=variable_cluster_delta_dfs, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs_location='bindingrange', fig_location=locations, slice_plot=False)
-            variable_cluster_delta_dfs.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\work\\work{csv_suffix}.csv", index=False)
             # max contraction rate plot
             df_title = f'Max contraction rate magnitude {title_suffix}'
             metric_description = 'Max contraction rate magnitude (um/s)'
             locations = ['maxpower', f'maxpower{fig_suffix}']
             plot_handler(df=variable_max_contraction_dfs, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs_location='bindingrange', fig_location=locations, slice_plot=False)
-            variable_max_contraction_dfs.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\maxpower\\maxpower{csv_suffix}.csv", index=False)
             # max contraction rate time plot
             df_title = f'Max contraction rate time {title_suffix}'
             metric_description = 'Max contraction rate time (s)'
             locations = ['maxpowertime', f'maxpowertime{fig_suffix}']
             plot_handler(df=variable_max_contraction_time_dfs, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs_location='bindingrange', fig_location=locations, slice_plot=False)
-            variable_max_contraction_time_dfs.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\maxpowertime\\maxpowertime{csv_suffix}.csv", index=False)
             # attachment of hands % delta from beginning to end plot
             df_title = f'Attachment of hands % delta {title_suffix}'
             metric_description = 'Attachment of hands delta (%)'
             locations = ['attachdelta', f'attachdelta{fig_suffix}']
             plot_handler(df=variable_attach_dfs, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs_location='bindingrange', fig_location=locations, slice_plot=False)
-            variable_attach_dfs.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvsbindingrange\\attachdelta\\attachdelta{csv_suffix}.csv", index=False)
     # flattens dfs
     group_cluster_delta_dfs = pd.concat(group_cluster_delta_dfs, axis=1)
     group_max_contraction_dfs = pd.concat(group_max_contraction_dfs, axis=1)
