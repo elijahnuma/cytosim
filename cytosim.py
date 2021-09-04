@@ -428,30 +428,30 @@ for group_num in [*range(6, 22)]:
         locations = ['maxpower', 'maxpower', 'nonscaling', f'maxpower{fig_suffix}']
         plot_handler(df=max_contraction_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs=vs_metric, fig_location=locations, slice_plot=False)
         # max contraction rate vs total motor count (by scaling) (max power)
-        scaling_max_contraction_title = f'Max contraction rate magnitude vs total head count {title_suffix}'
+        df_title = f'Max contraction rate magnitude vs total head count {title_suffix}'
         metric_description = 'Max contraction rate magnitude (um/s)'
         locations = ['maxpower', 'maxpower', 'scaling', f'scalingmaxpower{fig_suffix}']
-        plot_handler(df=scaling_max_contraction_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, metric=vs_metric, fig_location=locations, slice_plot=False)
+        plot_handler(df=scaling_max_contraction_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs=vs_metric, fig_location=locations, slice_plot=False)
         # max contraction rate per computational time vs motor (max power time efficiency)
         df_title = f'Max contraction rate magnitude per computational time vs {vs_metric} {title_suffix}'
         metric_description = 'Max contraction rate magnitude per computational time (um/s/S)'
         locations = ['maxpower', 'efficiency', 'computationaltime', f'maxpowertimeefficiency{fig_suffix}']
-        plot_handler(df=max_contraction_time_efficiency_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, metric=vs_metric, fig_location=locations, slice_plot=False)
+        plot_handler(df=max_contraction_time_efficiency_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs=vs_metric, fig_location=locations, slice_plot=False)
         # max contraction rate per computational time vs motor (by scaling) (max power time efficiency)
-        scaling_max_contraction_time_efficiency_title = f'Max contraction rate magnitude per computational time vs total head count {title_suffix}'
+        df_title = f'Max contraction rate magnitude per computational time vs total head count {title_suffix}'
         metric_description = 'Max contraction rate magnitude per computational time (um/s/S)'
         locations = ['maxpower', 'efficiency', 'scalingcomputationaltime', f'scalingmaxpowertimeefficiency{fig_suffix}']
-        plot_handler(df=scaling_max_contraction_time_efficiency_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, metric=vs_metric, fig_location=locations, slice_plot=False)
+        plot_handler(df=scaling_max_contraction_time_efficiency_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs=vs_metric, fig_location=locations, slice_plot=False)
         # max contraction rate per memory usage vs motor (max power memory efficiency)
         df_title = f'Max contraction rate magnitude per memory usage vs {vs_metric} {title_suffix}'
         metric_description = 'Max contraction rate magnitude per memory usage (um/s/MB)'
         locations = ['maxpower', 'efficiency', 'memoryusage', f'maxpowermemoryefficiency{fig_suffix}']
-        plot_handler(df=max_contraction_memory_efficiency_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, metric=vs_metric, fig_location=locations, slice_plot=False)
+        plot_handler(df=max_contraction_memory_efficiency_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs=vs_metric, fig_location=locations, slice_plot=False)
         # max contraction rate time vs motor (max power time)
         df_title = f'Max contraction rate time vs {vs_metric} {title_suffix}'
         metric_description = 'Seconds (s)'
         locations = ['maxpower', 'maxpowertime', f'maxpowertime{fig_suffix}']
-        plot_handler(df=max_contraction_time_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, metric=vs_metric, fig_location=locations, slice_plot=False)
+        plot_handler(df=max_contraction_time_df, plot_title=df_title, y_label=metric_description, legend_label=var_name, vs=vs_metric, fig_location=locations, slice_plot=False)
 # %% Tracking diffusion
 # intializers
 test_number = 579
