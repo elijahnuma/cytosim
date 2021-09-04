@@ -216,6 +216,7 @@ def plot_handler(df, plot_title, y_label, legend_label, vs, fig_location, slice_
         ax.legend(title=f'{legend_label}:')
         ax.title.set_size(font_size)
     fig_location = '\\'.join(fig_location)
+    vs = vs.replace(' ', '')
     fig.savefig(cwd + f'\\plots\\plotsvs{vs}\\{fig_location}.png')
     df.to_csv(path_or_buf=cwd + f"\\csvs\\csvsvs{vs}\\{fig_location}.csv", index=True)
 # %% Main loops
